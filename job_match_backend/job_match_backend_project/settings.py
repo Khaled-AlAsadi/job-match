@@ -109,7 +109,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+AUTH_USER_MODEL = 'job_match_backend_app.CustomUser'
 
+AUTHENTICATION_BACKENDS = [
+    'job_match_backend_app.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
