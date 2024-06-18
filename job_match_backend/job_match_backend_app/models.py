@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.base_user import BaseUserManager
+from .choices import *
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -16,6 +17,15 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
+
+class JobPost(models.Model):
+    job_post_title = models.CharField(max_length=50)
+    company_name = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
+    employment_type = models.CharField(choices=EMPLOYMENT_TYPES,max_length=22)
+    job_description = models.CharField(max_length=500)
+    phone_number = models.CharField(max_length=20)
+    expiration_date = models.CharField(max_length=10)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -33,3 +43,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class JobSeekerCv(models.Model):
+    profile = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='job_seeker_profile')
+    email = models.EmailField(unique=True)
+    mobile_number = models.CharField(max_length=30)
+
+class WorkExperince(models.Model):
+    job_seeker = models.ForeignKey(JobSeekerCv,on_delete=models.CASCADE, related_name='work_experiences')
+    occupation_title = models.CharField(max_length=50)
+    company_name = models.CharField(max_length=50)
+    years = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)    
+
+class Education(models.Model):
+    job_seeker = models.ForeignKey(JobSeekerCv,on_delete=models.CASCADE, related_name='educations')
+    school_name = models.CharField(max_length=50)
+    level = models.CharField(max_length=50)
+    orientation = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
