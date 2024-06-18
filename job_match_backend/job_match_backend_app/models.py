@@ -18,14 +18,6 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
-class JobPost(models.Model):
-    job_post_title = models.CharField(max_length=50)
-    company_name = models.CharField(max_length=50)
-    location = models.CharField(max_length=50)
-    employment_type = models.CharField(choices=EMPLOYMENT_TYPES,max_length=22)
-    job_description = models.CharField(max_length=500)
-    phone_number = models.CharField(max_length=20)
-    expiration_date = models.CharField(max_length=10)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -43,6 +35,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class JobPost(models.Model):
+    job_post = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='job_post')
+    job_post_title = models.CharField(max_length=50)
+    company_name = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
+    employment_type = models.CharField(choices=EMPLOYMENT_TYPES,max_length=22)
+    job_description = models.CharField(max_length=500)
+    phone_number = models.CharField(max_length=20)
+    expiration_date = models.CharField(max_length=10)
+
 
 class JobSeekerCv(models.Model):
     profile = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='job_seeker_profile')
