@@ -2,12 +2,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.base_user import BaseUserManager
 from .choices import *
+from django.contrib.postgres.fields import ArrayField
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
+        extra_fields.setdefault('is_ag', bool(extra_fields.get('org_number')))
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -27,6 +29,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     org_number = models.CharField(max_length=20, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_ag = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
@@ -44,13 +47,14 @@ class JobPost(models.Model):
     employment_type = models.CharField(choices=EMPLOYMENT_TYPES,max_length=22)
     job_description = models.CharField(max_length=500)
     phone_number = models.CharField(max_length=20)
-    expiration_date = models.CharField(max_length=10)
-
+    expiration_date = models.DateField()
 
 class JobSeekerCv(models.Model):
     profile = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='job_seeker_profile')
     email = models.EmailField(unique=True)
     mobile_number = models.CharField(max_length=30)
+    applied_profiles = models.ManyToManyField(JobPost, related_name='applicants')
+
 
 class WorkExperince(models.Model):
     job_seeker = models.ForeignKey(JobSeekerCv,on_delete=models.CASCADE, related_name='work_experiences')
