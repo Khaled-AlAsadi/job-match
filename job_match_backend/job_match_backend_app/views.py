@@ -13,12 +13,11 @@ def index(request):
     return HttpResponse("Använd rätt route för att hitta saker")
 
 @api_view(['GET'])
-def retrieveEmployerJobPosts(request, email):
+def retrieveEmployerJobPosts(request):
     if request.user.is_authenticated:
-        user = get_object_or_404(CustomUser, email=email)
-        
-        if user.is_ag:
-            job_posts = JobPost.objects.filter(job_post=user)
+
+        if request.user.is_ag:
+            job_posts = JobPost.objects.filter(job_post=request.user)
             data = list(job_posts.values())
             if data:
                 return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
