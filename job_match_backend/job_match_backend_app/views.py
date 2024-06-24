@@ -15,7 +15,6 @@ def index(request):
 @api_view(['GET'])
 def retrieveEmployerJobPosts(request):
     if request.user.is_authenticated:
-
         if request.user.is_ag:
             job_posts = JobPost.objects.filter(job_post=request.user)
             data = list(job_posts.values())
@@ -23,7 +22,6 @@ def retrieveEmployerJobPosts(request):
                 return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
             else:
                 return JsonResponse([], safe=False)
-
         else:
             return JsonResponse({"Error": "Unauthorized"}, status=401)
     else:
