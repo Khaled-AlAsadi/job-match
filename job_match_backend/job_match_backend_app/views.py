@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
 from .serializers import JobPostSerializer
-from .models import JobPost,CustomUser
+from .models import JobPost
 from rest_framework.decorators import api_view
 from rest_framework import status
 
