@@ -1,10 +1,17 @@
 import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
+from rest_framework.response import Response
+from .serializers import JobPostSerializer
 from .models import JobPost,CustomUser
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import AnonymousUser
+from rest_framework import status
+import logging
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login
 
+logger = logging.getLogger(__name__)
 # Create your views here.
 @api_view(['GET'])
 def index(request):
@@ -27,5 +34,18 @@ def retrieveEmployerJobPosts(request, email):
             return JsonResponse({"Error": "Unauthorized"}, status=401)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=401)
-    
 
+
+@api_view(['POST'])
+def createJobPost(request):
+    if request.user.is_authenticated and request.user.is_ag:
+        serializer = JobPostSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            try:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({"error": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
