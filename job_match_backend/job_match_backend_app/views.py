@@ -44,3 +44,18 @@ def createJobPost(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+@api_view(['PATCH'])
+def updateJobPost(request,id):
+    if request.user.is_authenticated and request.user.is_ag:
+            job_post = get_object_or_404(JobPost, id=id)
+            serializer = JobPostSerializer(job_post, data=request.data, partial=True)
+            print(job_post)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+

@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.index),
     path('EmployerJobPostsByEmail/<str:email>',views.retrieveEmployerJobPosts,name="EmployerJobPostsByEmail"),
     path('jobpost/create',views.createJobPost),
+    path('jobpost/update/<str:id>',views.updateJobPost,name="updateJobPost")
 ]
