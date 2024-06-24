@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
+    path('EmployerJobPostsByEmail/<str:email>',views.retrieveEmployerJobPosts,name="EmployerJobPostsByEmail")
 ]
