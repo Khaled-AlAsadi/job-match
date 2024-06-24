@@ -24,6 +24,8 @@ def retrieveEmployerJobPosts(request, email):
                 return JsonResponse([], safe=False)
 
         else:
-            return JsonResponse({"Error": "Unauthorized"}, status=403)
+            return JsonResponse({"Error": "Unauthorized"}, status=401)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=401)
+    
+
