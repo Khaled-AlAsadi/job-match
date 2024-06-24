@@ -55,7 +55,7 @@ def updateJobPost(request,id):
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
     
 
-@api_view(['Delete'])
+@api_view(['DELETE'])
 def deleteJobPost(request,id):
     if request.user.is_authenticated and request.user.is_ag:
             job_post = get_object_or_404(JobPost, id=id, job_post=request.user)
@@ -64,4 +64,12 @@ def deleteJobPost(request,id):
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
     
-
+@api_view(["GET"])
+def getJobPostById(request,id):
+    if request.user.is_authenticated and request.user.is_ag:
+        job_post = get_object_or_404(JobPost, id=id, job_post=request.user)
+        serializer = JobPostSerializer(job_post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    
