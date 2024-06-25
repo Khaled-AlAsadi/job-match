@@ -2,8 +2,8 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
-from .serializers import JobPostSerializer
-from .models import JobPost
+from .serializers import JobPostSerializer, JobSeekerCVSerializer
+from .models import JobPost, JobSeekerCv
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -73,3 +73,21 @@ def getJobPostById(request,id):
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
     
+@api_view(["PATCH"])
+def updateJobSeekerInfo(request):
+    if request.user.is_authenticated and not request.user.is_ag:
+        try:
+            job_seeker = JobSeekerCv.objects.get_or_create(profile=request.user, defaults={
+                'email': request.user.email,
+                'mobile_number': request.user.mobile_number,
+            })
+
+            serializer = JobSeekerCVSerializer(job_seeker, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
