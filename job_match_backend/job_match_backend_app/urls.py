@@ -8,5 +8,6 @@ urlpatterns = [
     path('jobpost/update/<str:id>',views.updateJobPost,name="updateJobPost"),
     path('jobpost/delete/<str:id>',views.deleteJobPost,name="deleteJobPost"),
     path('jobpost/get/<str:id>',views.getJobPostById,name="getJobPostById"),
-    path('jobseeker/info/update',views.updateJobSeekerInfo,name="updateJobSeekerInfo")
+    path('jobseeker/info/update',views.updateJobSeekerInfo,name="updateJobSeekerInfo"),
+    path('jobseeker/retrive/profile',views.getJobSeekerCv,name="getJobSeekerCv")
 ]

@@ -91,3 +91,13 @@ def updateJobSeekerInfo(request):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+@api_view(["GET"])
+def getJobSeekerCv(request):
+    if request.user.is_authenticated and not request.user.is_ag:
+        cv = get_object_or_404(JobSeekerCv, profile=request.user)
+        serializer = JobSeekerCVSerializer(cv)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
