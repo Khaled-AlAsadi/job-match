@@ -6,7 +6,7 @@ class JobPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobPost
-        fields=['job_post_title','company_name','location','employment_type','job_description','phone_number','expiration_date']
+        fields=['job_post_title','company_name','location','employment_type','job_description','phone_number','expiration_date','is_published']
     
     def create(self, validated_data):
         validated_data['job_post'] = self.context['request'].user

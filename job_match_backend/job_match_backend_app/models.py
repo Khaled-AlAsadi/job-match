@@ -47,6 +47,7 @@ class JobPost(models.Model):
     job_description = models.CharField(max_length=500)
     phone_number = models.CharField(max_length=20)
     expiration_date = models.DateField()
+    is_published = models.BooleanField(default=False)
 
 class JobSeekerCv(models.Model):
     profile = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='job_seeker_profile')
