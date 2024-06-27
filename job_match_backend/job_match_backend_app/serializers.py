@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import JobPost, JobSeekerCv
+from .models import JobPost, JobSeekerCv, WorkExperince
 
 class JobPostSerializer(serializers.ModelSerializer):
     expiration_date = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
@@ -12,10 +12,20 @@ class JobPostSerializer(serializers.ModelSerializer):
         validated_data['job_post'] = self.context['request'].user
         return super().create(validated_data)
 
+    
+class WorkExperinceSerializer(serializers.ModelSerializer):
+    job_seeker = serializers.PrimaryKeyRelatedField(queryset=JobSeekerCv.objects.all(), write_only=True)
+
+    class Meta:
+        model = WorkExperince
+        fields = ['id','occupation_title', 'company_name', 'years', 'description','job_seeker']
+
 class JobSeekerCVSerializer(serializers.ModelSerializer):
+    work_experiences = WorkExperinceSerializer(many=True, read_only=True)
+
     class Meta:
         model = JobSeekerCv
-        fields=['email','mobile_number']
+        fields=['email','mobile_number','work_experiences']
     
     def create(self, validated_data):
         validated_data['profile'] = self.context['request'].user
