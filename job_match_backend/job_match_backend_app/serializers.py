@@ -22,11 +22,13 @@ class WorkExperinceSerializer(serializers.ModelSerializer):
 
 class JobSeekerCVSerializer(serializers.ModelSerializer):
     work_experiences = WorkExperinceSerializer(many=True, read_only=True)
-
     class Meta:
         model = JobSeekerCv
-        fields=['email','mobile_number','work_experiences']
+        fields = ['email', 'mobile_number','work_experiences']
+        read_only_fields = ['profile','work_experiences']
     
-    def create(self, validated_data):
-        validated_data['profile'] = self.context['request'].user
-        return super().create(validated_data)
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.mobile_number = validated_data.get('mobile_number', instance.mobile_number)
+        instance.save()
+        return instance

@@ -69,3 +69,4 @@ class Education(models.Model):
     level = models.CharField(max_length=50)
     orientation = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
+    years = models.CharField(max_length=2,null=True)

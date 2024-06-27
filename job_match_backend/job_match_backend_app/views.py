@@ -77,12 +77,15 @@ def getJobPostById(request,id):
 def updateJobSeekerInfo(request):
     if request.user.is_authenticated and not request.user.is_ag:
         try:
-            job_seeker = JobSeekerCv.objects.get_or_create(profile=request.user, defaults={
-                'email': request.user.email,
-                'mobile_number': request.user.mobile_number,
-            })
-
-            serializer = JobSeekerCVSerializer(job_seeker, data=request.data, partial=True)
+            job_seeker,created = JobSeekerCv.objects.get_or_create(
+                profile=request.user,
+                defaults={
+                    'email': request.user.email,
+                    'mobile_number': request.user.mobile_number,
+                }
+            )
+            data = request.data.copy()
+            serializer = JobSeekerCVSerializer(job_seeker, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -91,7 +94,7 @@ def updateJobSeekerInfo(request):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
-    
+
 @api_view(["GET"])
 def getJobSeekerCv(request):
     if request.user.is_authenticated and not request.user.is_ag:
