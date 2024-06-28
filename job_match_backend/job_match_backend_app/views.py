@@ -14,16 +14,13 @@ def index(request):
 
 @api_view(['GET'])
 def retrieveEmployerJobPosts(request):
-    if request.user.is_authenticated:
-        if request.user.is_ag:
+    if request.user.is_authenticated and request.user.is_ag:
             job_posts = JobPost.objects.filter(job_post=request.user)
             data = list(job_posts.values())
             if data:
                 return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
             else:
                 return JsonResponse([], safe=False)
-        else:
-            return JsonResponse({"Error": "Unauthorized"}, status=401)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=401)
 
@@ -120,6 +117,20 @@ def createWorkExperince(request):
     else:
         return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(["PUT"])
+def updateWorkExperience(request, id):
+    if request.user.is_authenticated and not request.user.is_ag:
+        cv = get_object_or_404(JobSeekerCv, profile=request.user)
+        work_experience = get_object_or_404(WorkExperince, id=id, job_seeker=cv)
+        serializer = WorkExperinceSerializer(work_experience, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+
 @api_view(["DELETE"])
 def deleteWorkExperience(request, id):
     if request.user.is_authenticated and not request.user.is_ag:
@@ -142,6 +153,20 @@ def createEducation(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(["PUT"])
+def updateEducation(request, id):
+    if request.user.is_authenticated and not request.user.is_ag:
+        cv = get_object_or_404(JobSeekerCv, profile=request.user)
+        education = get_object_or_404(Education, id=id, job_seeker=cv)
+        serializer = EducationSerializer(education, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:

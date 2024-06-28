@@ -12,6 +12,8 @@ urlpatterns = [
     path('jobseeker/retrive/profile',views.getJobSeekerCv,name="getJobSeekerCv"),
     path('jobseeker/workexperince/create',views.createWorkExperince,name="createWorkexperince"),
     path('jobseeker/workexperince/delete/<str:id>',views.deleteWorkExperience,name='deleteWorkexperince'),
+    path('jobseeker/workexperince/update/<str:id>',views.updateWorkExperience,name='updateWorkexperince'),
     path('jobseeker/education/create',views.createEducation,name='createEducation'),
-    path('jobseeker/education/delete/<str:id>',views.deleteEducation,name='createEducation')
+    path('jobseeker/education/delete/<str:id>',views.deleteEducation,name='deleteEducation'),
+    path('jobseeker/education/update/<str:id>',views.updateEducation,name='updateEducation'),
 ]
