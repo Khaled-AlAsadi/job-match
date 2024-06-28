@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import JobPost, JobSeekerCv, WorkExperince
+from .models import Education, JobPost, JobSeekerCv, WorkExperince
 
 class JobPostSerializer(serializers.ModelSerializer):
     expiration_date = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
@@ -20,12 +20,21 @@ class WorkExperinceSerializer(serializers.ModelSerializer):
         model = WorkExperince
         fields = ['id','occupation_title', 'company_name', 'years', 'description','job_seeker']
 
+class EducationSerializer(serializers.ModelSerializer):
+    job_seeker = serializers.PrimaryKeyRelatedField(queryset=JobSeekerCv.objects.all(), write_only=True)
+
+    class Meta:
+        model = Education
+        fields = ['id','school_name', 'level', 'orientation', 'description','years','job_seeker']
+
 class JobSeekerCVSerializer(serializers.ModelSerializer):
     work_experiences = WorkExperinceSerializer(many=True, read_only=True)
+    educations = EducationSerializer(many=True,read_only=True)
+
     class Meta:
         model = JobSeekerCv
-        fields = ['email', 'mobile_number','work_experiences']
-        read_only_fields = ['profile','work_experiences']
+        fields = ['email', 'mobile_number','work_experiences','educations']
+        read_only_fields = ['profile','work_experiences','educations']
     
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)

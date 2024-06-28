@@ -2,7 +2,7 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
-from .serializers import JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
+from .serializers import EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
 from .models import JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -119,3 +119,20 @@ def createWorkExperince(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+@api_view(["POST"])
+def createEducation(request):
+    if request.user.is_authenticated and not request.user.is_ag:
+        cv = get_object_or_404(JobSeekerCv, profile=request.user)
+        data = request.data.copy()
+        data['job_seeker'] = cv.id
+        
+        serializer = EducationSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    

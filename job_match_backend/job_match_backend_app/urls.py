@@ -10,5 +10,6 @@ urlpatterns = [
     path('jobpost/get/<str:id>',views.getJobPostById,name="getJobPostById"),
     path('jobseeker/info/update',views.updateJobSeekerInfo,name="updateJobSeekerInfo"),
     path('jobseeker/retrive/profile',views.getJobSeekerCv,name="getJobSeekerCv"),
-    path('jobseeker/workexperince/create',views.createWorkExperince,name="createWorkexperince")
+    path('jobseeker/workexperince/create',views.createWorkExperince,name="createWorkexperince"),
+    path('jobseeker/education/create',views.createEducation,name='createEducation')
 ]
