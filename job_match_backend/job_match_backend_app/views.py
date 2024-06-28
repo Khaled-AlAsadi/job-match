@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
 from .serializers import EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
-from .models import JobPost, JobSeekerCv, WorkExperince
+from .models import Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -119,6 +119,17 @@ def createWorkExperince(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(["DELETE"])
+def deleteWorkExperience(request, id):
+    if request.user.is_authenticated and not request.user.is_ag:
+        cv = get_object_or_404(JobSeekerCv, profile=request.user)
+        experience = get_object_or_404(WorkExperince, id=id, job_seeker=cv)
+        
+        experience.delete()
+        return Response({"Success": "Work experience deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
     
 @api_view(["POST"])
 def createEducation(request):
@@ -135,4 +146,16 @@ def createEducation(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
-    
+
+
+@api_view(["DELETE"])
+def deleteEducation(request, id):
+    if request.user.is_authenticated and not request.user.is_ag:
+        cv = get_object_or_404(JobSeekerCv, profile=request.user)
+        education = get_object_or_404(Education, id=id, job_seeker=cv)
+        
+        education.delete()
+        return Response({"Success": "Education deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+       
