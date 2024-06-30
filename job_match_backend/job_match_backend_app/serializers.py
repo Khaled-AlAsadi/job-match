@@ -1,13 +1,19 @@
 from rest_framework import serializers
-from .models import Education, JobPost, JobSeekerCv, WorkExperince
+from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
+
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = ['applicant', 'application_date']
 
 class JobPostSerializer(serializers.ModelSerializer):
     expiration_date = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+    applications = ApplicationSerializer(many=True, read_only=True, source='job_applications')
 
     class Meta:
         model = JobPost
-        fields=['job_post_title','company_name','location','employment_type','job_description','phone_number','expiration_date','is_published']
-    
+        fields = ['id','job_post_title', 'company_name', 'location', 'employment_type', 'job_description', 'phone_number', 'expiration_date', 'is_published', 'applications']
     def create(self, validated_data):
         validated_data['job_post'] = self.context['request'].user
         return super().create(validated_data)

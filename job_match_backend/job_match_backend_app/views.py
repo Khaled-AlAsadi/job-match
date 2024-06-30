@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
 from .serializers import EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
-from .models import Education, JobPost, JobSeekerCv, WorkExperince
+from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -15,15 +15,11 @@ def index(request):
 @api_view(['GET'])
 def retrieveEmployerJobPosts(request):
     if request.user.is_authenticated and request.user.is_ag:
-            job_posts = JobPost.objects.filter(job_post=request.user)
-            data = list(job_posts.values())
-            if data:
-                return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
-            else:
-                return JsonResponse([], safe=False)
+        job_posts = JobPost.objects.filter(job_post=request.user)
+        serializer = JobPostSerializer(job_posts, many=True)
+        return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
     else:
-        return JsonResponse({"Error": "You are not logged in"}, status=401)
-
+        return JsonResponse({"Error": "You are not logged in or not authorized"}, status=401)
 
 @api_view(['POST'])
 def createJobPost(request):
@@ -184,3 +180,31 @@ def deleteEducation(request, id):
     else:
         return Response({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
        
+
+@api_view(["POST"])
+def applyToJob(request, id):
+    if request.user.is_authenticated and not request.user.is_ag:
+        job_post = get_object_or_404(JobPost, id=id)
+        
+        # Check if the user has already applied to this job
+        if Application.objects.filter(applicant=request.user, job_post=job_post).exists():
+            return Response({"Error": "You have already applied for this job"}, status=status.HTTP_204_NO_CONTENT)
+        
+        # Get or create the JobSeekerCv instance for the user
+        job_seeker_cv, created = JobSeekerCv.objects.get_or_create(
+            profile=request.user,
+            defaults={
+                'email': request.user.email,
+                'mobile_number': request.user.mobile_number
+            }
+        )
+        
+        application = Application.objects.create(
+            applicant=request.user,
+            job_post=job_post,
+            job_seeker_cv=job_seeker_cv
+        )
+        
+        return Response({"Message": "Application successful"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"Error": "You are not logged in or not authorized to apply for this job"}, status=status.HTTP_401_UNAUTHORIZED)
