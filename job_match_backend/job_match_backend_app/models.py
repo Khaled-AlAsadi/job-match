@@ -56,13 +56,13 @@ class JobPost(models.Model):
     applications = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Application', related_name='job_applications')
 
 class Application(models.Model):
-    applicant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='applications')
+    profile_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='applications')
     job_post = models.ForeignKey(JobPost, on_delete=models.CASCADE, related_name='job_applications')
     job_seeker_cv = models.ForeignKey('JobSeekerCv', on_delete=models.CASCADE, related_name='applications')
     application_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.applicant.email} applied to {self.job_post.job_post_title}"
+        return f"{self.profile_id.email} applied to {self.job_post.job_post_title}"
 
 class JobSeekerCv(models.Model):
     profile = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='job_seeker_profile')

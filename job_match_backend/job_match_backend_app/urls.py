@@ -16,5 +16,6 @@ urlpatterns = [
     path('jobseeker/education/create',views.createEducation,name='createEducation'),
     path('jobseeker/education/delete/<str:id>',views.deleteEducation,name='deleteEducation'),
     path('jobseeker/education/update/<str:id>',views.updateEducation,name='updateEducation'),
-    path('jobseeker/apply/<str:id>',views.applyToJob,name="applyToJob")
+    path('jobseeker/apply/<str:id>',views.applyToJob,name="applyToJob"),
+    path('jobseeker/delete/application/<int:id>/', views.deleteApplicationEmployee, name='deleteApplicationEmployee'),
 ]

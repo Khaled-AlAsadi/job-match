@@ -22,7 +22,7 @@ class JobSeekerCVSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobSeekerCv
-        fields = ['email', 'mobile_number','work_experiences','educations']
+        fields = ["profile_id",'email', 'mobile_number','work_experiences','educations']
         read_only_fields = ['profile','work_experiences','educations']
     
     def update(self, instance, validated_data):
@@ -36,7 +36,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Application
-        fields = ['applicant', 
+        fields = ['profile_id', 
                   'job_seeker_cv']
 
 class JobPostSerializer(serializers.ModelSerializer):

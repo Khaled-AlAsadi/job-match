@@ -187,7 +187,7 @@ def applyToJob(request, id):
         job_post = get_object_or_404(JobPost, id=id)
         
         # Check if the user has already applied to this job
-        if Application.objects.filter(applicant=request.user, job_post=job_post).exists():
+        if Application.objects.filter(profile_id=request.user, job_post=job_post).exists():
             return Response({"Error": "You have already applied for this job"}, status=status.HTTP_204_NO_CONTENT)
         
         # Get or create the JobSeekerCv instance for the user
@@ -200,7 +200,7 @@ def applyToJob(request, id):
         )
         
         application = Application.objects.create(
-            applicant=request.user,
+            profile_id=request.user,
             job_post=job_post,
             job_seeker_cv=job_seeker_cv
         )
@@ -208,3 +208,21 @@ def applyToJob(request, id):
         return Response({"Message": "Application successful"}, status=status.HTTP_200_OK)
     else:
         return Response({"Error": "You are not logged in or not authorized to apply for this job"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+@api_view(["DELETE"])
+def deleteApplicationEmployee(request, id):
+    if request.user.is_authenticated:
+        job_post = get_object_or_404(JobPost, id=id)
+        
+        # Find the application
+        try:
+            application = Application.objects.get(profile_id=request.user, job_post=job_post)
+        except Application.DoesNotExist:
+            return Response({"Error": "Application does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Delete the application
+        application.delete()
+        
+        return Response({"Message": "Application deleted successfully"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"Error": "You are not logged in or not authorized to delete this application"}, status=status.HTTP_401_UNAUTHORIZED)
