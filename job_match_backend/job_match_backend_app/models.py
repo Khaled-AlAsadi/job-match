@@ -44,7 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class JobPost(models.Model):
-    job_post = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='job_posts')
+    job_post = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='job_posts')
     job_post_title = models.CharField(max_length=50)
     company_name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)

@@ -20,7 +20,7 @@ def retrieveEmployerJobPosts(request):
         return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
     else:
         return JsonResponse({"Error": "You are not logged in or not authorized"}, status=401)
-
+    
 @api_view(['POST'])
 def createJobPost(request):
     if request.user.is_authenticated and request.user.is_ag:
@@ -28,9 +28,9 @@ def createJobPost(request):
         if serializer.is_valid():
             try:
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             except Exception as e:
-                return Response({"error": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
