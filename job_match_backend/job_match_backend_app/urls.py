@@ -18,4 +18,5 @@ urlpatterns = [
     path('jobseeker/education/update/<str:id>',views.updateEducation,name='updateEducation'),
     path('jobseeker/apply/<str:id>',views.applyToJob,name="applyToJob"),
     path('jobseeker/delete/application/<int:id>/', views.deleteApplicationEmployee, name='deleteApplicationEmployee'),
+    path('user/info',views.getUser,name="getUser")
 ]

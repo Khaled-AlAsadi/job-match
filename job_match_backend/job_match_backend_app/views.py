@@ -2,8 +2,8 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
-from .serializers import EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
-from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
+from .serializers import CustomUserSerializer, EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
+from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -11,6 +11,16 @@ from rest_framework import status
 @api_view(['GET'])
 def index(request):
     return HttpResponse("Använd rätt route för att hitta saker")
+
+@api_view(['GET'])
+def getUser(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)
+
+    serializer = CustomUserSerializer(user)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def retrieveEmployerJobPosts(request):

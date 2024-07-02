@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
+from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
 
 
 class WorkExperinceSerializer(serializers.ModelSerializer):
@@ -51,3 +51,8 @@ class JobPostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['job_post'] = self.context['request'].user
         return super().create(validated_data)
+    
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'first_name', 'last_name', 'mobile_number', 'org_number', 'is_ag', 'is_active', 'is_staff']
