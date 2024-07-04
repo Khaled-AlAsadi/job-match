@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
-import { login as loginService, refreshToken  } from '../services/authService';
-import { getUser } from '../services/authService'; // Import getUser function
+import { login as loginService, refreshToken, getUser } from '../services/authService';
 
 interface User {
   email:string
@@ -41,8 +40,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const tokens = sessionStorage.getItem('authTokens');
     if (tokens) {
       try {
-        const decoded = JSON.parse(atob(JSON.parse(tokens).access.split('.')[1]));
-        return decoded;
+        //Parses the token
+        //atob(): decodes a Base64-encoded string
+        const token = JSON.parse(atob(JSON.parse(tokens).access.split('.')[1]));
+        return token;
       } catch (e) {
         console.error('Failed to parse token', e);
         return null;
@@ -57,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     // Fetch user info
     try {
-      const userInfo = await getUser(data.access); // Pass access token to getUser
+      const userInfo = await getUser(data.access); 
       setUser(userInfo);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
