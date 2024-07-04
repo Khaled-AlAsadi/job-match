@@ -10,7 +10,7 @@ const AppRoutes: React.FC = () => {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<HomePage />} />
           </Route>
