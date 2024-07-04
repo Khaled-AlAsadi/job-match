@@ -1,14 +1,18 @@
+// src/pages/LoginPage.js
 import React, { useState } from 'react';
-import { login } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authContext';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     try {
-      const data = await login(email, password);
-      console.log('Login successful:', data);
+      await login(email, password);
+      navigate('/home');
     } catch (error) {
       console.error('Login failed:', error);
     }
