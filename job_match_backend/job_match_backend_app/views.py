@@ -6,6 +6,7 @@ from .serializers import CustomUserSerializer, EducationSerializer, JobPostSeria
 from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django.utils.timezone import now
 
 # Create your views here.
 @api_view(['GET'])
@@ -31,6 +32,16 @@ def retrieveEmployerJobPosts(request):
     else:
         return JsonResponse({"Error": "You are not logged in or not authorized"}, status=401)
     
+@api_view(['GET'])
+def retrieveAvailableJobPosts(request):
+    if request.user.is_authenticated and not request.user.is_ag:
+        applied_job_posts = Application.objects.filter(profile_id=request.user).values_list('job_post_id', flat=True)
+        job_posts = JobPost.objects.filter(is_published=True, expiration_date__gte=now()).exclude(id__in=applied_job_posts)
+        serializer = JobPostSerializer(job_posts, many=True)
+        return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
+    else:
+        return JsonResponse({"Error": "You are not logged in or not authorized"}, status=401)
+
 @api_view(['POST'])
 def createJobPost(request):
     if request.user.is_authenticated and request.user.is_ag:
