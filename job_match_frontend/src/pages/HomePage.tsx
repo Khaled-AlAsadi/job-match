@@ -1,10 +1,12 @@
 import { useAuth } from "../context/authContext";
+import EmployeePage from "./EmployeePage";
+import EmployerPage from "./EmployerPage";
 
 const HomePage = () => {
   const { user } = useAuth();
 
   return (
-    <p>Welcome, {user?.email}!</p>
+    user?.is_ag ? <EmployerPage/> : <EmployeePage/>
 
   );
 };
