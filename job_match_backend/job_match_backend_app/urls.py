@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
+    path("create/user",views.createUser,name="createUser"),
+    path('user/info',views.getUser,name="getUser"),
     path('jobposts',views.retrieveEmployerJobPosts,name="EmployerJobPostsByEmail"),
     path('jobpost/create',views.createJobPost),
     path('jobpost/update/<str:id>',views.updateJobPost,name="updateJobPost"),
@@ -19,5 +21,4 @@ urlpatterns = [
     path('jobseeker/education/update/<str:id>',views.updateEducation,name='updateEducation'),
     path('jobseeker/apply/<str:id>',views.applyToJob,name="applyToJob"),
     path('jobseeker/delete/application/<int:id>/', views.deleteApplicationEmployee, name='deleteApplicationEmployee'),
-    path('user/info',views.getUser,name="getUser")
 ]

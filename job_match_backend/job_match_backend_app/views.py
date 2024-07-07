@@ -247,3 +247,12 @@ def deleteApplicationEmployee(request, id):
         return Response({"Message": "Application deleted successfully"}, status=status.HTTP_200_OK)
     else:
         return Response({"Error": "You are not logged in or not authorized to delete this application"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+@api_view(["POST"])
+def createUser(request):
+    serializer = CustomUserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
