@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/authContext";
 import { retrieveAvailableJobPosts } from "../services/employeeService";
+import { availableJobPosts } from "../types/availableJobPost";
 
 
 const EmployeePage = () => {
@@ -36,8 +37,8 @@ const EmployeePage = () => {
       <p>Welcome EmployeePage, {user?.email}!</p>
       <h2>Available Job Posts</h2>
       <ul>
-        {jobPosts.map((job:any) => (
-          <li key={job.id}>{job.title}</li>
+      {jobPosts.map((job: availableJobPosts) => (
+          <li key={job.id}>{job.job_post_title}</li>
         ))}
       </ul>
     </div>
