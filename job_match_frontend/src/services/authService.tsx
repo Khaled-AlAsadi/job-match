@@ -5,10 +5,16 @@ export const login = async (email: string, password: string) => {
   return response.data;
 };
 
-export const refreshToken = async (refreshToken:string) => {
-  const response = await api.post('refresh/token', { refresh: refreshToken });
-  return response.data;
+export const refreshToken = async (refreshToken: string) => {
+  try {
+    const response = await api.post('refresh/token', { refresh: refreshToken });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to refresh token:', error);
+    throw error;
+  }
 };
+
 
 export const getUser = async (token:string) => {
   try {

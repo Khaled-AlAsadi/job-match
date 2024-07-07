@@ -2,14 +2,14 @@ import React, { createContext, useState, useEffect, ReactNode, useContext } from
 import { login as loginService, refreshToken, getUser } from '../services/authService';
 
 interface User {
-  email:string
-  first_name:string
-  last_name:string
-  mobile_number:string
-  org_number?:string | null
-  is_ag:boolean
-  is_active:boolean
-  is_staff:boolean
+  email: string;
+  first_name: string;
+  last_name: string;
+  mobile_number: string;
+  org_number?: string | null;
+  is_ag: boolean;
+  is_active: boolean;
+  is_staff: boolean;
 }
 
 interface AuthTokens {
@@ -55,23 +55,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (username: string, password: string) => {
     const data = await loginService(username, password);
     setAuthTokens(data);
+    sessionStorage.setItem('authTokens', JSON.stringify(data));
     
-    // Fetch user info
     try {
-      const userInfo = await getUser(data.access); 
+      const userInfo = await getUser(data.access);
       setUser(userInfo);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
       setUser(null);
     }
-    
-    sessionStorage.setItem('authTokens', JSON.stringify(data));
   };
 
   const logout = () => {
     setAuthTokens(null);
     setUser(null);
     sessionStorage.removeItem('authTokens');
+  };
+
+  const handleTokenRefresh = async () => {
+    if (authTokens && authTokens.refresh) {
+      try {
+        const data = await refreshToken(authTokens.refresh);
+        setAuthTokens(data);
+        sessionStorage.setItem('authTokens', JSON.stringify(data));
+      } catch (error) {
+        console.error('Failed to refresh token:', error);
+        logout();
+      }
+    }
   };
 
   useEffect(() => {
@@ -81,9 +92,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const tokens = JSON.parse(storedTokens);
         setAuthTokens(tokens);
         
-        // Fetch user info
         try {
-          const userInfo = await getUser(tokens.access); // Pass access token to getUser
+          const userInfo = await getUser(tokens.access);
           setUser(userInfo);
         } catch (error) {
           console.error('Failed to fetch user info:', error);
@@ -96,11 +106,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const refreshTokenInterval = setInterval(() => {
-      if (authTokens && authTokens.refresh) {
-        refreshToken(authTokens.refresh);
-      }
-    }, 4 * 60 * 1000); // Refresh token every 4 minutes
+    const refreshTokenInterval = setInterval(handleTokenRefresh, 4 * 60 * 1000); // Refresh token every 4 minutes
 
     return () => clearInterval(refreshTokenInterval);
   }, [authTokens]);
