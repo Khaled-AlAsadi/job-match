@@ -48,6 +48,13 @@ class JobPostSerializer(serializers.ModelSerializer):
         fields = ['id', 'job_post_title', 'company_name', 'location', 'employment_type', 'job_description', 'phone_number', 'expiration_date', 'is_published', 'applications']
         read_only_fields = ['applications']
 
+class AvailableJobPostsSerializer(serializers.ModelSerializer):
+    expiration_date = serializers.DateField(format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
+
+    class Meta:
+        model = JobPost
+        fields = ['id', 'job_post_title', 'company_name', 'location', 'employment_type', 'job_description', 'phone_number', 'expiration_date', 'is_published']
+
     def create(self, validated_data):
         validated_data['job_post'] = self.context['request'].user
         return super().create(validated_data)

@@ -2,7 +2,7 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
-from .serializers import CustomUserSerializer, EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
+from .serializers import  AvailableJobPostsSerializer, CustomUserSerializer, EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
 from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -37,7 +37,7 @@ def retrieveAvailableJobPosts(request):
     if request.user.is_authenticated and not request.user.is_ag:
         applied_job_posts = Application.objects.filter(profile_id=request.user).values_list('job_post_id', flat=True)
         job_posts = JobPost.objects.filter(is_published=True, expiration_date__gte=now()).exclude(id__in=applied_job_posts)
-        serializer = JobPostSerializer(job_posts, many=True)
+        serializer = AvailableJobPostsSerializer(job_posts, many=True)
         return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False})
     else:
         return JsonResponse({"Error": "You are not logged in or not authorized"}, status=401)
