@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
+from django.contrib.auth.hashers import make_password
 
 
 class WorkExperinceSerializer(serializers.ModelSerializer):
@@ -62,4 +63,7 @@ class AvailableJobPostsSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'mobile_number', 'org_number', 'is_ag', 'is_active', 'is_staff']
+        fields = ['email', 'first_name', 'last_name', 'mobile_number', 'org_number', 'is_ag', 'is_active', 'is_staff',"password"]
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return super(CustomUserSerializer, self).create(validated_data)

@@ -11,6 +11,8 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
+        if not password:
+            raise ValueError('The Password field must be set')
         email = self.normalize_email(email)
         extra_fields.setdefault('is_ag', bool(extra_fields.get('org_number')))
         user = self.model(email=email, **extra_fields)
