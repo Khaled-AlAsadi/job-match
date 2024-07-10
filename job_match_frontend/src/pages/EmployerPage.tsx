@@ -39,8 +39,8 @@ const EmployerPage = () => {
     <Container>
       {jobPosts.map((job: EmployerJobPost) => (
         <JobPostContainer>
-          <span>{job.applications.length}</span>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
+          <span>Antal Kandidater: {job.applications.length}</span>
         </JobPostContainer>
       ))}
     </Container>
