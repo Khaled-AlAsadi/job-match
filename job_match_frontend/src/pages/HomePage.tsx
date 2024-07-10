@@ -5,10 +5,11 @@ import EmployerPage from "./EmployerPage";
 const HomePage = () => {
   const { user } = useAuth();
 
-  return (
-    user?.is_ag ? <EmployerPage/> : <EmployeePage/>
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
-  );
+  return user.is_ag ? <EmployerPage /> : <EmployeePage />;
 };
 
 export default HomePage;
