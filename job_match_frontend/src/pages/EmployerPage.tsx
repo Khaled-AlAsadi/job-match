@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/authContext'
 import { retrieveEmployerJobPosts } from '../services/employerService'
 import styled from 'styled-components'
+import { EmployerJobPost } from '../types/types'
 
 const EmployerPage = () => {
-  const [jobPosts, setJobPosts] = useState<any[]>([])
+  const [jobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { user, authTokens } = useAuth()
@@ -36,8 +37,9 @@ const EmployerPage = () => {
 
   return (
     <Container>
-      {jobPosts.map((job: any) => (
+      {jobPosts.map((job: EmployerJobPost) => (
         <JobPostContainer>
+          <span>{job.applications.length}</span>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
         </JobPostContainer>
       ))}

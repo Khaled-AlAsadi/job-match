@@ -1,37 +1,37 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../context/authContext";
-import { retrieveAvailableJobPosts } from "../services/employeeService";
-import { availableJobPosts } from "../types/availableJobPost";
+import { useEffect, useState } from 'react'
+import { useAuth } from '../context/authContext'
+import { retrieveAvailableJobPosts } from '../services/employeeService'
+import { AvailableJobPosts } from '../types/types'
 
 const EmployeePage = () => {
-  const [jobPosts, setJobPosts] = useState<availableJobPosts[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { user, authTokens } = useAuth();
+  const [jobPosts, setJobPosts] = useState<AvailableJobPosts[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const { user, authTokens } = useAuth()
 
   useEffect(() => {
     const fetchJobPosts = async () => {
       if (user?.is_ag === false) {
         try {
-          const data = await retrieveAvailableJobPosts(authTokens?.access);
-          setJobPosts(data);
+          const data = await retrieveAvailableJobPosts(authTokens?.access)
+          setJobPosts(data)
         } catch (error: any) {
-          setError(error.message);
+          setError(error.message)
         } finally {
-          setLoading(false);
+          setLoading(false)
         }
       }
-    };
+    }
 
-    fetchJobPosts();
-  }, [user, authTokens]);
+    fetchJobPosts()
+  }, [user, authTokens])
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p>Loading...</p>
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p>Error: {error}</p>
   }
 
   return (
@@ -39,12 +39,12 @@ const EmployeePage = () => {
       <p>Welcome EmployeePage, {user?.email}!</p>
       <h2>Available Job Posts</h2>
       <ul>
-        {jobPosts.map((job: availableJobPosts) => (
+        {jobPosts.map((job: AvailableJobPosts) => (
           <li key={job.id}>{job.job_post_title}</li>
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default EmployeePage;
+export default EmployeePage
