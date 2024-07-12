@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from '../context/authContext';
-import HeaderComponent from '../components/Header';
-import LoginPage from '../pages/LoginPage';
-import HomePage from '../pages/HomePage';
-import PrivateRoute from './PrivateRoute';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from '../context/authContext'
+import HeaderComponent from '../components/Header'
+import LoginPage from '../pages/LoginPage'
+import HomePage from '../pages/HomePage'
+import PrivateRoute from './PrivateRoute'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ const AppRoutes: React.FC = () => {
         </Routes>
       </AuthProvider>
     </Router>
-  );
-};
+  )
+}
 
-export default AppRoutes;
+export default AppRoutes

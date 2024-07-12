@@ -1,3 +1,25 @@
+export interface User {
+  email: string
+  first_name: string
+  last_name: string
+  mobile_number: string
+  org_number?: string | null
+  is_ag: boolean
+  is_active: boolean
+  is_staff: boolean
+}
+
+export interface AuthTokens {
+  access: string
+  refresh: string
+}
+
+export interface AuthContextType {
+  user: User | null
+  authTokens: AuthTokens | null
+  login: (username: string, password: string) => Promise<void>
+  logout: () => void
+}
 export interface AvailableJobPosts {
   id: number
   job_post_title: string

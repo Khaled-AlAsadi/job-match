@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/authContext'
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-  const { login } = useAuth();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleLogin = async () => {
     try {
-      await login(email, password);
-      navigate('/home');
+      await login(email, password)
+      navigate('/home')
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Login failed:', error)
     }
-  };
+  }
 
   return (
     <div>
@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
       />
       <button onClick={handleLogin}>Login</button>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

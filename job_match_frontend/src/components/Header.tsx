@@ -1,13 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/authContext';
-
+import { useAuth } from '../context/authContext'
 
 function HeaderComponent() {
   const navigate = useNavigate()
 
-  const { user,logout } = useAuth();
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     if (!user) return navigate('/')
@@ -18,9 +17,10 @@ function HeaderComponent() {
       <NavLinks>
         {user && (
           <Fragment>
-            <NavLink to="/home">Home</NavLink>
+            <NavLink to="/home">Startsidan</NavLink>
+            <NavLink to="/profile">Profil</NavLink>
             <NavLink to="/" onClick={logout}>
-              Log out
+              Logga ut
             </NavLink>
           </Fragment>
         )}
