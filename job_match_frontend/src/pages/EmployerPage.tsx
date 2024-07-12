@@ -3,6 +3,7 @@ import { useAuth } from '../context/authContext'
 import { retrieveEmployerJobPosts } from '../services/employerService'
 import styled from 'styled-components'
 import { EmployerJobPost } from '../types/types'
+import Button from '../components/Button'
 
 const EmployerPage = () => {
   const [jobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
@@ -41,6 +42,7 @@ const EmployerPage = () => {
         <JobPostContainer>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
           <span>Antal Kandidater: {job.applications.length}</span>
+          <Button onClick={() => console.log(job)}>Visa jobbannonsen</Button>
         </JobPostContainer>
       ))}
     </Container>

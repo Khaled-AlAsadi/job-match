@@ -5,17 +5,25 @@ import { useAuth } from '../context/authContext'
 
 function HeaderComponent() {
   const navigate = useNavigate()
-
   const { user, logout } = useAuth()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     if (!user) return navigate('/')
-  }, [user])
+  }, [user, navigate])
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
   return (
     <NavbarContainer>
-      <Logo>Job Match</Logo>
-      <NavLinks>
-        {user && (
+      <Header>
+        <Logo>Job Match</Logo>
+        <MenuIcon onClick={toggleMenu}>&#9776;</MenuIcon>
+      </Header>
+      {user && (
+        <NavLinks isOpen={isMenuOpen}>
           <Fragment>
             <NavLink to="/home">Startsidan</NavLink>
             <NavLink to="/profile">Profil</NavLink>
@@ -23,33 +31,62 @@ function HeaderComponent() {
               Logga ut
             </NavLink>
           </Fragment>
-        )}
-      </NavLinks>
+        </NavLinks>
+      )}
     </NavbarContainer>
   )
 }
+
 const NavbarContainer = styled.nav`
   background-color: #333;
   color: white;
-  display: flex;
-  justify-content: space-between;
   padding: 1rem;
-  align-items: center;
-  flex-direction: row;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
+    display: block;
   }
 `
 
-const Logo = styled.div`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    align-items: center;
+  }
+`
+
+const Logo = styled.h2`
   font-size: 1.5rem;
   font-family: 'Sans Serif';
 `
 
-const NavLinks = styled.div`
+const MenuIcon = styled.div`
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`
+
+const NavLinks = styled.div<{ isOpen: boolean }>`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    flex-direction: column;
+    width: 100%;
+  }
+
   a {
     color: white;
     text-decoration: none;
@@ -58,21 +95,15 @@ const NavLinks = styled.div`
     &:hover {
       text-decoration: underline;
     }
+
     @media (max-width: 768px) {
-      display: flex;
-      flex-direction: column;
+      padding: 10px;
+      border-bottom: 1px solid white;
       width: 100%;
     }
   }
 `
-const MenuIcon = styled.div`
-  display: none;
 
-  @media (max-width: 768px) {
-    display: block;
-    cursor: pointer;
-  }
-`
 const NavLink = styled(Link)`
   color: white;
   text-decoration: none;
@@ -80,10 +111,6 @@ const NavLink = styled(Link)`
 
   &:hover {
     text-decoration: underline;
-  }
-  @media (max-width: 768px) {
-    padding: 10px;
-    border-bottom: 1px solid white;
   }
 `
 
