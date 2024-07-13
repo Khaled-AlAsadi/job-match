@@ -5,6 +5,7 @@ import HeaderComponent from '../components/Header'
 import LoginPage from '../pages/LoginPage'
 import HomePage from '../pages/HomePage'
 import PrivateRoute from './PrivateRoute'
+import FooterComponent from '../components/Footer'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/home" element={<HomePage />} />
           </Route>
         </Routes>
+        <FooterComponent />
       </AuthProvider>
     </Router>
   )
