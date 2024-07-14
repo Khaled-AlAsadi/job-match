@@ -6,6 +6,7 @@ import LoginPage from '../pages/LoginPage'
 import HomePage from '../pages/HomePage'
 import PrivateRoute from './PrivateRoute'
 import FooterComponent from '../components/Footer'
+import JobPage from '../pages/JobPage'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<HomePage />} />
+            <Route path='employer/job/:id' element={<JobPage/>}/>
           </Route>
         </Routes>
         <FooterComponent />

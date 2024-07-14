@@ -4,12 +4,19 @@ import { retrieveEmployerJobPosts } from '../services/employerService'
 import styled from 'styled-components'
 import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
+import { useNavigate } from 'react-router-dom'
 
 const EmployerPage = () => {
-  const [jobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
+  const navigate = useNavigate();
+
+  const [EmployerjobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { user, authTokens } = useAuth()
+
+  const handleJobView = (job:EmployerJobPost) => {
+    navigate(`/employer/job/${job.id}`, { state: { job } });
+  };
 
   useEffect(() => {
     const fetchEmployerJobPosts = async () => {
@@ -38,11 +45,11 @@ const EmployerPage = () => {
 
   return (
     <Container>
-      {jobPosts.map((job: EmployerJobPost) => (
+      {EmployerjobPosts.map((job: EmployerJobPost) => (
         <JobPostContainer>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
           <span>Antal Kandidater: {job.applications.length}</span>
-          <Button onClick={() => console.log(job)}>Visa jobbannonsen</Button>
+          <Button onClick={() => handleJobView(job)}>Visa jobbannonsen</Button>
         </JobPostContainer>
       ))}
     </Container>
