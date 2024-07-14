@@ -7,16 +7,16 @@ import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
 
 const EmployerPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const [EmployerjobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { user, authTokens } = useAuth()
 
-  const handleJobView = (job:EmployerJobPost) => {
-    navigate(`/employer/job/${job.id}`, { state: { job } });
-  };
+  const handleJobView = (job: EmployerJobPost) => {
+    navigate(`/employer/job/${job.id}`, { state: { job } })
+  }
 
   useEffect(() => {
     const fetchEmployerJobPosts = async () => {
