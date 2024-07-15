@@ -5,9 +5,11 @@ import styled from 'styled-components'
 import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
+import FormComponent from '../components/JobPostForm'
 
 const EmployerPage = () => {
   const navigate = useNavigate()
+  const [isFormOpen, setIsFormOpen] = useState(false)
 
   const [EmployerjobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
   const [loading, setLoading] = useState(true)
@@ -43,8 +45,21 @@ const EmployerPage = () => {
     return <p>Error: {error}</p>
   }
 
+  const onCreatePostClick = () => {
+    setIsFormOpen(true)
+  }
+
+  const handleCloseForm = () => {
+    setIsFormOpen(false)
+  }
+  const handleJobSubmit = (formData: EmployerJobPost) => {
+    console.log(formData)
+    setIsFormOpen(false)
+  }
   return (
     <Container>
+      <Button onClick={onCreatePostClick}>Skapa en ny jobbannons</Button>
+
       {EmployerjobPosts.map((job: EmployerJobPost) => (
         <JobPostContainer>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
@@ -52,6 +67,12 @@ const EmployerPage = () => {
           <Button onClick={() => handleJobView(job)}>Visa jobbannonsen</Button>
         </JobPostContainer>
       ))}
+      <FormComponent
+        isOpen={isFormOpen}
+        onClose={handleCloseForm}
+        onSubmit={handleJobSubmit}
+        primaryButtonText="Skapa"
+      />
     </Container>
   )
 }
