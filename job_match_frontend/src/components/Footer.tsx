@@ -19,9 +19,12 @@ function FooterComponent() {
 
 const Footer = styled.footer`
   background-color: #333;
-  position: absolute;
-  left: 0;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  width: 100%;
   bottom: 0;
-  right: 0;
+  left: 0;
 `
 export default FooterComponent

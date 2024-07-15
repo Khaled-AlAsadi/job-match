@@ -45,6 +45,18 @@ export interface EmployerJobPost {
   applications: []
 }
 
+export interface Application {
+  profile_id: string
+  job_seeker_cv: JobSeekerCv
+}
+export interface JobSeekerCv {
+  profile_id: string
+  email: string
+  mobile_number: string
+  work_experiences: WorkExperience[]
+  educations: Education[]
+}
+
 export interface WorkExperience {
   id: number
   occupation_title: string
