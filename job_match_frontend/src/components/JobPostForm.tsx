@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 interface CustomModalProps {
   isOpen: boolean
@@ -17,36 +19,38 @@ const FormComponent: React.FC<CustomModalProps> = ({
   editItem,
 }) => {
   const initialFormData = {
-    companyName: '',
-    jobPostTitle: '',
-    jobDescription: '',
-    jobLocation: '',
-    EmploymentType: '',
+    company_name: '',
+    job_post_title: '',
+    job_description: '',
+    location: '',
+    employment_type: '',
+    expiration_date: new Date(),
   }
 
-  const [formData, setFormData] = useState({
-    companyName: '',
-    jobPostTitle: '',
-    jobDescription: '',
-    jobLocation: '',
-    EmploymentType: '',
-  })
+  const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({
-    companyName: '',
-    jobPostTitle: '',
-    jobDescription: '',
-    jobLocation: '',
+    company_name: '',
+    job_post_title: '',
+    job_description: '',
+    location: '',
   })
 
   useEffect(() => {
     if (editItem) {
-      setFormData(editItem)
+      setFormData({
+        ...editItem,
+        expiration_date: new Date(editItem.expiration_date),
+      })
     } else {
       setFormData(initialFormData)
     }
   }, [editItem])
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target
     setFormData((prevState) => ({
       ...prevState,
@@ -58,43 +62,47 @@ const FormComponent: React.FC<CustomModalProps> = ({
     }))
   }
 
-  const handleSelectChange = (e: any) => {
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = e.target.value
     setFormData((prevState) => ({
       ...prevState,
-      EmploymentType: selectedOption,
+      employment_type: selectedOption,
     }))
   }
-  const handleClose = () => {
-    onClose()
-    // setFormData({
-    //   companyName: '',
-    //   jobPostTitle: '',
-    //   jobDescription: '',
-    //   jobLocation: '',
-    //   EmploymentType: 'Tillsvidareanställning',
-    // })
+
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setFormData((prevState) => ({
+        ...prevState,
+        expiration_date: date,
+      }))
+    }
   }
 
-  const handleSubmit = (e: any) => {
+  const handleClose = () => {
+    onClose()
+    setFormData(initialFormData)
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     let hasErrors = false
     const newErrors = { ...errors }
-    if (formData.jobPostTitle.length < 5) {
-      newErrors.jobPostTitle = 'jobPostTitle must be at least 5 characters long'
+    if (formData.job_post_title.length < 5) {
+      newErrors.job_post_title = 'Job title must be at least 5 characters long'
       hasErrors = true
     }
-    if (formData.companyName.length < 5) {
-      newErrors.companyName = 'companyName must be at least 5 characters long'
+    if (formData.company_name.length < 5) {
+      newErrors.company_name = 'Company name must be at least 5 characters long'
       hasErrors = true
     }
-    if (formData.jobLocation.length < 5) {
-      newErrors.jobLocation = 'jobLocation must be at least 5 characters long'
+    if (formData.location.length < 5) {
+      newErrors.location = 'Location must be at least 5 characters long'
       hasErrors = true
     }
-    if (formData.jobDescription.length < 5) {
-      newErrors.jobDescription =
-        'jobDescription must be at least 5 characters long'
+    if (formData.job_description.length < 5) {
+      newErrors.job_description =
+        'Job description must be at least 5 characters long'
       hasErrors = true
     }
     if (hasErrors) {
@@ -103,13 +111,7 @@ const FormComponent: React.FC<CustomModalProps> = ({
     } else {
       onSubmit(formData)
       onClose()
-      setFormData({
-        companyName: '',
-        jobPostTitle: '',
-        jobDescription: '',
-        jobLocation: '',
-        EmploymentType: 'Tillsvidareanställning',
-      })
+      setFormData(initialFormData)
     }
   }
 
@@ -120,53 +122,53 @@ const FormComponent: React.FC<CustomModalProps> = ({
       <ModalContent>
         <StyledForm onSubmit={handleSubmit}>
           <FormGroup>
-            <Label htmlFor="jobPostTitle">Jobtitel:</Label>
+            <Label htmlFor="job_post_title">Job title:</Label>
             <Input
               type="text"
-              id="jobPostTitle"
-              name="jobPostTitle"
-              value={formData.jobPostTitle}
+              id="job_post_title"
+              name="job_post_title"
+              value={formData.job_post_title}
               onChange={handleChange}
             />
-            {errors.jobPostTitle && <Span>{errors.jobPostTitle}</Span>}
+            {errors.job_post_title && <Span>{errors.job_post_title}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="companyName">Företagsnamn:</Label>
+            <Label htmlFor="company_name">Company name:</Label>
             <Input
               type="text"
-              id="companyName"
-              name="companyName"
-              value={formData.companyName}
+              id="company_name"
+              name="company_name"
+              value={formData.company_name}
               onChange={handleChange}
             />
-            {errors.companyName && <Span>{errors.companyName}</Span>}
+            {errors.company_name && <Span>{errors.company_name}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="jobLocation">Område:</Label>
+            <Label htmlFor="location">Location:</Label>
             <Input
-              id="jobLocation"
-              name="jobLocation"
-              value={formData.jobLocation}
+              id="location"
+              name="location"
+              value={formData.location}
               onChange={handleChange}
             />
-            {errors.jobLocation && <Span>{errors.jobLocation}</Span>}
+            {errors.location && <Span>{errors.location}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="jobDescription">Beskrivning:</Label>
+            <Label htmlFor="job_description">Description:</Label>
             <TextArea
-              id="jobDescription"
-              name="jobDescription"
-              value={formData.jobDescription}
+              id="job_description"
+              name="job_description"
+              value={formData.job_description}
               onChange={handleChange}
             />
-            {errors.jobDescription && <Span>{errors.jobDescription}</Span>}
+            {errors.job_description && <Span>{errors.job_description}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="EmploymentType">Type</Label>
+            <Label htmlFor="employment_type">Employment Type:</Label>
             <StyledSelect
-              name="EmploymentType"
-              id="EmploymentType"
-              value={formData.EmploymentType}
+              name="employment_type"
+              id="employment_type"
+              value={formData.employment_type}
               onChange={handleSelectChange}
             >
               <option value="Tillsvidareanställning">
@@ -176,8 +178,21 @@ const FormComponent: React.FC<CustomModalProps> = ({
               <option value="Deltid">Deltid</option>
             </StyledSelect>
           </FormGroup>
-          <CancelButton onClick={handleClose}>Avbryt</CancelButton>
-          <Button type="submit">{primaryButtonText}</Button>
+          <DatePickerGroup>
+            <Label htmlFor="expiration_date">Utgångsdatum:</Label>
+            <DatePicker
+              selected={formData.expiration_date}
+              onChange={handleDateChange}
+              dateFormat="yyyy-MM-dd"
+              minDate={new Date()}
+            />
+          </DatePickerGroup>
+          <ButtonGroup>
+            <CancelButton type="button" onClick={handleClose}>
+              Cancel
+            </CancelButton>
+            <Button type="submit">{primaryButtonText}</Button>
+          </ButtonGroup>
         </StyledForm>
       </ModalContent>
     </ModalBackground>
@@ -188,7 +203,6 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  gap: 5px;
 `
 
 const ModalBackground = styled.div`
@@ -211,12 +225,17 @@ const ModalContent = styled.div`
 `
 
 const FormGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 `
 
+const DatePickerGroup = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+`
 const Label = styled.label`
   display: block;
   margin-bottom: 5px;
+  margin-right: 0.5rem;
 `
 
 const Input = styled.input`
@@ -257,11 +276,17 @@ const CancelButton = styled.button`
   border-radius: 3px;
   cursor: pointer;
 `
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 const StyledSelect = styled.select`
   width: 80%;
-  max-height: 500px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
 `
+
 export default FormComponent
