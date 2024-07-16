@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { EmployerJobPost } from '../types/types'
 
 interface CustomModalProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (value: any) => void
+  onSubmit: (value: EmployerJobPost) => void
   primaryButtonText: string
   editItem?: any
 }
@@ -24,10 +25,13 @@ const FormComponent: React.FC<CustomModalProps> = ({
     job_description: '',
     location: '',
     employment_type: '',
+    is_published: false,
     expiration_date: new Date(),
   }
 
   const [formData, setFormData] = useState(initialFormData)
+  const [isChecked, setIsChecked] = React.useState(false)
+
   const [errors, setErrors] = useState({
     company_name: '',
     job_post_title: '',
@@ -115,6 +119,14 @@ const FormComponent: React.FC<CustomModalProps> = ({
     }
   }
 
+  const handleCheck = () => {
+    setIsChecked(!isChecked)
+    setFormData((prevState) => ({
+      ...prevState,
+      is_published: !isChecked,
+    }))
+  }
+
   if (!isOpen) return null
 
   return (
@@ -187,6 +199,10 @@ const FormComponent: React.FC<CustomModalProps> = ({
               minDate={new Date()}
             />
           </DatePickerGroup>
+          <FormGroup>
+            <label>Publicera jobbannons? </label>
+            <input type="checkbox" checked={isChecked} onChange={handleCheck} />
+          </FormGroup>
           <ButtonGroup>
             <CancelButton type="button" onClick={handleClose}>
               Cancel

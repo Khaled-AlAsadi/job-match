@@ -63,7 +63,7 @@ const EmployerPage = () => {
       {EmployerjobPosts.map((job: EmployerJobPost) => (
         <JobPostContainer>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
-          <span>Antal Kandidater: {job.applications.length}</span>
+          <span>Antal Kandidater: {job?.applications?.length}</span>
           <Button onClick={() => handleJobView(job)}>Visa jobbannonsen</Button>
         </JobPostContainer>
       ))}

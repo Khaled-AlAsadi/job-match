@@ -105,7 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (authTokens) {
       const refreshTokenInterval = setInterval(async () => {
         await handleTokenRefresh()
-      }, 4 * 60 * 1000)
+      }, 30 * 60 * 1000)
 
       return () => clearInterval(refreshTokenInterval)
     }

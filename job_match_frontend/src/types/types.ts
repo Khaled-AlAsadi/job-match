@@ -33,16 +33,16 @@ export interface AvailableJobPosts {
 }
 
 export interface EmployerJobPost {
-  id: number
+  id?: number
   job_post_title: string
   company_name: string
   location: string
   employment_type: string
   job_description: string
-  phone_number: string
-  expiration_date: string
+  phone_number?: string
+  expiration_date: Date
   is_published: boolean
-  applications: []
+  applications?: Application[]
 }
 
 export interface Application {
