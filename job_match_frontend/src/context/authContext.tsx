@@ -20,12 +20,12 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authTokens, setAuthTokens] = useState<AuthTokens | null>(() => {
-    const tokens = sessionStorage.getItem('authTokens')
+    const tokens = localStorage.getItem('authTokens')
     return tokens ? JSON.parse(tokens) : null
   })
 
   const [user, setUser] = useState<User | null>(() => {
-    const tokens = sessionStorage.getItem('authTokens')
+    const tokens = localStorage.getItem('authTokens')
     if (tokens) {
       try {
         //Parses the token
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (username: string, password: string) => {
     const data = await loginService(username, password)
     setAuthTokens(data)
-    sessionStorage.setItem('authTokens', JSON.stringify(data))
+    localStorage.setItem('authTokens', JSON.stringify(data))
 
     try {
       const userInfo = await getUser(data.access)
@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setAuthTokens(null)
     setUser(null)
-    sessionStorage.removeItem('authTokens')
+    localStorage.removeItem('authTokens')
   }
 
   const handleTokenRefresh = async () => {
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         const data = await refreshToken(authTokens.refresh)
         setAuthTokens(data)
-        sessionStorage.setItem('authTokens', JSON.stringify(data))
+        localStorage.setItem('authTokens', JSON.stringify(data))
 
         try {
           const userInfo = await getUser(data.access)
@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const storedTokens = sessionStorage.getItem('authTokens')
+      const storedTokens = localStorage.getItem('authTokens')
       if (storedTokens) {
         const tokens = JSON.parse(storedTokens)
         setAuthTokens(tokens)
