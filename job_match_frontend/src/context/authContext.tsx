@@ -66,6 +66,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const data = await refreshToken(authTokens.refresh)
         setAuthTokens(data)
         sessionStorage.setItem('authTokens', JSON.stringify(data))
+
+        try {
+          const userInfo = await getUser(data.access)
+          setUser(userInfo)
+        } catch (error) {
+          console.error('Failed to fetch user info:', error)
+          setUser(null)
+        }
       } catch (error) {
         console.error('Failed to refresh token:', error)
         logout()
@@ -94,9 +102,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    const refreshTokenInterval = setInterval(handleTokenRefresh, 4 * 60 * 1000) // Refresh token every 4 minutes
+    if (authTokens) {
+      const refreshTokenInterval = setInterval(async () => {
+        await handleTokenRefresh()
+      }, 4 * 60 * 1000)
 
-    return () => clearInterval(refreshTokenInterval)
+      return () => clearInterval(refreshTokenInterval)
+    }
   }, [authTokens])
 
   return (
