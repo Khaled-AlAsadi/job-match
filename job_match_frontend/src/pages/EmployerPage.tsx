@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/authContext'
-import { retrieveEmployerJobPosts } from '../services/employerService'
+import {
+  createJobPost,
+  retrieveEmployerJobPosts,
+} from '../services/employerService'
 import styled from 'styled-components'
 import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
@@ -52,7 +55,10 @@ const EmployerPage = () => {
   const handleCloseForm = () => {
     setIsFormOpen(false)
   }
-  const handleJobSubmit = (formData: EmployerJobPost) => {
+  const handleJobSubmit = async (formData: EmployerJobPost) => {
+    await createJobPost(authTokens?.access, formData).then()
+    await retrieveEmployerJobPosts(authTokens?.access)
+
     console.log(formData)
     setIsFormOpen(false)
   }

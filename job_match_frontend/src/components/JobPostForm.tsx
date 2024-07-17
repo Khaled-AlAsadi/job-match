@@ -24,8 +24,9 @@ const FormComponent: React.FC<CustomModalProps> = ({
     job_post_title: '',
     job_description: '',
     location: '',
-    employment_type: '',
+    employment_type: 'Tillsvidareanställning',
     is_published: false,
+    phone_number: '',
     expiration_date: new Date(),
   }
 
@@ -37,6 +38,7 @@ const FormComponent: React.FC<CustomModalProps> = ({
     job_post_title: '',
     job_description: '',
     location: '',
+    phone_number: '',
   })
 
   useEffect(() => {
@@ -74,11 +76,19 @@ const FormComponent: React.FC<CustomModalProps> = ({
     }))
   }
 
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
   const handleDateChange = (date: Date | null) => {
     if (date) {
-      setFormData((prevState) => ({
+      const formattedDate = formatDate(date)
+      setFormData((prevState: any) => ({
         ...prevState,
-        expiration_date: date,
+        expiration_date: formattedDate,
       }))
     }
   }
@@ -156,6 +166,17 @@ const FormComponent: React.FC<CustomModalProps> = ({
             {errors.company_name && <Span>{errors.company_name}</Span>}
           </FormGroup>
           <FormGroup>
+            <Label htmlFor="phone_number">Mobilnummer:</Label>
+            <Input
+              type="text"
+              id="phone_number"
+              name="phone_number"
+              value={formData.phone_number}
+              onChange={handleChange}
+            />
+            {errors.company_name && <Span>{errors.phone_number}</Span>}
+          </FormGroup>
+          <FormGroup>
             <Label htmlFor="location">Location:</Label>
             <Input
               id="location"
@@ -193,7 +214,11 @@ const FormComponent: React.FC<CustomModalProps> = ({
           <DatePickerGroup>
             <Label htmlFor="expiration_date">Utgångsdatum:</Label>
             <DatePicker
-              selected={formData.expiration_date}
+              selected={
+                formData.expiration_date
+                  ? new Date(formData.expiration_date)
+                  : null
+              }
               onChange={handleDateChange}
               dateFormat="yyyy-MM-dd"
               minDate={new Date()}

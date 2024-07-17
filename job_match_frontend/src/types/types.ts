@@ -40,7 +40,7 @@ export interface EmployerJobPost {
   employment_type: string
   job_description: string
   phone_number?: string
-  expiration_date: Date
+  expiration_date: any
   is_published: boolean
   applications?: Application[]
 }
