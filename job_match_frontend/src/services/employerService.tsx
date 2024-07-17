@@ -29,3 +29,18 @@ export const createJobPost = async (token: any, payload: EmployerJobPost) => {
     throw error
   }
 }
+
+export const deleteJobPost = async (token: any, id: string) => {
+  try {
+    const response = await api.delete(`employer/jobpost/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error creating job post:', error)
+    // Optionally add more detailed error handling here
+    throw error
+  }
+}

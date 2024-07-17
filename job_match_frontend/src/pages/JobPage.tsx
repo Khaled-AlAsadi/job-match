@@ -1,10 +1,16 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { Education, Application, WorkExperience } from '../types/types'
+import { deleteJobPost } from '../services/employerService'
+import { useState } from 'react'
+import { CustomModal } from '../components/CustomModal'
+import { useAuth } from '../context/authContext'
 
 const JobPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const [isModalopen, setIsModalOpen] = useState(false)
+  const { user, authTokens, logout } = useAuth()
 
   const { job } = location.state || {}
 
@@ -12,9 +18,35 @@ const JobPage = () => {
     return <h1>No job details available</h1>
   }
 
+  const handleDeleteButtonClick = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleJobPostDeletion = async () => {
+    try {
+      if (authTokens?.access && user !== null) {
+        await deleteJobPost(authTokens?.access, job.id)
+        navigate('/home')
+      }
+    } catch (error) {
+      logout()
+    }
+  }
+
   return (
     <Container>
       <Button onClick={() => navigate(-1)}>Gå tillbaka</Button>
+      <Button onClick={() => handleDeleteButtonClick()}>Ta bort</Button>
+      <CustomModal
+        visible={isModalopen}
+        onClose={() => setIsModalOpen(false)}
+        modalTitle={`Är du säker att du vill du ta bort jobbannonsen?`}
+        modalText={`all data kommer att tas bort som tillhör annonsen`}
+        primaryButtonTitle="Ja"
+        secondaryButtonTitle="Nej"
+        onPrimaryButtonPress={() => handleJobPostDeletion()}
+        onSecondaryButtonPress={() => setIsModalOpen(false)}
+      />
       <JobPostTitle>{job.job_post_title}</JobPostTitle>
       <Details>
         <DetailItem>
