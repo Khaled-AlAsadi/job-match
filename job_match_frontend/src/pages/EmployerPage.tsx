@@ -56,11 +56,16 @@ const EmployerPage = () => {
     setIsFormOpen(false)
   }
   const handleJobSubmit = async (formData: EmployerJobPost) => {
-    await createJobPost(authTokens?.access, formData).then()
-    await retrieveEmployerJobPosts(authTokens?.access)
-
-    console.log(formData)
-    setIsFormOpen(false)
+    try {
+      await createJobPost(authTokens?.access, formData)
+      const updatedJobPosts = await retrieveEmployerJobPosts(authTokens?.access)
+      setJobPosts(updatedJobPosts)
+      console.log(formData)
+    } catch (error) {
+      console.error('Error creating job post:', error)
+    } finally {
+      setIsFormOpen(false)
+    }
   }
   return (
     <Container>

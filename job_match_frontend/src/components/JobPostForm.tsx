@@ -123,7 +123,11 @@ const FormComponent: React.FC<CustomModalProps> = ({
       setErrors(newErrors)
       return
     } else {
-      onSubmit(formData)
+      const formattedData = {
+        ...formData,
+        expiration_date: formatDate(new Date(formData.expiration_date)),
+      }
+      onSubmit(formattedData)
       onClose()
       setFormData(initialFormData)
     }
