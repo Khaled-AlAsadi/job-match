@@ -28,8 +28,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const tokens = localStorage.getItem('authTokens')
     if (tokens) {
       try {
-        //Parses the token
-        //atob(): decodes a Base64-encoded string
         const token = JSON.parse(atob(JSON.parse(tokens).access.split('.')[1]))
         return token
       } catch (e) {
@@ -41,15 +39,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   })
 
   const login = async (username: string, password: string) => {
-    const data = await loginService(username, password)
-    setAuthTokens(data)
-    localStorage.setItem('authTokens', JSON.stringify(data))
-
     try {
+      const data = await loginService(username, password)
+      setAuthTokens(data)
+      localStorage.setItem('authTokens', JSON.stringify(data))
       const userInfo = await getUser(data.access)
       setUser(userInfo)
     } catch (error) {
-      console.error('Failed to fetch user info:', error)
+      console.error('Login failed:', error)
       setUser(null)
     }
   }
@@ -61,23 +58,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const handleTokenRefresh = async () => {
-    if (authTokens && authTokens.refresh) {
-      try {
+    try {
+      if (authTokens && authTokens.refresh) {
         const data = await refreshToken(authTokens.refresh)
         setAuthTokens(data)
         localStorage.setItem('authTokens', JSON.stringify(data))
-
-        try {
-          const userInfo = await getUser(data.access)
-          setUser(userInfo)
-        } catch (error) {
-          console.error('Failed to fetch user info:', error)
-          setUser(null)
-        }
-      } catch (error) {
-        console.error('Failed to refresh token:', error)
-        logout()
+        const userInfo = await getUser(data.access)
+        setUser(userInfo)
       }
+    } catch (error) {
+      console.error('Failed to refresh token:', error)
+      logout()
     }
   }
 
@@ -87,7 +78,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (storedTokens) {
         const tokens = JSON.parse(storedTokens)
         setAuthTokens(tokens)
-
         try {
           const userInfo = await getUser(tokens.access)
           setUser(userInfo)
@@ -103,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const refreshTokenIfNeeded = async () => {
-      if (authTokens && typeof handleTokenRefresh === 'function') {
+      if (authTokens) {
         await handleTokenRefresh()
       }
     }
@@ -111,7 +101,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const intervalId = setInterval(refreshTokenIfNeeded, 30 * 60 * 1000)
 
     return () => clearInterval(intervalId)
-  }, [authTokens])
+  }, [authTokens, handleTokenRefresh])
 
   return (
     <AuthContext.Provider value={{ user, authTokens, login, logout }}>
