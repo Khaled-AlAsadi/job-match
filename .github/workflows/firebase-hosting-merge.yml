@@ -10,26 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # Ensure this matches your project's Node.js version
+          node-version: '14'
 
       - name: Install Dependencies and Build Project
-        working-directory: job_match_frontend
         run: |
+          cd job_match_frontend
           npm install
           npm run build
 
       - name: Deploy to Firebase Hosting
-        working-directory: job_match_frontend
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JOB_MATCH_WEB_32DB5 }}'
           channelId: live
           projectId: job-match-web-32db5
-          entryPoint: job_match_frontend  # Adjust to your frontend directory name
+          entryPoint: job_match_frontend
