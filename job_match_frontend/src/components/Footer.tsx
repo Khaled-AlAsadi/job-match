@@ -8,6 +8,7 @@ function FooterComponent() {
         <a
           href="https://github.com/Khaled-AlAsadi"
           target="_blank"
+          rel="noopener noreferrer"
           aria-label="View our GitHub profile"
         >
           <FaGithub />

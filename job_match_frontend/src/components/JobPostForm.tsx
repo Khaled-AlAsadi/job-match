@@ -19,7 +19,7 @@ const FormComponent: React.FC<CustomModalProps> = ({
   primaryButtonText,
   editItem,
 }) => {
-  const initialFormData = {
+  const initialFormData: EmployerJobPost = {
     company_name: '',
     job_post_title: '',
     job_description: '',
@@ -30,8 +30,8 @@ const FormComponent: React.FC<CustomModalProps> = ({
     expiration_date: new Date(),
   }
 
-  const [formData, setFormData] = useState(initialFormData)
-  const [isChecked, setIsChecked] = React.useState(false)
+  const [formData, setFormData] = useState<EmployerJobPost>(initialFormData)
+  const [isChecked, setIsChecked] = useState(false)
 
   const [errors, setErrors] = useState({
     company_name: '',
@@ -86,7 +86,7 @@ const FormComponent: React.FC<CustomModalProps> = ({
   const handleDateChange = (date: Date | null) => {
     if (date) {
       const formattedDate = formatDate(date)
-      setFormData((prevState: any) => ({
+      setFormData((prevState) => ({
         ...prevState,
         expiration_date: formattedDate,
       }))
@@ -178,7 +178,7 @@ const FormComponent: React.FC<CustomModalProps> = ({
               value={formData.phone_number}
               onChange={handleChange}
             />
-            {errors.company_name && <Span>{errors.phone_number}</Span>}
+            {errors.phone_number && <Span>{errors.phone_number}</Span>}
           </FormGroup>
           <FormGroup>
             <Label htmlFor="location">Location:</Label>
@@ -277,6 +277,7 @@ const DatePickerGroup = styled.div`
   margin-bottom: 20px;
   display: flex;
 `
+
 const Label = styled.label`
   display: block;
   margin-bottom: 5px;

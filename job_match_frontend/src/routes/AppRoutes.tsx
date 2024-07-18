@@ -5,7 +5,6 @@ import HeaderComponent from '../components/Header'
 import LoginPage from '../pages/LoginPage'
 import HomePage from '../pages/HomePage'
 import PrivateRoute from './PrivateRoute'
-import FooterComponent from '../components/Footer'
 import JobPage from '../pages/JobPage'
 
 const AppRoutes: React.FC = () => {
