@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -19,16 +19,19 @@ const FormComponent: React.FC<CustomModalProps> = ({
   primaryButtonText,
   editItem,
 }) => {
-  const initialFormData: EmployerJobPost = {
-    company_name: '',
-    job_post_title: '',
-    job_description: '',
-    location: '',
-    employment_type: 'Tillsvidareanställning',
-    is_published: false,
-    phone_number: '',
-    expiration_date: new Date(),
-  }
+  const initialFormData = useMemo(
+    () => ({
+      company_name: '',
+      job_post_title: '',
+      job_description: '',
+      location: '',
+      employment_type: 'Tillsvidareanställning',
+      is_published: false,
+      phone_number: '',
+      expiration_date: new Date(),
+    }),
+    []
+  )
 
   const [formData, setFormData] = useState<EmployerJobPost>(initialFormData)
   const [isChecked, setIsChecked] = useState(false)

@@ -60,27 +60,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('authTokens')
   }
 
-  const handleTokenRefresh = async () => {
-    if (authTokens && authTokens.refresh) {
-      try {
-        const data = await refreshToken(authTokens.refresh)
-        setAuthTokens(data)
-        localStorage.setItem('authTokens', JSON.stringify(data))
-
-        try {
-          const userInfo = await getUser(data.access)
-          setUser(userInfo)
-        } catch (error) {
-          console.error('Failed to fetch user info:', error)
-          setUser(null)
-        }
-      } catch (error) {
-        console.error('Failed to refresh token:', error)
-        logout()
-      }
-    }
-  }
-
   useEffect(() => {
     const initializeAuth = async () => {
       const storedTokens = localStorage.getItem('authTokens')
@@ -102,6 +81,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   })
 
   useEffect(() => {
+    const handleTokenRefresh = async () => {
+      if (authTokens && authTokens.refresh) {
+        try {
+          const data = await refreshToken(authTokens.refresh)
+          setAuthTokens(data)
+          localStorage.setItem('authTokens', JSON.stringify(data))
+
+          try {
+            const userInfo = await getUser(data.access)
+            setUser(userInfo)
+          } catch (error) {
+            console.error('Failed to fetch user info:', error)
+            setUser(null)
+          }
+        } catch (error) {
+          console.error('Failed to refresh token:', error)
+          logout()
+        }
+      }
+    }
     if (authTokens) {
       const refreshTokenInterval = setInterval(async () => {
         await handleTokenRefresh()
@@ -109,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       return () => clearInterval(refreshTokenInterval)
     }
-  }, [authTokens, handleTokenRefresh])
+  }, [authTokens])
 
   return (
     <AuthContext.Provider value={{ user, authTokens, login, logout }}>
