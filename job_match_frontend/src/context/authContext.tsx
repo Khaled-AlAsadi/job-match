@@ -52,11 +52,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setAuthTokens(null)
     setUser(null)
     localStorage.removeItem('authTokens')
-  }
+  }, [])
 
   const handleTokenRefresh = useCallback(async () => {
     try {
