@@ -12,7 +12,7 @@ interface CustomModalProps {
   editItem?: any
 }
 
-const FormComponent: React.FC<CustomModalProps> = ({
+const JobForm: React.FC<CustomModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -338,4 +338,4 @@ const StyledSelect = styled.select`
   border-radius: 3px;
 `
 
-export default FormComponent
+export default JobForm

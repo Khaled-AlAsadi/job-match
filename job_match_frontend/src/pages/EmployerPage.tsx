@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
-import FormComponent from '../components/JobPostForm'
+import JobForm from '../components/JobForm'
 
 const EmployerPage = () => {
   const navigate = useNavigate()
@@ -78,7 +78,7 @@ const EmployerPage = () => {
           <Button onClick={() => handleJobView(job)}>Visa jobbannonsen</Button>
         </JobPostContainer>
       ))}
-      <FormComponent
+      <JobForm
         isOpen={isFormOpen}
         onClose={handleCloseForm}
         onSubmit={handleJobSubmit}
