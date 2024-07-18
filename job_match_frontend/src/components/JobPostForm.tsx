@@ -50,7 +50,7 @@ const FormComponent: React.FC<CustomModalProps> = ({
     } else {
       setFormData(initialFormData)
     }
-  }, [editItem])
+  }, [editItem, initialFormData])
 
   const handleChange = (
     e: React.ChangeEvent<

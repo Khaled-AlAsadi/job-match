@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       return () => clearInterval(refreshTokenInterval)
     }
-  }, [authTokens])
+  }, [authTokens, handleTokenRefresh])
 
   return (
     <AuthContext.Provider value={{ user, authTokens, login, logout }}>
