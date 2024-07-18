@@ -102,13 +102,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    if (authTokens) {
-      const refreshTokenInterval = setInterval(async () => {
+    const refreshTokenIfNeeded = async () => {
+      if (authTokens && typeof handleTokenRefresh === 'function') {
         await handleTokenRefresh()
-      }, 30 * 60 * 1000)
-
-      return () => clearInterval(refreshTokenInterval)
+      }
     }
+
+    const intervalId = setInterval(refreshTokenIfNeeded, 30 * 60 * 1000)
+
+    return () => clearInterval(intervalId)
   }, [authTokens])
 
   return (
