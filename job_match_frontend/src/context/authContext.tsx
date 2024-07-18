@@ -4,6 +4,7 @@ import React, {
   useEffect,
   ReactNode,
   useContext,
+  useCallback,
 } from 'react'
 import {
   login as loginService,
@@ -57,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('authTokens')
   }
 
-  const handleTokenRefresh = async () => {
+  const handleTokenRefresh = useCallback(async () => {
     try {
       if (authTokens && authTokens.refresh) {
         const data = await refreshToken(authTokens.refresh)
@@ -70,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error('Failed to refresh token:', error)
       logout()
     }
-  }
+  }, [authTokens, logout])
 
   useEffect(() => {
     const initializeAuth = async () => {
