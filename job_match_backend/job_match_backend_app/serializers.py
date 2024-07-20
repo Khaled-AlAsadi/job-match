@@ -126,8 +126,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'is_ag',
             'is_active',
             'is_staff',
-            "password"]
+            'password'
+        ]
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
-        return super(CustomUserSerializer, self).create(validated_data)
+        return super().create(validated_data)
