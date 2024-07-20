@@ -6,7 +6,7 @@ const baseURL =
     : 'http://127.0.0.1:8000'
 
 const api = axios.create({
-  baseURL: baseURL,
+  baseURL: 'https://job-match-fg8r.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
