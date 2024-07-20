@@ -8,3 +8,4 @@ node_modules/
 cloudinary_python.txt
 venv
 .vscode
+job_match_backend/db.sqlite3
