@@ -6,7 +6,8 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('job_match_backend_app', '0002_jobpost_jobseekercv_customuser_is_ag_workexperince_and_more'),
+        ('job_match_backend_app',
+         '0002_jobpost_jobseekercv_customuser_is_ag_workexperince_and_more'),
     ]
 
     operations = [
