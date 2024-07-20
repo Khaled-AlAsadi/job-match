@@ -136,7 +136,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [authTokens, handleTokenRefresh])
 
   return (
-    <AuthContext.Provider value={{ user, authTokens, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, authTokens, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

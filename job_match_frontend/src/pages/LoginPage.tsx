@@ -23,22 +23,43 @@ const LoginPage: React.FC = () => {
     }
   }
 
+  const handleRegisterNavigation = () => {
+    navigate('/register')
+  }
+
   return (
     <div>
       <h1>Login</h1>
       <input
         type="text"
+        id="Username"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Username"
       />
       <input
         type="password"
+        id="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
       <button onClick={handleLogin}>Login</button>
+      <span>
+        Har du inget konto? Registerera
+        <button
+          onClick={handleRegisterNavigation}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'blue',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+          }}
+        >
+          här
+        </button>
+      </span>
     </div>
   )
 }

@@ -149,7 +149,7 @@ const JobForm: React.FC<CustomModalProps> = ({
   return (
     <ModalBackground>
       <ModalContent>
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm id="jobForm" onSubmit={handleSubmit}>
           <FormGroup>
             <Label htmlFor="job_post_title">Job title:</Label>
             <Input
