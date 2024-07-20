@@ -5,6 +5,31 @@ export const login = async (email: string, password: string) => {
   return response.data
 }
 
+export const signup = async (
+  email: string,
+  password: string,
+  mobileNumber: string,
+  first_name: string,
+  last_name: string,
+  is_active: string,
+  is_staff: string,
+  is_ag: string,
+  org_number?: string
+) => {
+  const response = await api.post('create/user', {
+    email,
+    password,
+    mobileNumber,
+    first_name,
+    last_name,
+    is_active,
+    is_staff,
+    is_ag,
+    org_number,
+  })
+  return response.data
+}
+
 export const refreshToken = async (refreshToken: string) => {
   try {
     const response = await api.post('refresh/token', { refresh: refreshToken })

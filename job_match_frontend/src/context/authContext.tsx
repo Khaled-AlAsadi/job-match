@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import {
   login as loginService,
+  signup as signupService,
   refreshToken,
   getUser,
 } from '../services/authService'
@@ -48,6 +49,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(userInfo)
     } catch (error) {
       console.error('Login failed:', error)
+      setUser(null)
+    }
+  }
+
+  const signup = async (
+    username: string,
+    password: string,
+    mobileNumber: string,
+    first_name: string,
+    last_name: string,
+    is_active: string,
+    is_staff: string,
+    is_ag: string,
+    org_number?: string
+  ) => {
+    try {
+      const data = await signupService(
+        username,
+        password,
+        mobileNumber,
+        first_name,
+        last_name,
+        is_active,
+        is_staff,
+        is_ag,
+        org_number
+      )
+      return data
+    } catch (error) {
+      console.error('Sign up failed:', error)
       setUser(null)
     }
   }
@@ -105,7 +136,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [authTokens, handleTokenRefresh])
 
   return (
-    <AuthContext.Provider value={{ user, authTokens, login, logout }}>
+    <AuthContext.Provider value={{ user, authTokens, signup, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
