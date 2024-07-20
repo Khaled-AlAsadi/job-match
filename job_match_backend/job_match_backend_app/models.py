@@ -75,13 +75,7 @@ class Application(models.Model):
         'JobSeekerCv',
         on_delete=models.CASCADE,
         related_name='applications')
-    application_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{
-            self.profile_id.email} applied to {
-            self.job_post.job_post_title}"
-
+    application_date = models.DateTimeField(auto_now_add=True) 
 
 class JobSeekerCv(models.Model):
     profile = models.ForeignKey(
