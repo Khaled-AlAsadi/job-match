@@ -27,7 +27,7 @@ function HeaderComponent() {
           <Fragment>
             <NavLink to="/home">Startsidan</NavLink>
             <NavLink to="/profile">Profil</NavLink>
-            <NavLink to="/" onClick={logout}>
+            <NavLink to="/login" onClick={logout}>
               Logga ut
             </NavLink>
           </Fragment>

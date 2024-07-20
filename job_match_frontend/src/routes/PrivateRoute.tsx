@@ -5,7 +5,7 @@ import AuthContext from '../context/authContext';
 const PrivateRoute: React.FC = () => {
   const { user } = useContext(AuthContext) || {};
 
-  return user ? <Outlet /> : <Navigate to="/" />;
+  return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

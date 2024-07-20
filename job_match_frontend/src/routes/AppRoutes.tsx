@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from '../context/authContext'
 import HeaderComponent from '../components/Header'
 import LoginPage from '../pages/LoginPage'
@@ -15,11 +15,12 @@ const AppRoutes: React.FC = () => {
         <HeaderComponent />
         <Routes>
           <Route path="/register" element={<SignupPage />} />
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<HomePage />} />
-            <Route path="employer/job/:id" element={<JobPage />} />
+            <Route path="/employer/job/:id" element={<JobPage />} />
           </Route>
+          <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </AuthProvider>
     </Router>
