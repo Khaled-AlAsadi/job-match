@@ -7,7 +7,7 @@ interface ApplicationListProps {
   onViewProfile: (applicationId: string) => void
 }
 
-const StyledList: React.FC<ApplicationListProps> = ({
+const ApplicationsList: React.FC<ApplicationListProps> = ({
   applications,
   onViewProfile,
 }) => {
@@ -71,4 +71,4 @@ const NoApplications = styled.div`
   color: #666;
 `
 
-export default StyledList
+export default ApplicationsList

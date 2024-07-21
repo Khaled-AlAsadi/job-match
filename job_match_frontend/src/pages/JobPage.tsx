@@ -5,7 +5,7 @@ import { deleteJobPost } from '../services/employerService'
 import { useState } from 'react'
 import { CustomModal } from '../components/CustomModal'
 import { useAuth } from '../context/authContext'
-import StyledList from '../components/StyledList'
+import ApplicationsList from '../components/ApplicationsList'
 
 const JobPage = () => {
   const location = useLocation()
@@ -84,7 +84,7 @@ const JobPage = () => {
         {job.applications.length > 0 ? (
           job.applications.map((application: Application[], index: any) => (
             <ApplicationContainer key={index}>
-              <StyledList
+              <ApplicationsList
                 applications={application}
                 onViewProfile={handleViewProfile}
               />
