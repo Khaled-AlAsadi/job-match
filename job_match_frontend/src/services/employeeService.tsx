@@ -1,3 +1,4 @@
+import { Education, WorkExperience } from '../types/types'
 import api from './api'
 
 export const retrieveAvailableJobPosts = async (token: any) => {
@@ -31,6 +32,41 @@ export const retrieveProfile = async (token: any) => {
 export const updateProfile = async (token: any, payload: any) => {
   try {
     const response = await api.patch('/jobseeker/info/update', payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to update profile:', error)
+    throw error
+  }
+}
+
+export const createWorkExperince = async (
+  token: any,
+  payload: WorkExperience
+) => {
+  try {
+    const response = await api.post(
+      '/jobseeker/workexperince/create',
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error('Failed to update profile:', error)
+    throw error
+  }
+}
+
+export const createEducation = async (token: any, payload: Education) => {
+  try {
+    const response = await api.post('/jobseeker/education/create', payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

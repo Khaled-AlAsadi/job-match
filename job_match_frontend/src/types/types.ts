@@ -77,7 +77,7 @@ export interface WorkExperience {
 }
 
 export interface Education {
-  id: number
+  id?: any
   school_name: string
   level: string
   orientation: string

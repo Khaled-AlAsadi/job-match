@@ -3,12 +3,15 @@ import { useAuth } from '../context/authContext'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import {
+  createEducation,
+  createWorkExperince,
   retrieveProfile,
   updateProfile as updateProfileNameEmail,
 } from '../services/employeeService'
 import { JobSeekerCv, WorkExperience, Education } from '../types/types'
+import ExperinceModal from '../components/ExperinceModal'
 
-const ProfilePage = () => {
+const ProfilePage: React.FC = () => {
   const { user, authTokens } = useAuth()
   const [profile, setProfile] = useState<JobSeekerCv>({
     profile_id: '',
@@ -19,6 +22,13 @@ const ProfilePage = () => {
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isModalOpen, setModalOpen] = useState(false)
+  const [currentData, setCurrentData] = useState<
+    WorkExperience | Education | null
+  >(null)
+  const [modalType, setModalType] = useState<'experience' | 'education'>(
+    'experience'
+  )
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -52,65 +62,76 @@ const ProfilePage = () => {
     }
   }
 
-  const addWorkExperience = () => {
-    setProfile({
-      ...profile,
-      work_experiences: [
-        ...profile.work_experiences,
-        {
-          id: Date.now(),
-          occupation_title: '',
-          company_name: '',
-          years: '',
-          description: '',
-        },
-      ],
-    })
-  }
-
-  const removeWorkExperience = (id: number) => {
-    setProfile({
-      ...profile,
-      work_experiences: profile.work_experiences.filter((exp) => exp.id !== id),
-    })
-  }
-
-  const updateWorkExperience = (id: number, field: string, value: string) => {
-    const updatedExperiences = profile.work_experiences.map((exp) =>
-      exp.id === id ? { ...exp, [field]: value } : exp
+  const addData = (type: 'experience' | 'education') => {
+    setCurrentData(
+      type === 'experience'
+        ? {
+            id: Date.now(),
+            occupation_title: '',
+            company_name: '',
+            years: '',
+            description: '',
+          }
+        : {
+            school_name: '',
+            level: '',
+            orientation: '',
+            years: '',
+            description: '',
+          }
     )
-    setProfile({ ...profile, work_experiences: updatedExperiences })
+    setModalType(type)
+    setModalOpen(true)
   }
 
-  const addEducation = () => {
-    setProfile({
-      ...profile,
-      educations: [
-        ...profile.educations,
-        {
-          id: Date.now(),
-          school_name: '',
-          level: '',
-          orientation: '',
-          years: '',
-          description: '',
-        },
-      ],
-    })
+  const saveData = async (data: any) => {
+    if (modalType === 'experience') {
+      await createWorkExperince(authTokens?.access, data)
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        work_experiences: [
+          ...prevProfile.work_experiences,
+          data as WorkExperience,
+        ],
+      }))
+    } else {
+      const formattedData = {
+        school_name: data.school_name?.trim() || '',
+        level: data.level?.trim() || '',
+        orientation: data.orientation?.trim() || '',
+        description: data.description?.trim() || '',
+        years: data.years?.trim() || '',
+      }
+
+      console.log('Formatted Data:', formattedData)
+
+      try {
+        await createEducation(authTokens?.access, formattedData)
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          educations: [...prevProfile.educations, formattedData as Education],
+        }))
+      } catch (error) {
+        console.error('Error saving data:', error)
+        setError('Failed to save education data.')
+      }
+    }
   }
 
-  const removeEducation = (id: number) => {
-    setProfile({
-      ...profile,
-      educations: profile.educations.filter((edu) => edu.id !== id),
-    })
-  }
-
-  const updateEducation = (id: number, field: string, value: string) => {
-    const updatedEducations = profile.educations.map((edu) =>
-      edu.id === id ? { ...edu, [field]: value } : edu
-    )
-    setProfile({ ...profile, educations: updatedEducations })
+  const removeData = (id: number, type: 'experience' | 'education') => {
+    if (type === 'experience') {
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        work_experiences: prevProfile.work_experiences.filter(
+          (exp) => exp.id !== id
+        ),
+      }))
+    } else {
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        educations: prevProfile.educations.filter((edu) => edu.id !== id),
+      }))
+    }
   }
 
   if (loading) return <Loading>Loading...</Loading>
@@ -145,162 +166,68 @@ const ProfilePage = () => {
             />
           </FormField>
           <Button onClick={handleUpdateProfile}>Spara Ändringar</Button>
-
+          <hr />
           <SectionTitle>Arbetslivserfarenhet</SectionTitle>
-          {profile.work_experiences.map((exp) => (
-            <ExperienceForm key={exp.id}>
-              <FormField>
-                <Label>Titel:</Label>
-                <Input
-                  type="text"
-                  value={exp.occupation_title}
-                  onChange={(e) =>
-                    updateWorkExperience(
-                      exp.id,
-                      'occupation_title',
-                      e.target.value
-                    )
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>Företag:</Label>
-                <Input
-                  type="text"
-                  value={exp.company_name}
-                  onChange={(e) =>
-                    updateWorkExperience(exp.id, 'company_name', e.target.value)
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>År:</Label>
-                <Input
-                  type="text"
-                  value={exp.years}
-                  onChange={(e) =>
-                    updateWorkExperience(exp.id, 'years', e.target.value)
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>Beskrivning:</Label>
-                <TextArea
-                  value={exp.description}
-                  onChange={(e) =>
-                    updateWorkExperience(exp.id, 'description', e.target.value)
-                  }
-                />
-              </FormField>
-              <Button onClick={() => removeWorkExperience(exp.id)}>
-                Ta bort erfarenhet
-              </Button>
-            </ExperienceForm>
-          ))}
-          <Button onClick={addWorkExperience}>
-            Lägg till arbetslivserfarenhet
+          <ExperienceList>
+            {profile.work_experiences.map((workExperience) => (
+              <ExperienceCard key={workExperience.id}>
+                <CardTitle>{workExperience.occupation_title}</CardTitle>
+                <CardCompany>{workExperience.company_name}</CardCompany>
+                <CardYears>{workExperience.years}</CardYears>
+                <CardDescription>{workExperience.description}</CardDescription>
+                <Button
+                  onClick={() => removeData(workExperience.id, 'experience')}
+                >
+                  Ta Bort
+                </Button>
+              </ExperienceCard>
+            ))}
+          </ExperienceList>
+          <Button onClick={() => addData('experience')}>
+            Lägg till Erfarenhet
           </Button>
-
-          <SectionTitle>Utbildningar</SectionTitle>
-          {profile.educations.map((edu) => (
-            <EducationForm key={edu.id}>
-              <FormField>
-                <Label>Skola:</Label>
-                <Input
-                  type="text"
-                  value={edu.school_name}
-                  onChange={(e) =>
-                    updateEducation(edu.id, 'school_name', e.target.value)
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>Nivå:</Label>
-                <Input
-                  type="text"
-                  value={edu.level}
-                  onChange={(e) =>
-                    updateEducation(edu.id, 'level', e.target.value)
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>Inriktning:</Label>
-                <Input
-                  type="text"
-                  value={edu.orientation}
-                  onChange={(e) =>
-                    updateEducation(edu.id, 'orientation', e.target.value)
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>År:</Label>
-                <Input
-                  type="text"
-                  value={edu.years}
-                  onChange={(e) =>
-                    updateEducation(edu.id, 'years', e.target.value)
-                  }
-                />
-              </FormField>
-              <FormField>
-                <Label>Beskrivning:</Label>
-                <TextArea
-                  value={edu.description}
-                  onChange={(e) =>
-                    updateEducation(edu.id, 'description', e.target.value)
-                  }
-                />
-              </FormField>
-              <Button onClick={() => removeEducation(edu.id)}>
-                Ta bort utbildning
-              </Button>
-            </EducationForm>
-          ))}
-          <Button onClick={addEducation}>Lägg till utbildning</Button>
+          <hr />
+          <SectionTitle>Utbildning</SectionTitle>
+          <ExperienceList>
+            {profile.educations.map((education: Education) => (
+              <ExperienceCard key={education.id}>
+                <CardTitle>{education.school_name}</CardTitle>
+                <CardCompany>{education.orientation}</CardCompany>
+                <CardYears>{education.years}</CardYears>
+                <CardDescription>{education.description}</CardDescription>
+                <Button onClick={() => removeData(education.id, 'education')}>
+                  Ta Bort
+                </Button>
+              </ExperienceCard>
+            ))}
+          </ExperienceList>
+          <Button onClick={() => addData('education')}>
+            Lägg till Utbildning
+          </Button>
         </ProfileForm>
       )}
+
+      <ExperinceModal
+        show={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={saveData}
+        data={currentData || {}}
+        type={modalType}
+      />
     </Container>
   )
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
-  background-color: #f9f9f9;
-  color: #333;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`
-
-const Button = styled.button`
-  padding: 10px 20px;
-  margin: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  &:hover {
-    background-color: #0056b3;
-  }
 `
 
 const ProfileForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
+  margin: 20px 0;
 `
 
 const FormField = styled.div`
   margin-bottom: 15px;
-  width: 100%;
 `
 
 const Label = styled.label`
@@ -326,29 +253,66 @@ const TextArea = styled.textarea`
   min-height: 100px;
 `
 
-const ExperienceForm = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
+const Button = styled.button`
+  padding: 10px 20px;
+  margin: 10px 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  &:hover {
+    background-color: #0056b3;
+  }
 `
 
-const EducationForm = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-`
-
-const SectionTitle = styled.h3`
-  font-size: 1.5rem;
+const SectionTitle = styled.h2`
   margin: 20px 0;
 `
 
-const Loading = styled.div`
+const ExperienceList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+const ExperienceCard = styled.div`
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`
+
+const CardTitle = styled.h3`
+  margin: 0 0 5px 0;
   font-size: 1.2rem;
-  color: #007bff;
+`
+
+const CardCompany = styled.h4`
+  margin: 0 0 5px 0;
+  color: #555;
+`
+
+const CardYears = styled.p`
+  margin: 0 0 5px 0;
+  font-style: italic;
+`
+
+const CardDescription = styled.p`
+  margin: 0;
+`
+
+const Loading = styled.div`
+  text-align: center;
+  font-size: 1.5rem;
 `
 
 const Error = styled.div`
-  font-size: 1.2rem;
   color: red;
+  text-align: center;
+  font-size: 1.5rem;
 `
 
 export default ProfilePage
