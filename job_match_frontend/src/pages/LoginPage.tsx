@@ -40,9 +40,8 @@ const LoginPage: React.FC = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <LoginButton onClick={handleLogin}>
-        Login
-      </LoginButton>
+      <LoginButton onClick={handleLogin}>Login</LoginButton>
+      <LoginButton onClick={handleRegisterNavigation}>Registerera </LoginButton>
     </LoginContainer>
   )
 }

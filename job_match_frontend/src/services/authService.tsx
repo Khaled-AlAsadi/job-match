@@ -5,27 +5,37 @@ export const login = async (email: string, password: string) => {
   return response.data
 }
 
-export const signup = async (
-  email: string,
-  password: string,
-  mobileNumber: string,
-  first_name: string,
-  last_name: string,
-  is_active: string,
-  is_staff: string,
-  is_ag: string,
+export const signupService = async ({
+  email,
+  first_name,
+  last_name,
+  mobile_number,
+  org_number,
+  is_ag,
+  is_active,
+  is_staff,
+  password,
+}: {
+  email: string
+  first_name: string
+  last_name: string
+  mobile_number: string
   org_number?: string
-) => {
+  is_ag?: boolean
+  is_active: boolean
+  is_staff: boolean
+  password: string
+}) => {
   const response = await api.post('create/user', {
     email,
-    password,
-    mobileNumber,
     first_name,
     last_name,
+    mobile_number,
+    org_number,
+    is_ag,
     is_active,
     is_staff,
-    is_ag,
-    org_number,
+    password,
   })
   return response.data
 }

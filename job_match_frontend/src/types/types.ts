@@ -18,16 +18,16 @@ export interface AuthContextType {
   user: User | null
   authTokens: AuthTokens | null
   login: (username: string, password: string) => Promise<void>
-  signup?: (
-    username: string,
-    password: string,
-    mobileNumber: string,
+  signup: (
+    email: string,
     first_name: string,
     last_name: string,
-    is_active: string,
-    is_staff: string,
-    is_ag: string,
-    org_number?: string
+    mobileNumber: string,
+    org_number: any,
+    is_ag: boolean,
+    is_active: boolean,
+    is_staff: boolean,
+    password: string
   ) => Promise<void>
   logout: () => void
 }

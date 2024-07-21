@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import {
   login as loginService,
-  signup as signupService,
+  signupService,
   refreshToken,
   getUser,
 } from '../services/authService'
@@ -54,32 +54,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const signup = async (
-    username: string,
-    password: string,
-    mobileNumber: string,
+    email: string,
     first_name: string,
     last_name: string,
-    is_active: string,
-    is_staff: string,
-    is_ag: string,
-    org_number?: string
+    mobile_number: string,
+    org_number: string,
+    is_ag: boolean,
+    is_active: boolean,
+    is_staff: boolean,
+    password: string
   ) => {
     try {
-      const data = await signupService(
-        username,
-        password,
-        mobileNumber,
+      const response = await signupService({
+        email,
         first_name,
         last_name,
+        mobile_number,
+        org_number,
+        is_ag,
         is_active,
         is_staff,
-        is_ag,
-        org_number
-      )
-      return data
+        password,
+      })
+      return response
     } catch (error) {
       console.error('Sign up failed:', error)
-      setUser(null)
     }
   }
 
@@ -136,13 +135,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [authTokens, handleTokenRefresh])
 
   return (
-    <AuthContext.Provider value={{ user, authTokens, login, logout }}>
+    <AuthContext.Provider value={{ user, authTokens, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext)
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
