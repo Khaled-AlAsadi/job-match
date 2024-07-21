@@ -95,7 +95,7 @@ class WorkExperince(models.Model):
         related_name='work_experiences')
     occupation_title = models.CharField(max_length=50)
     company_name = models.CharField(max_length=50)
-    years = models.CharField(max_length=50)
+    years = models.CharField(max_length=10)
     description = models.CharField(max_length=500)
 
 
@@ -108,4 +108,4 @@ class Education(models.Model):
     level = models.CharField(max_length=50)
     orientation = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
-    years = models.CharField(max_length=2, null=True)
+    years = models.CharField(max_length=10, null=True)
