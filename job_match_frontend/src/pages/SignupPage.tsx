@@ -83,17 +83,7 @@ const SignupPage: React.FC = () => {
           placeholder="Organization Number"
         />
       )}
-      <Button
-        style={{
-          width: '250px',
-          padding: '10px',
-          fontSize: '18px',
-          marginTop: '20px',
-        }}
-        onClick={handleSignup}
-      >
-        Sign Up
-      </Button>
+      <SignupButton onClick={handleSignup}>Sign Up</SignupButton>
     </SignupContainer>
   )
 }
@@ -140,5 +130,22 @@ const Checkbox = styled.input`
   width: 20px;
   height: 20px;
 `
+const SignupButton = styled.button`
+  width: 250px;
+  background-color: black;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
+  &:hover {
+    background-color: #333;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`
 export default SignupPage

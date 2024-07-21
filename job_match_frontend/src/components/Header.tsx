@@ -10,7 +10,7 @@ function HeaderComponent() {
 
   useEffect(() => {
     if (!user) return navigate('/')
-  })
+  }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
