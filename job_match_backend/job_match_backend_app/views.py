@@ -153,19 +153,18 @@ def updateJobSeekerInfo(request):
 @api_view(["GET"])
 def getJobSeekerCv(request):
     if request.user.is_authenticated and not request.user.is_ag:
-        cv, created = JobSeekerCv.objects.get_or_create(
-            profile=request.user,
-            defaults={
-                'email': request.user.email,
-                'mobile_number': request.user.mobile_number
-            }
-        )
+        try:
+            cv = JobSeekerCv.objects.get(profile=request.user)
+        except JobSeekerCv.DoesNotExist:
+            cv = JobSeekerCv.objects.create(
+                profile=request.user,
+                email=request.user.email,
+                mobile_number=request.user.mobile_number
+            )
         serializer = JobSeekerCVSerializer(cv)
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        return JsonResponse({"Error": "You are not logged in"},
-                            status=status.HTTP_401_UNAUTHORIZED)
-
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(["POST"])
 def createWorkExperince(request):
