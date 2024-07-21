@@ -26,7 +26,7 @@ const JobForm: React.FC<CustomModalProps> = ({
       job_description: '',
       location: '',
       employment_type: 'Tillsvidareanställning',
-      is_published: false,
+      is_published: true,
       phone_number: '',
       expiration_date: new Date(),
     }),
@@ -34,7 +34,6 @@ const JobForm: React.FC<CustomModalProps> = ({
   )
 
   const [formData, setFormData] = useState<EmployerJobPost>(initialFormData)
-  const [isChecked, setIsChecked] = useState(false)
 
   const [errors, setErrors] = useState({
     company_name: '',
@@ -106,20 +105,25 @@ const JobForm: React.FC<CustomModalProps> = ({
     let hasErrors = false
     const newErrors = { ...errors }
     if (formData.job_post_title.length < 5) {
-      newErrors.job_post_title = 'Job title must be at least 5 characters long'
+      newErrors.job_post_title = 'Jobbtiteln måste vara minst 5 tecken lång'
       hasErrors = true
     }
     if (formData.company_name.length < 5) {
-      newErrors.company_name = 'Company name must be at least 5 characters long'
+      newErrors.company_name = 'Företagsnamnet måste vara minst 5 tecken långt'
       hasErrors = true
     }
     if (formData.location.length < 5) {
-      newErrors.location = 'Location must be at least 5 characters long'
+      newErrors.location = 'Platsen måste vara minst 5 tecken lång'
       hasErrors = true
     }
     if (formData.job_description.length < 5) {
       newErrors.job_description =
-        'Job description must be at least 5 characters long'
+        'Jobbbeskrivningen måste vara minst 5 tecken lång'
+      hasErrors = true
+    }
+    const phoneNumberPattern = /^\d+$/
+    if (!phoneNumberPattern.test(formData.phone_number ?? '')) {
+      newErrors.phone_number = 'Telefonnumret får endast innehålla siffror'
       hasErrors = true
     }
     if (hasErrors) {
@@ -136,14 +140,6 @@ const JobForm: React.FC<CustomModalProps> = ({
     }
   }
 
-  const handleCheck = () => {
-    setIsChecked(!isChecked)
-    setFormData((prevState) => ({
-      ...prevState,
-      is_published: !isChecked,
-    }))
-  }
-
   if (!isOpen) return null
 
   return (
@@ -151,24 +147,26 @@ const JobForm: React.FC<CustomModalProps> = ({
       <ModalContent>
         <StyledForm id="jobForm" onSubmit={handleSubmit}>
           <FormGroup>
-            <Label htmlFor="job_post_title">Job title:</Label>
+            <Label htmlFor="job_post_title">Jobbtitel:</Label>
             <Input
               type="text"
               id="job_post_title"
               name="job_post_title"
               value={formData.job_post_title}
               onChange={handleChange}
+              maxLength={50}
             />
             {errors.job_post_title && <Span>{errors.job_post_title}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="company_name">Company name:</Label>
+            <Label htmlFor="company_name">Företagsnamn:</Label>
             <Input
               type="text"
               id="company_name"
               name="company_name"
               value={formData.company_name}
               onChange={handleChange}
+              maxLength={50}
             />
             {errors.company_name && <Span>{errors.company_name}</Span>}
           </FormGroup>
@@ -180,31 +178,34 @@ const JobForm: React.FC<CustomModalProps> = ({
               name="phone_number"
               value={formData.phone_number}
               onChange={handleChange}
+              maxLength={10}
             />
             {errors.phone_number && <Span>{errors.phone_number}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="location">Location:</Label>
+            <Label htmlFor="location">Plats:</Label>
             <Input
               id="location"
               name="location"
               value={formData.location}
               onChange={handleChange}
+              maxLength={50}
             />
             {errors.location && <Span>{errors.location}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="job_description">Description:</Label>
+            <Label htmlFor="job_description">Beskrivning:</Label>
             <TextArea
               id="job_description"
               name="job_description"
               value={formData.job_description}
               onChange={handleChange}
+              maxLength={1000}
             />
             {errors.job_description && <Span>{errors.job_description}</Span>}
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="employment_type">Employment Type:</Label>
+            <Label htmlFor="employment_type">Anställningstyp:</Label>
             <StyledSelect
               name="employment_type"
               id="employment_type"
@@ -231,13 +232,9 @@ const JobForm: React.FC<CustomModalProps> = ({
               minDate={new Date()}
             />
           </DatePickerGroup>
-          <FormGroup>
-            <label>Publicera jobbannons? </label>
-            <input type="checkbox" checked={isChecked} onChange={handleCheck} />
-          </FormGroup>
           <ButtonGroup>
             <CancelButton type="button" onClick={handleClose}>
-              Cancel
+              Avbryt
             </CancelButton>
             <Button type="submit">{primaryButtonText}</Button>
           </ButtonGroup>
@@ -326,16 +323,17 @@ const CancelButton = styled.button`
   cursor: pointer;
 `
 
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
 const StyledSelect = styled.select`
-  width: 80%;
+  width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
+`
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 `
 
 export default JobForm

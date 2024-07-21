@@ -52,8 +52,8 @@ class JobPost(models.Model):
     company_name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
     employment_type = models.CharField(choices=EMPLOYMENT_TYPES, max_length=22)
-    job_description = models.CharField(max_length=500)
-    phone_number = models.CharField(max_length=20)
+    job_description = models.CharField(max_length=1000)
+    phone_number = models.CharField(max_length=10)
     expiration_date = models.DateField()
     is_published = models.BooleanField(default=False)
     applications = models.ManyToManyField(
