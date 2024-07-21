@@ -1,15 +1,20 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { Education, Application, WorkExperience } from '../types/types'
+import { Application } from '../types/types'
 import { deleteJobPost } from '../services/employerService'
 import { useState } from 'react'
 import { CustomModal } from '../components/CustomModal'
 import { useAuth } from '../context/authContext'
+import StyledList from '../components/StyledList'
 
 const JobPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [isModalopen, setIsModalOpen] = useState(false)
+  const [selectedApplicationId, setSelectedApplicationId] = useState<
+    string | null
+  >(null)
+
   const { user, authTokens, logout } = useAuth()
 
   const { job } = location.state || {}
@@ -32,7 +37,10 @@ const JobPage = () => {
       logout()
     }
   }
-
+  const handleViewProfile = (applicationId: string) => {
+    setSelectedApplicationId(applicationId)
+    navigate(`/application/${applicationId}`) // Navigate to the application detail page
+  }
   return (
     <Container>
       <Button onClick={() => navigate(-1)}>Gå tillbaka</Button>
@@ -74,60 +82,12 @@ const JobPage = () => {
       <ApplicationsSection>
         <SectionTitle>Ansökningar</SectionTitle>
         {job.applications.length > 0 ? (
-          job.applications.map((application: Application, index: any) => (
+          job.applications.map((application: Application[], index: any) => (
             <ApplicationContainer key={index}>
-              <ApplicationDetail>
-                <Label>Email:</Label> {application.job_seeker_cv.email}
-              </ApplicationDetail>
-              <ApplicationDetail>
-                <Label>Telefonnummer:</Label>{' '}
-                {application.job_seeker_cv.mobile_number}
-              </ApplicationDetail>
-              <ApplicationDetail>
-                <Label>Arbetslivserfarenhet:</Label>
-                {application.job_seeker_cv.work_experiences.map(
-                  (experience: WorkExperience) => (
-                    <Experience key={experience.id}>
-                      <div>
-                        <strong>Titel:</strong> {experience.occupation_title}
-                      </div>
-                      <div>
-                        <strong>Företag:</strong> {experience.company_name}
-                      </div>
-                      <div>
-                        <strong>År:</strong> {experience.years}
-                      </div>
-                      <div>
-                        <strong>Beskrivning:</strong> {experience.description}
-                      </div>
-                    </Experience>
-                  )
-                )}
-              </ApplicationDetail>
-              <ApplicationDetail>
-                <Label>Utbildningar:</Label>
-                {application.job_seeker_cv.educations.map(
-                  (education: Education) => (
-                    <EducationDetail key={education.id}>
-                      <div>
-                        <strong>Skola:</strong> {education.school_name}
-                      </div>
-                      <div>
-                        <strong>Nivå:</strong> {education.level}
-                      </div>
-                      <div>
-                        <strong>Inriktning:</strong> {education.orientation}
-                      </div>
-                      <div>
-                        <strong>År:</strong> {education.years}
-                      </div>
-                      <div>
-                        <strong>Beskrivning:</strong> {education.description}
-                      </div>
-                    </EducationDetail>
-                  )
-                )}
-              </ApplicationDetail>
+              <StyledList
+                applications={application}
+                onViewProfile={handleViewProfile}
+              />
             </ApplicationContainer>
           ))
         ) : (
