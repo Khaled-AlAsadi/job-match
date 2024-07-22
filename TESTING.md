@@ -118,7 +118,6 @@ Testing was conducted on the following browsers;
 
 - Brave;
 - Chrome;
-- Firefox;
 
 [Compatibility Report](documentation/validation/compatibility.pdf)
 
