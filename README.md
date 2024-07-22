@@ -52,8 +52,7 @@
 - ### Frameworks and libraries:
 
   - [Django](https://www.djangoproject.com/): python framework used to create all the logic.
-  - [jQuery](https://jquery.com/): was used to control click events and sending AJAX requests.
-  - [jQuery User Interface](https://jqueryui.com/) was used to create interactive elements.
+  - [React](https://react.dev/): react framework was used to create all the frontend components.
 
 - ### Databases:
 
@@ -78,7 +77,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Wireframes
 
-[WoWder Wireframes](documentation/design/wowder_wireframes.pdf)
+[Wireframes](documentation/design/wowder_wireframes.pdf)
 
 ---
 
@@ -86,13 +85,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### GitHub Project Management
 
-![GitHub Project Management](documentation/agile/github_project_management.png)
-
-GitHub Project Management was used to manage the project. If it hadn't been for the GitHub project management, I wouldn't have been able to manage the development of the application. It helped me to prioritize the tasks and to keep track of my progress.
-
 ![GitHub Project Management](documentation/agile/kanban.png)
-
-![GitHub Project Management](documentation/agile/tasks.png)
 
 ---
 
