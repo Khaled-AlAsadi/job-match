@@ -133,6 +133,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
 
+
 class SimplifiedJobPostSerializer(serializers.ModelSerializer):
     expiration_date = serializers.DateField(
         format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
@@ -151,11 +152,10 @@ class SimplifiedJobPostSerializer(serializers.ModelSerializer):
             'is_published'
         ]
 
+
 class ApplicationsSerializer(serializers.ModelSerializer):
     job_post = SimplifiedJobPostSerializer(read_only=True)
 
     class Meta:
         model = Application
         fields = ['id', 'job_post']
-
-
