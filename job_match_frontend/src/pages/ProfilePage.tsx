@@ -15,6 +15,7 @@ import {
 import { JobSeekerCv, WorkExperience, Education } from '../types/types'
 import ExperinceModal from '../components/ExperinceModal'
 import { CustomModal } from '../components/CustomModal'
+import Button from '../components/Button' // Import the updated Button component
 
 const ProfilePage: React.FC = () => {
   const { user, authTokens } = useAuth()
@@ -205,7 +206,7 @@ const ProfilePage: React.FC = () => {
   return (
     <Container>
       {user?.is_ag ? (
-        <Button onClick={() => navigate('/my-job-posts')}>
+        <Button variant="primary" onClick={() => navigate('/my-job-posts')}>
           Mina Jobbannonser
         </Button>
       ) : (
@@ -230,7 +231,9 @@ const ProfilePage: React.FC = () => {
               }
             />
           </FormField>
-          <Button onClick={handleUpdateProfile}>Spara Ändringar</Button>
+          <Button variant="primary" onClick={handleUpdateProfile}>
+            Spara Ändringar
+          </Button>
           <hr />
           <SectionTitle>Arbetslivserfarenhet</SectionTitle>
           <ExperienceList>
@@ -240,10 +243,14 @@ const ProfilePage: React.FC = () => {
                 <CardCompany>{workExperience.company_name}</CardCompany>
                 <CardYears>{workExperience.years}</CardYears>
                 <CardDescription>{workExperience.description}</CardDescription>
-                <Button onClick={() => editData(workExperience, 'experience')}>
+                <Button
+                  variant="secondary"
+                  onClick={() => editData(workExperience, 'experience')}
+                >
                   Redigera
                 </Button>
                 <Button
+                  variant="delete"
                   onClick={() =>
                     confirmDeleteData(workExperience.id, 'experience')
                   }
@@ -253,7 +260,7 @@ const ProfilePage: React.FC = () => {
               </ExperienceCard>
             ))}
           </ExperienceList>
-          <Button onClick={() => addData('experience')}>
+          <Button variant="primary" onClick={() => addData('experience')}>
             Lägg till Erfarenhet
           </Button>
           <hr />
@@ -265,10 +272,14 @@ const ProfilePage: React.FC = () => {
                 <CardCompany>{education.orientation}</CardCompany>
                 <CardYears>{education.years}</CardYears>
                 <CardDescription>{education.description}</CardDescription>
-                <Button onClick={() => editData(education, 'education')}>
+                <Button
+                  variant="secondary"
+                  onClick={() => editData(education, 'education')}
+                >
                   Redigera
                 </Button>
                 <Button
+                  variant="delete"
                   onClick={() => confirmDeleteData(education.id, 'education')}
                 >
                   Ta Bort
@@ -276,7 +287,7 @@ const ProfilePage: React.FC = () => {
               </ExperienceCard>
             ))}
           </ExperienceList>
-          <Button onClick={() => addData('education')}>
+          <Button variant="primary" onClick={() => addData('education')}>
             Lägg till Utbildning
           </Button>
         </ProfileForm>
@@ -311,6 +322,10 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
 `
 
 const ProfileForm = styled.div`
@@ -321,7 +336,7 @@ const ProfileForm = styled.div`
   margin-bottom: 20px;
   box-sizing: border-box;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     padding: 15px;
   }
 `
@@ -344,28 +359,7 @@ const Input = styled.input`
   border-radius: 4px;
   box-sizing: border-box;
 
-  @media (max-width: 600px) {
-    font-size: 0.9rem;
-  }
-`
-
-const Button = styled.button`
-  padding: 10px 15px;
-  margin: 5px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  @media (max-width: 600px) {
-    padding: 8px 12px;
+  @media (max-width: 768px) {
     font-size: 0.9rem;
   }
 `
@@ -374,7 +368,7 @@ const SectionTitle = styled.h2`
   margin: 20px 0;
   font-size: 1.5rem;
 
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     font-size: 1.3rem;
   }
 `
@@ -395,7 +389,7 @@ const ExperienceCard = styled.div`
   flex-direction: column;
   gap: 10px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     padding: 10px;
   }
 `

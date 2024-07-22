@@ -89,9 +89,9 @@ const EmployeePage = () => {
         </JobDetails>
         <ButtonGroup>
           <ApplyButton onClick={() => handleApply(currentJob.id)}>
-            ansök
+            Ansök
           </ApplyButton>
-          <SkipButton onClick={handleSkip}>hoppa över</SkipButton>
+          <SkipButton onClick={handleSkip}>Hoppa över</SkipButton>
         </ButtonGroup>
       </JobItem>
     </Container>
@@ -102,17 +102,26 @@ export default EmployeePage
 
 const Container = styled.div`
   padding: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
 `
 
 const JobItem = styled.div`
   margin-bottom: 15px;
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  border-radius: 8px;
   background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 `
 
 const JobDetails = styled.div`
@@ -126,14 +135,25 @@ const JobTitle = styled.h2`
 `
 
 const Text = styled.p`
-  margin: 10px 0;
+  margin: 5px 0;
   color: #444;
+  font-size: 1rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+  }
 `
 
 const ButtonGroup = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin-left: 20px;
+  margin-top: 10px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    margin-left: 20px;
+  }
 `
 
 const Button = styled.button`
@@ -142,16 +162,41 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
   font-size: 1em;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `
 
 const ApplyButton = styled(Button)`
   background-color: #4caf50;
-  color: white;
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:active {
+    background-color: #388e3c;
+  }
 `
 
 const SkipButton = styled(Button)`
   background-color: #f44336;
-  color: white;
+
+  &:hover {
+    background-color: #e53935;
+  }
+
+  &:active {
+    background-color: #c62828;
+  }
 `
 
 const MessageContainer = styled.div`

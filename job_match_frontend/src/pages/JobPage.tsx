@@ -15,11 +15,10 @@ const JobPage = () => {
   >(null)
 
   const { user, authTokens, logout } = useAuth()
-
   const { job } = location.state || {}
 
   if (!job) {
-    return <h1>No job details available</h1>
+    return <NoJobDetails>No job details available</NoJobDetails>
   }
 
   const handleDeleteButtonClick = () => {
@@ -43,8 +42,12 @@ const JobPage = () => {
 
   return (
     <Container>
-      <Button onClick={() => navigate(-1)}>Gå tillbaka</Button>
-      <Button onClick={handleDeleteButtonClick}>Ta bort</Button>
+      <ButtonGroup>
+        <Button onClick={() => navigate(-1)}>Gå tillbaka</Button>
+        <Button onClick={handleDeleteButtonClick} variant="danger">
+          Ta bort
+        </Button>
+      </ButtonGroup>
       <CustomModal
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -58,7 +61,7 @@ const JobPage = () => {
       <JobPostTitle>{job.job_post_title}</JobPostTitle>
       <Details>
         <DetailItem>
-          <Label>FöretagsNamn:</Label> {job.company_name}
+          <Label>Företagsnamn:</Label> {job.company_name}
         </DetailItem>
         <DetailItem>
           <Label>Jobbområde:</Label> {job.location}
@@ -67,7 +70,7 @@ const JobPage = () => {
           <Label>Anställningstyp:</Label> {job.employment_type}
         </DetailItem>
         <DetailItem>
-          <Label>JobbBeskrivning:</Label> {job.job_description}
+          <Label>Jobbbeskrivning:</Label> {job.job_description}
         </DetailItem>
         <DetailItem>
           <Label>Mobilnummer:</Label> {job.phone_number}
@@ -76,6 +79,7 @@ const JobPage = () => {
           <Label>Utgångsdatum:</Label> {job.expiration_date}
         </DetailItem>
         <DetailItem>
+          <Label>Status:</Label>{' '}
           {job.is_published ? 'Publicerad' : 'Avpublicerad'}
         </DetailItem>
       </Details>
@@ -99,60 +103,81 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f0f4f8;
   color: #333;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
 `
 
-const Button = styled.button`
-  align-self: flex-start;
-  padding: 10px 20px;
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
   margin-bottom: 20px;
-  background-color: #007bff;
-  color: white;
+`
+
+const Button = styled.button<{ variant?: 'primary' | 'danger' }>`
+  padding: 12px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  background-color: ${({ variant }) =>
+    variant === 'danger' ? '#dc3545' : '#007bff'};
+  color: white;
+  font-size: 1rem;
+
   &:hover {
-    background-color: #0056b3;
+    background-color: ${({ variant }) =>
+      variant === 'danger' ? '#c82333' : '#0056b3'};
   }
 `
 
 const JobPostTitle = styled.h2`
   font-size: 2rem;
-  margin-bottom: 20px;
   color: #007bff;
+  margin-bottom: 20px;
 `
 
 const Details = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `
 
 const DetailItem = styled.div`
   margin-bottom: 10px;
   font-size: 1rem;
+  color: #555;
 `
 
 const Label = styled.span`
   font-weight: bold;
+  color: #333;
 `
 
 const ApplicationsSection = styled.section`
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
 `
 
 const SectionTitle = styled.h3`
   font-size: 1.5rem;
+  color: #007bff;
   margin-bottom: 10px;
 `
 
 const NoApplications = styled.div`
   font-size: 1rem;
-  color: #666;
+  color: #888;
+`
+
+const NoJobDetails = styled.h1`
+  color: #dc3545;
 `
 
 export default JobPage

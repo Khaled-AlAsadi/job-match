@@ -45,7 +45,7 @@ const EmployerPage = () => {
   }
 
   if (error) {
-    return <p>Error: {error}</p>
+    return <ErrorText>Error: {error}</ErrorText>
   }
 
   const onCreatePostClick = () => {
@@ -55,27 +55,36 @@ const EmployerPage = () => {
   const handleCloseForm = () => {
     setIsFormOpen(false)
   }
+
   const handleJobSubmit = async (formData: EmployerJobPost) => {
     try {
       await createJobPost(authTokens?.access, formData)
       const updatedJobPosts = await retrieveEmployerJobPosts(authTokens?.access)
       setJobPosts(updatedJobPosts)
-      console.log(formData)
     } catch (error) {
       console.error('Error creating job post:', error)
     } finally {
       setIsFormOpen(false)
     }
   }
+
   return (
     <Container>
-      <Button onClick={onCreatePostClick}>Skapa en ny jobbannons</Button>
+      <CreatePostButton variant="primary" onClick={onCreatePostClick}>
+        Skapa en ny jobbannons
+      </CreatePostButton>
 
       {EmployerjobPosts.map((job: EmployerJobPost) => (
-        <JobPostContainer>
+        <JobPostContainer key={job.id}>
           <JobPostTitle>{job.job_post_title}</JobPostTitle>
-          <span>Antal Kandidater: {job?.applications?.length}</span>
-          <Button onClick={() => handleJobView(job)}>Visa jobbannonsen</Button>
+          <JobPostDetails>
+            <DetailText>
+              Antal Kandidater: {job?.applications?.length}
+            </DetailText>
+          </JobPostDetails>
+          <ViewJobButton onClick={() => handleJobView(job)}>
+            Visa jobbannonsen
+          </ViewJobButton>
         </JobPostContainer>
       ))}
       <JobForm
@@ -94,32 +103,64 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+`
+
+const CreatePostButton = styled(Button)`
+  margin-bottom: 20px;
+  padding: 12px 20px;
 `
 
 const JobPostContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
+  align-items: flex-start;
+  width: 100%;
   max-width: 600px;
   padding: 20px;
-  margin: 10px 0;
+  margin: 15px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 `
 
 const JobPostTitle = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-size: 1.8rem;
   color: #333;
+  margin: 0 0 10px;
+`
+
+const JobPostDetails = styled.div`
+  margin-bottom: 10px;
+`
+
+const DetailText = styled.p`
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+`
+
+const ViewJobButton = styled(Button)`
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`
+
+const ErrorText = styled.p`
+  color: #dc3545;
+  font-size: 1.2rem;
 `

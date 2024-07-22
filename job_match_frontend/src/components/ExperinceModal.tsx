@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Education, WorkExperience } from '../types/types'
+import Button from '../components/Button'
 
 interface ModalProps {
   show: boolean
@@ -149,7 +150,9 @@ const ExperinceModal: React.FC<ModalProps> = ({
           {errors.description && <ErrorText>{errors.description}</ErrorText>}
         </FormField>
         <Button onClick={handleSave}>Spara</Button>
-        <Button onClick={onClose}>Avbryt</Button>
+        <Button variant="secondary" onClick={onClose}>
+          Avbryt
+        </Button>
       </ModalContainer>
     </ModalBackdrop>
   )
@@ -200,20 +203,6 @@ const TextArea = styled.textarea`
   border-radius: 4px;
   resize: none;
   min-height: 100px;
-`
-
-const Button = styled.button`
-  padding: 10px 20px;
-  margin: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  &:hover {
-    background-color: #0056b3;
-  }
 `
 
 const ErrorText = styled.span`
