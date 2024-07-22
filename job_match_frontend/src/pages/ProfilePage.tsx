@@ -7,9 +7,12 @@ import {
   createWorkExperince,
   retrieveProfile,
   updateProfile as updateProfileNameEmail,
+  deleteEducation,
+  deleteWorkExperience,
 } from '../services/employeeService'
 import { JobSeekerCv, WorkExperience, Education } from '../types/types'
 import ExperinceModal from '../components/ExperinceModal'
+import { CustomModal } from '../components/CustomModal'
 
 const ProfilePage: React.FC = () => {
   const { user, authTokens } = useAuth()
@@ -23,10 +26,15 @@ const ProfilePage: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setModalOpen] = useState(false)
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [currentData, setCurrentData] = useState<
     WorkExperience | Education | null
   >(null)
   const [modalType, setModalType] = useState<'experience' | 'education'>(
+    'experience'
+  )
+  const [deleteId, setDeleteId] = useState<number | null>(null)
+  const [deleteType, setDeleteType] = useState<'experience' | 'education'>(
     'experience'
   )
   const navigate = useNavigate()
@@ -96,6 +104,7 @@ const ProfilePage: React.FC = () => {
       }))
     } else {
       const formattedData = {
+        id: data.id,
         school_name: data.school_name?.trim() || '',
         level: data.level?.trim() || '',
         orientation: data.orientation?.trim() || '',
@@ -116,21 +125,39 @@ const ProfilePage: React.FC = () => {
         setError('Failed to save education data.')
       }
     }
+    setModalOpen(false)
   }
 
-  const removeData = (id: number, type: 'experience' | 'education') => {
-    if (type === 'experience') {
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        work_experiences: prevProfile.work_experiences.filter(
-          (exp) => exp.id !== id
-        ),
-      }))
-    } else {
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        educations: prevProfile.educations.filter((edu) => edu.id !== id),
-      }))
+  const confirmDeleteData = (id: number, type: 'experience' | 'education') => {
+    setDeleteId(id)
+    setDeleteType(type)
+    setDeleteModalOpen(true)
+  }
+
+  const handleDeleteData = async () => {
+    if (deleteId !== null && deleteType) {
+      try {
+        if (deleteType === 'experience') {
+          await deleteWorkExperience(authTokens?.access, deleteId)
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            work_experiences: prevProfile.work_experiences.filter(
+              (exp) => exp.id !== deleteId
+            ),
+          }))
+        } else {
+          await deleteEducation(authTokens?.access, deleteId)
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            educations: prevProfile.educations.filter(
+              (edu) => edu.id !== deleteId
+            ),
+          }))
+        }
+        setDeleteModalOpen(false)
+      } catch (error) {
+        setError('Failed to delete data.')
+      }
     }
   }
 
@@ -176,7 +203,9 @@ const ProfilePage: React.FC = () => {
                 <CardYears>{workExperience.years}</CardYears>
                 <CardDescription>{workExperience.description}</CardDescription>
                 <Button
-                  onClick={() => removeData(workExperience.id, 'experience')}
+                  onClick={() =>
+                    confirmDeleteData(workExperience.id, 'experience')
+                  }
                 >
                   Ta Bort
                 </Button>
@@ -195,7 +224,9 @@ const ProfilePage: React.FC = () => {
                 <CardCompany>{education.orientation}</CardCompany>
                 <CardYears>{education.years}</CardYears>
                 <CardDescription>{education.description}</CardDescription>
-                <Button onClick={() => removeData(education.id, 'education')}>
+                <Button
+                  onClick={() => confirmDeleteData(education.id, 'education')}
+                >
                   Ta Bort
                 </Button>
               </ExperienceCard>
@@ -214,9 +245,22 @@ const ProfilePage: React.FC = () => {
         data={currentData || {}}
         type={modalType}
       />
+
+      <CustomModal
+        visible={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        primaryButtonTitle="Ja"
+        onPrimaryButtonPress={handleDeleteData}
+        secondaryButtonTitle="Nej"
+        onSecondaryButtonPress={() => setDeleteModalOpen(false)}
+        modalText="Är du säker på att du vill ta bort detta?"
+        modalTitle="Bekräfta borttagning"
+      />
     </Container>
   )
 }
+
+export default ProfilePage
 
 const Container = styled.div`
   padding: 20px;
@@ -242,15 +286,6 @@ const Input = styled.input`
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-`
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  min-height: 100px;
 `
 
 const Button = styled.button`
@@ -314,5 +349,3 @@ const Error = styled.div`
   text-align: center;
   font-size: 1.5rem;
 `
-
-export default ProfilePage
