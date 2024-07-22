@@ -29,9 +29,7 @@ const ProfilePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setModalOpen] = useState(false)
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [currentData, setCurrentData] = useState<
-    WorkExperience | Education | null
-  >(null)
+  const [currentData, setCurrentData] = useState<any>(null)
   const [modalType, setModalType] = useState<'experience' | 'education'>(
     'experience'
   )
@@ -76,14 +74,12 @@ const ProfilePage: React.FC = () => {
     setCurrentData(
       type === 'experience'
         ? {
-            id: Date.now(),
             occupation_title: '',
             company_name: '',
             years: '',
             description: '',
           }
         : {
-            id: Date.now(),
             school_name: '',
             level: '',
             orientation: '',
@@ -106,43 +102,61 @@ const ProfilePage: React.FC = () => {
 
   const saveData = async (data: any) => {
     try {
+      const payload = { ...data }
+
+      if (!data.id) {
+        delete payload.id
+      }
+
       if (modalType === 'experience') {
         if (data.id) {
-          // Editing
-          await updateWorkExperience(authTokens?.access, data.id, data)
+          // Editing existing work experience
+          await updateWorkExperience(authTokens?.access, data.id, payload)
           setProfile((prevProfile) => ({
             ...prevProfile,
             work_experiences: prevProfile.work_experiences.map((exp) =>
-              exp.id === data.id ? data : exp
+              exp.id === data.id ? { ...payload, id: data.id } : exp
             ),
           }))
         } else {
-          // Adding
-          await createWorkExperince(authTokens?.access, data)
+          // Adding new work experience
+          const newWorkExperience = await createWorkExperince(
+            authTokens?.access,
+            payload
+          )
           setProfile((prevProfile) => ({
             ...prevProfile,
             work_experiences: [
               ...prevProfile.work_experiences,
-              data as WorkExperience,
+              {
+                ...newWorkExperience,
+                id: newWorkExperience.id,
+              } as WorkExperience,
             ],
           }))
         }
-      } else {
+      } else if (modalType === 'education') {
         if (data.id) {
-          // Editing
-          await updateEducation(authTokens?.access, data.id, data)
+          // Editing existing education
+          await updateEducation(authTokens?.access, data.id, payload)
           setProfile((prevProfile) => ({
             ...prevProfile,
             educations: prevProfile.educations.map((edu) =>
-              edu.id === data.id ? data : edu
+              edu.id === data.id ? { ...payload, id: data.id } : edu
             ),
           }))
         } else {
-          // Adding
-          await createEducation(authTokens?.access, data)
+          // Adding new education
+          const newEducation = await createEducation(
+            authTokens?.access,
+            payload
+          )
           setProfile((prevProfile) => ({
             ...prevProfile,
-            educations: [...prevProfile.educations, data as Education],
+            educations: [
+              ...prevProfile.educations,
+              { ...newEducation, id: newEducation.id } as Education,
+            ],
           }))
         }
       }
