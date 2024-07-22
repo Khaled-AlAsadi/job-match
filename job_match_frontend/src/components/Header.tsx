@@ -1,16 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import styled from 'styled-components'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
 
 function HeaderComponent() {
-  const navigate = useNavigate()
   const { user, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  useEffect(() => {
-    if (!user) return navigate('/')
-  })
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
