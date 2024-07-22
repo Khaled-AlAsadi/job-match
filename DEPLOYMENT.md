@@ -79,8 +79,6 @@
 
 10. Click on "Advanced" settings.
 
-    - ![Advanced Settings](documentaion/deployment/render_advanced_settings.png)
-
 11. Add the following environment variables:
 
     | Key                   | Value              |
@@ -94,8 +92,6 @@
     DATABASE_URL value is takes from ElephantSQL dashboard, SECRET_KEY value is takes from your local env.py file.
 
 12. Open VS Code and create a new file called `build.sh` in the root directory of your project.
-
-    - ![Create Build.sh](documentaion/deployment/render_create_build_sh.png)
 
 13. Copy the following code into the `build.sh` file:
 
@@ -140,7 +136,7 @@
 
 20. Go back to Render and click "Create Web Service."
 
-        - ![Save Web Service](documentaion/deployment/render_create_web_service.png)
+    - ![Save Web Service](documentaion/deployment/render_create_web_service.png)
 
 21. Wait for the completion of the deployment.
 
