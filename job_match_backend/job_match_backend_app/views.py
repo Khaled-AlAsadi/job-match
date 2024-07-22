@@ -344,26 +344,25 @@ def applyToJob(request, id):
 @api_view(["DELETE"])
 def deleteApplicationEmployee(request, id):
     if request.user.is_authenticated:
-        job_post = get_object_or_404(JobPost, id=id)
+        job_post = get_object_or_404(JobPost)
 
         # Find the application
-        try:
-            application = Application.objects.get(
-                profile_id=request.user, job_post=job_post)
-        except Application.DoesNotExist:
+        application = Application.objects.filter(
+            profile_id=request.user, job_post=job_post
+        ).first()
+
+        if not application:
             return Response({"Error": "Application does not exist"},
                             status=status.HTTP_404_NOT_FOUND)
 
         # Delete the application
         application.delete()
 
-        return Response(
-            {"Message": "success"}, status=status.HTTP_200_OK)
+        return Response({"Message": "success"}, status=status.HTTP_200_OK)
     else:
-        return Response(
-            {
-                "Error": "You are not not authorized "},
-            status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"Error": "You are not authorized"},
+                        status=status.HTTP_401_UNAUTHORIZED)
+                        
 
 
 @api_view(["POST"])
