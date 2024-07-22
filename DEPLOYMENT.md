@@ -17,73 +17,73 @@
 
 2. Create a new instance of the database.
 
-   - ![ElephantSQL. Create a new instance](documentation/deployment/elephantsql_create_new_instance.png)
+   - ![ElephantSQL. Create a new instance](documentaion/deployment/elephantsql_create_new_instance.png)
 
 3. Select a name for your database and select the free plan.
 
-   - ![ElephantSQL. Select a name for your database](documentation/deployment/elephantsql_name.png)
+   - ![ElephantSQL. Select a name for your database](documentaion/deployment/elephantsql_name.png)
 
 4. Select a region close to you.
 
-   - ![ElephantSQL. Select a region](documentation/deployment/elephantsql_select_region.png)
+   - ![ElephantSQL. Select a region](documentaion/deployment/elephantsql_select_region.png)
 
 5. Click "Review"
 
-   - ![ElephantSQL. Review](documentation/deployment/elephantsql_click_review.png)
+   - ![ElephantSQL. Review](documentaion/deployment/elephantsql_click_review.png)
 
 6. Click "Create Instance"
 
-   - ![ElephantSQL. Create Instance](documentation/deployment/elephantsql_click_create_instance.png)
+   - ![ElephantSQL. Create Instance](documentaion/deployment/elephantsql_click_create_instance.png)
 
 7. Click on the name of your database to open the dashboard.
 
-   - ![ElephantSQL. Open dashboard](documentation/deployment/elephantsql_click_db_name.png)
+   - ![ElephantSQL. Open dashboard](documentaion/deployment/elephantsql_click_db_name.png)
 
 8. You will see the dashboard of your database. You will need the URL of your database to connect it to your Django project.
 
-   - ![ElephantSQL. DB](documentation/deployment/elephantsql_db_url.png)
+   - ![ElephantSQL. DB](documentaion/deployment/elephantsql_db_url.png)
 
 ### Create a new app on Render
 
 Link to the deployed application on Render: [Drive Ready](https://driveready.onrender.com/)
 
-1. Create a new Render account if you don't already have one here [Render](https://render.com/).
+1.  Create a new Render account if you don't already have one here [Render](https://render.com/).
 
-2. Create a new application on the following page here [New Render App](https://dashboard.render.com/), choose **Webserver**:
+2.  Create a new application on the following page here [New Render App](https://dashboard.render.com/), choose **Webserver**:
 
-   - ![New Render App](documentation/deployment/render_new_web_service.png)
+    - ![New Render App](documentaion/deployment/render_new_web_service.png)
 
-3. Search for the repository you created and click "Connect."
+3.  Search for the repository you created and click "Connect."
 
-   - ![Connect to GitHub](documentation/deployment/render_configure_github_account.png)
+    - ![Connect to GitHub](documentaion/deployment/render_configure_github_account.png)
 
-4. Create name for the application
+4.  Create name for the application
 
-   - ![Create Application Name](documentation/deployment/render_create_name.png)
+    - ![Create Application Name](documentaion/deployment/render_create_name.png)
 
-5. Select the region where you want to deploy the application.
+5.  Select the region where you want to deploy the application.
 
-   - ![Select Region](documentation/deployment/render_select_region.png)
+    - ![Select Region](documentaion/deployment/render_select_region.png)
 
-6. Select branch to deploy.
+6.  Select branch to deploy.
 
-   - ![Select Branch](documentation/deployment/render_select_branch.png)
+    - ![Select Branch](documentaion/deployment/render_select_branch.png)
 
-7. Select environment.
+7.  Select environment.
 
-   - ![Select Environment Variables](documentation/deployment/render_select_environment.png)
+    - ![Select Environment Variables](documentaion/deployment/render_select_environment.png)
 
-8. Render build command: `./build.sh`
+8.  Render build command: `./build.sh`
 
-   - ![Render Build Command](documentation/deployment/render_build_command.png)
+    - ![Render Build Command](documentaion/deployment/render_build_command.png)
 
-9. Select Free plan.
+9.  Select Free plan.
 
-   - ![Select Free Plan](documentation/deployment/render_payment_info.png)
+    - ![Select Free Plan](documentaion/deployment/render_payment_info.png)
 
 10. Click on "Advanced" settings.
 
-    - ![Advanced Settings](documentation/deployment/render_advanced_settings.png)
+    - ![Advanced Settings](documentaion/deployment/render_advanced_settings.png)
 
 11. Add the following environment variables:
 
@@ -99,7 +99,7 @@ Link to the deployed application on Render: [Drive Ready](https://driveready.onr
 
 12. Open VS Code and create a new file called `build.sh` in the root directory of your project.
 
-    - ![Create Build.sh](documentation/deployment/render_create_build_sh.png)
+    - ![Create Build.sh](documentaion/deployment/render_create_build_sh.png)
 
 13. Copy the following code into the `build.sh` file:
 
@@ -144,7 +144,7 @@ Link to the deployed application on Render: [Drive Ready](https://driveready.onr
 
 20. Go back to Render and click "Create Web Service."
 
-    - ![Save Web Service](documentation/deployment/render_create_web_service.png)
+        - ![Save Web Service](documentaion/deployment/render_create_web_service.png)
 
 21. Wait for the completion of the deployment.
 
@@ -158,23 +158,23 @@ Link to the deployed application on Render: [Drive Ready](https://driveready.onr
 
 2. Create a new project:
 
-   - ![New Firebase Project](documentation/deployment/firebase_create_project.png)
+   - ![New Firebase Project](documentaion/deployment/firebase_create_project.png)
 
 3. Name your project
 
 4. Add an app to your project by clicking on Web button
 
-   - ![New Firebase App](documentation/deployment/firebase_choose_web.png)
+   - ![New Firebase App](documentaion/deployment/firebase_choose_web.png)
 
 5. Name and register the app
 
-   - ![Register Firebase App](documentation/deployment/firebase_add_web.png)
+   - ![Register Firebase App](documentaion/deployment/firebase_add_web.png)
 
 6. Install firebase package by running `npm install firebase` in the directory
 
 7. Create a file for the config and paste the data for the app
 
-   - ![Firebase Config file](documentation/deployment/firebase_config_file.png)
+   - ![Firebase Config file](documentaion/deployment/firebase_config_file.png)
 
 8. Install firebase tools by running `npm install firebase-tools` in the directory
 
