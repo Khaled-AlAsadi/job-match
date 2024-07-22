@@ -45,8 +45,6 @@
 
 ### Create a new app on Render
 
-Link to the deployed application on Render: [Drive Ready](https://driveready.onrender.com/)
-
 1.  Create a new Render account if you don't already have one here [Render](https://render.com/).
 
 2.  Create a new application on the following page here [New Render App](https://dashboard.render.com/), choose **Webserver**:
@@ -54,8 +52,6 @@ Link to the deployed application on Render: [Drive Ready](https://driveready.onr
     - ![New Render App](documentaion/deployment/render_new_web_service.png)
 
 3.  Search for the repository you created and click "Connect."
-
-    - ![Connect to GitHub](documentaion/deployment/render_configure_github_account.png)
 
 4.  Create name for the application
 
