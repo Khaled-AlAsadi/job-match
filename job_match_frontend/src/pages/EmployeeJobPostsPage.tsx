@@ -51,23 +51,29 @@ const EmployeeJobPostsPage = () => {
 
   return (
     <Container>
-      <h1>Dina Jobbansökningar</h1>
+      <h1>Sökta Jobbansökningar</h1>
       {error && <Error>{error}</Error>}
       <ApplicationsContainer>
         {applications.length > 0 ? (
           applications.map((application: any) => (
             <ApplicationCard key={application.id}>
-              <h2>{application.job_post.job_post_title}</h2>
-              <span>{application.job_post.company_name}</span>
-              <span>{application.job_post.location}</span>
-              <span>{application.job_post.employment_type}</span>
-              <span>{application.job_post.job_description}</span>
-              <span>{application.job_post.phone_number}</span>
-              <DeleteButton
-                onClick={() => handleDeleteButtonClick(application.id)}
-              >
-                Ta bort
-              </DeleteButton>
+              <CardHeader>
+                <h2>{application.job_post.job_post_title}</h2>
+                <DeleteButton
+                  onClick={() => handleDeleteButtonClick(application.id)}
+                >
+                  Ta bort
+                </DeleteButton>
+              </CardHeader>
+              <CardBody>
+                <span>{application.job_post.company_name}</span>
+                <span>{application.job_post.location}</span>
+                <span>{application.job_post.employment_type}</span>
+                <Description>
+                  {application.job_post.job_description}
+                </Description>
+                <span>{application.job_post.phone_number}</span>
+              </CardBody>
             </ApplicationCard>
           ))
         ) : (
@@ -78,7 +84,7 @@ const EmployeeJobPostsPage = () => {
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         modalTitle="Är du säker att du vill ta bort jobbannonsen?"
-        modalText="All data kommer att tas bort som tillhör annonsen"
+        modalText="Din profil kommer att tas bort från annonsen"
         primaryButtonTitle="Ja"
         secondaryButtonTitle="Nej"
         onPrimaryButtonPress={handleJobPostDeletion}
@@ -99,48 +105,76 @@ const Container = styled.div`
 
 const ApplicationsContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-direction: column;
+  gap: 20px;
 `
 
 const ApplicationCard = styled.div`
-  border: 1px solid #ccc;
-  padding: 16px;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 
-  @media (max-width: 600px) {
-    max-width: 100%;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-  }
-
-  span {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 0.9rem;
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
   }
 `
 
+const CardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+
+  h2 {
+    font-size: 1.2rem;
+    color: #333;
+  }
+`
+
+const CardBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #555;
+
+  span {
+    display: block;
+  }
+`
+
+const Description = styled.p`
+  margin: 8px 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+`
+
 const DeleteButton = styled.button`
-  padding: 8px 12px;
+  padding: 8px 16px;
   background-color: #dc3545;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
   font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   &:hover {
     background-color: #c82333;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: #bd2130;
+    transform: translateY(0);
   }
 `
 
