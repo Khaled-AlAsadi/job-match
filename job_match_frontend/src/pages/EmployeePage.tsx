@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
+  apply,
   retrieveAvailableJobPosts,
   retrieveProfile,
 } from '../services/employeeService'
@@ -34,7 +35,7 @@ const EmployeePage = () => {
     fetchJobPosts()
   }, [user, authTokens])
 
-  const handleApply = (jobId: number) => {
+  const handleApply = async (jobId: number) => {
     console.log(`Applying for job with id: ${jobId}`)
     if (
       (Array.isArray(profile?.work_experiences) &&
@@ -43,12 +44,13 @@ const EmployeePage = () => {
     ) {
       return alert('Vänligen redigera din profil först')
     }
-    // setJobPosts((prevJobPosts) =>
-    //   prevJobPosts.filter((job) => job.id !== jobId)
-    // )
-    // setCurrentJobIndex((prevIndex) =>
-    //   prevIndex >= jobPosts.length - 1 ? 0 : prevIndex
-    // )
+    await apply(authTokens?.access, jobId)
+    setJobPosts((prevJobPosts) =>
+      prevJobPosts.filter((job) => job.id !== jobId)
+    )
+    setCurrentJobIndex((prevIndex) =>
+      prevIndex >= jobPosts.length - 1 ? 0 : prevIndex
+    )
   }
 
   const handleSkip = () => {

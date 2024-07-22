@@ -2,7 +2,7 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from rest_framework.response import Response
-from .serializers import AvailableJobPostsSerializer, CustomUserSerializer, EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
+from .serializers import ApplicationSerializer, ApplicationsSerializer, AvailableJobPostsSerializer, CustomUserSerializer, EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
 from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -83,7 +83,20 @@ def retrieveAvailableJobPosts(request):
         return JsonResponse(
             {"Error": "You are not logged in or not authorized"}, status=401)
 
-
+@api_view(['GET'])
+def retrieveApplications(request):
+    if request.user.is_authenticated and not request.user.is_ag:
+        # Fetch the applications related to the authenticated user
+        applications = Application.objects.filter(profile_id=request.user)
+        # Serialize the application data to include job post details only
+        serializer = ApplicationsSerializer(applications, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response(
+            {"Error": "You are not logged in or not authorized"},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    
 @api_view(['PATCH'])
 def updateJobPost(request, id):
     if request.user.is_authenticated and request.user.is_ag:

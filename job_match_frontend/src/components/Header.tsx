@@ -26,7 +26,10 @@ function HeaderComponent() {
         <NavLinks isOpen={isMenuOpen}>
           <Fragment>
             <NavLink to="/home">Startsidan</NavLink>
-            <NavLink to="/settings">Inställningar</NavLink>
+            {!user.is_ag && (
+              <NavLink to="/applications">Mina jobbannonser</NavLink>
+            )}
+
             {!user.is_ag && <NavLink to="/profile">Profil</NavLink>}
             <NavLink to="/login" onClick={logout}>
               Logga ut

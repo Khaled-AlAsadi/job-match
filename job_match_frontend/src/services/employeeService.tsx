@@ -28,6 +28,19 @@ export const retrieveProfile = async (token: any) => {
     throw error
   }
 }
+export const retrieveApplications = async (token: any) => {
+  try {
+    const response = await api.get('jobseeker/applications', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to retrieve job posts:', error)
+    throw error
+  }
+}
 
 export const updateProfile = async (token: any, payload: any) => {
   try {
@@ -74,6 +87,24 @@ export const createEducation = async (token: any, payload: Education) => {
     return response.data
   } catch (error) {
     console.error('Failed to update profile:', error)
+    throw error
+  }
+}
+
+export const apply = async (token: any, id: number) => {
+  try {
+    const response = await api.post(
+      `/jobseeker/apply/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error('Failed to apply for job:', error)
     throw error
   }
 }

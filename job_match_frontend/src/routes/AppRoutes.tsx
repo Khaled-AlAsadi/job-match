@@ -12,6 +12,7 @@ import PrivateRoute from './PrivateRoute'
 import JobPage from '../pages/JobPage'
 import SignupPage from '../pages/SignupPage'
 import ProfilePage from '../pages/ProfilePage'
+import EmployeeApplicationsPage from '../pages/EmployeeApplicationsPage'
 
 const AppRoutes: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/employer/job/:id" element={<JobPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/applications" element={<EmployeeApplicationsPage />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
