@@ -98,7 +98,9 @@ GitHub Project Management was used to manage the project. If it hadn't been for 
 
 ## Flowcharts
 
-To understand some concepts, I created several flowchart diagrams.
+To understand app flow, I created flowchart.
+
+[Flowchart](documentation/flowcharts/flow_chart.png)
 
 ---
 
