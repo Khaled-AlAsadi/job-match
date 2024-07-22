@@ -50,6 +50,23 @@ export const createJobPost = async (token: any, payload: EmployerJobPost) => {
   }
 }
 
+export const updateJobPost = async (
+  token: any,
+  id: number,
+  payload: EmployerJobPost
+) => {
+  try {
+    const response = await api.patch(`employer/jobpost/update/${id}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error creating job post:', error)
+    throw error
+  }
+}
 export const deleteJobPost = async (token: any, id: string) => {
   try {
     const response = await api.delete(`employer/jobpost/delete/${id}`, {

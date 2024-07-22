@@ -34,7 +34,6 @@ const JobForm: React.FC<CustomModalProps> = ({
   )
 
   const [formData, setFormData] = useState<EmployerJobPost>(initialFormData)
-
   const [errors, setErrors] = useState({
     company_name: '',
     job_post_title: '',

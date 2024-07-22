@@ -1,18 +1,19 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { deleteJobPost } from '../services/employerService'
+import { deleteJobPost, updateJobPost } from '../services/employerService'
 import { useState } from 'react'
 import { CustomModal } from '../components/CustomModal'
 import { useAuth } from '../context/authContext'
-import CandidatesList from '../components/CandidatesList'
+import JobForm from '../components/JobForm' // Import your JobForm component
+import { EmployerJobPost } from '../types/types'
+import Button from '../components/Button'
 
 const JobPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedApplicationId, setSelectedApplicationId] = useState<
-    string | null
-  >(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false) // State for edit modal
+  const [currentJob, setCurrentJob] = useState<EmployerJobPost | null>(null) // State for the job post
 
   const { user, authTokens, logout } = useAuth()
   const { job } = location.state || {}
@@ -36,16 +37,37 @@ const JobPage = () => {
     }
   }
 
-  const handleViewProfile = (applicationId: string) => {
-    navigate(`/job/${job.id}/application/${applicationId}`)
+  const handleJobPostUpdate = async (updatedJobPost: EmployerJobPost) => {
+    try {
+      if (authTokens?.access) {
+        await updateJobPost(authTokens.access, job.id, updatedJobPost)
+        navigate('/home')
+      }
+    } catch (error) {
+      logout()
+    }
+  }
+
+  const openEditModal = () => {
+    setCurrentJob(job)
+    setIsEditModalOpen(true)
+  }
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false)
+    setCurrentJob(null) // Clear the job after closing the modal
   }
 
   return (
     <Container>
       <ButtonGroup>
         <Button onClick={() => navigate(-1)}>Gå tillbaka</Button>
-        <Button onClick={handleDeleteButtonClick} variant="danger">
+        <Button onClick={handleDeleteButtonClick} variant="delete">
           Ta bort
+        </Button>
+        <Button onClick={openEditModal} variant="secondary">
+          {' '}
+          Redigera
         </Button>
       </ButtonGroup>
       <CustomModal
@@ -58,6 +80,15 @@ const JobPage = () => {
         onPrimaryButtonPress={handleJobPostDeletion}
         onSecondaryButtonPress={() => setIsModalOpen(false)}
       />
+      {isEditModalOpen && (
+        <JobForm
+          isOpen={isEditModalOpen}
+          onClose={closeEditModal}
+          onSubmit={handleJobPostUpdate}
+          primaryButtonText="Uppdatera"
+          editItem={currentJob}
+        />
+      )}
       <JobPostTitle>{job.job_post_title}</JobPostTitle>
       <Details>
         <DetailItem>
@@ -83,17 +114,6 @@ const JobPage = () => {
           {job.is_published ? 'Publicerad' : 'Avpublicerad'}
         </DetailItem>
       </Details>
-      <ApplicationsSection>
-        <SectionTitle>Ansökningar</SectionTitle>
-        {job.applications.length > 0 ? (
-          <CandidatesList
-            applications={job.applications}
-            onViewProfile={handleViewProfile}
-          />
-        ) : (
-          <NoApplications>Inga ansökningar</NoApplications>
-        )}
-      </ApplicationsSection>
     </Container>
   )
 }
@@ -115,22 +135,6 @@ const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
-`
-
-const Button = styled.button<{ variant?: 'primary' | 'danger' }>`
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: ${({ variant }) =>
-    variant === 'danger' ? '#dc3545' : '#007bff'};
-  color: white;
-  font-size: 1rem;
-
-  &:hover {
-    background-color: ${({ variant }) =>
-      variant === 'danger' ? '#c82333' : '#0056b3'};
-  }
 `
 
 const JobPostTitle = styled.h2`
@@ -158,22 +162,6 @@ const DetailItem = styled.div`
 const Label = styled.span`
   font-weight: bold;
   color: #333;
-`
-
-const ApplicationsSection = styled.section`
-  width: 100%;
-  max-width: 700px;
-`
-
-const SectionTitle = styled.h3`
-  font-size: 1.5rem;
-  color: #007bff;
-  margin-bottom: 10px;
-`
-
-const NoApplications = styled.div`
-  font-size: 1rem;
-  color: #888;
 `
 
 const NoJobDetails = styled.h1`
