@@ -18,6 +18,7 @@ const AppRoutes: React.FC = () => {
     <Router>
       <HeaderComponent />
       <Routes>
+        <Route path="*" element={<HomePage />} />
         <Route path="/register" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route element={<PrivateRoute />}>
