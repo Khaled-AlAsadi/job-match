@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { retrieveApplication } from '../services/employerService'
 import { useAuth } from '../context/authContext'
 import styled from 'styled-components'
-import { Education, JobSeekerCv, WorkExperience } from '../types/types'
+import { Education, WorkExperience } from '../types/types'
 
 const ApplicationPage = () => {
   const { jobId, applicationId } = useParams<{
