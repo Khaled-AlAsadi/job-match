@@ -41,6 +41,19 @@ export const retrieveApplications = async (token: any) => {
     throw error
   }
 }
+export const deleteJobApplication = async (token: any, id: number) => {
+  try {
+    const response = await api.delete(`/jobseeker/delete/application/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to retrieve job posts:', error)
+    throw error
+  }
+}
 
 export const updateProfile = async (token: any, payload: any) => {
   try {

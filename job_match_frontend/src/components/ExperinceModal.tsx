@@ -18,6 +18,7 @@ const ExperinceModal: React.FC<ModalProps> = ({
   type,
 }) => {
   const [formData, setFormData] = useState(data)
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   useEffect(() => {
     setFormData(data)
@@ -29,6 +30,27 @@ const ExperinceModal: React.FC<ModalProps> = ({
 
   if (!show) return null
 
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {}
+    if (type === 'experience') {
+      if (!formData.occupation_title)
+        newErrors.occupation_title = 'Titel är obligatoriskt'
+      if (!formData.company_name)
+        newErrors.company_name = 'Företag är obligatoriskt'
+    } else if (type === 'education') {
+      if (!formData.school_name)
+        newErrors.school_name = 'Skola är obligatoriskt'
+      if (!formData.level) newErrors.level = 'Nivå är obligatoriskt'
+      if (!formData.orientation)
+        newErrors.orientation = 'Inriktning är obligatoriskt'
+    }
+    if (!formData.years) newErrors.years = 'År är obligatoriskt'
+    if (!formData.description)
+      newErrors.description = 'Beskrivning är obligatoriskt'
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -37,8 +59,10 @@ const ExperinceModal: React.FC<ModalProps> = ({
   }
 
   const handleSave = () => {
-    onSave(formData)
-    onClose()
+    if (validate()) {
+      onSave(formData)
+      onClose()
+    }
   }
 
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -60,6 +84,10 @@ const ExperinceModal: React.FC<ModalProps> = ({
             }
             onChange={handleChange}
           />
+          {errors.occupation_title && (
+            <ErrorText>{errors.occupation_title}</ErrorText>
+          )}
+          {errors.school_name && <ErrorText>{errors.school_name}</ErrorText>}
         </FormField>
         {type === 'experience' && (
           <FormField>
@@ -70,6 +98,9 @@ const ExperinceModal: React.FC<ModalProps> = ({
               value={formData.company_name}
               onChange={handleChange}
             />
+            {errors.company_name && (
+              <ErrorText>{errors.company_name}</ErrorText>
+            )}
           </FormField>
         )}
         <FormField>
@@ -80,6 +111,7 @@ const ExperinceModal: React.FC<ModalProps> = ({
             value={formData.years}
             onChange={handleChange}
           />
+          {errors.years && <ErrorText>{errors.years}</ErrorText>}
         </FormField>
         {type === 'education' && (
           <>
@@ -91,6 +123,7 @@ const ExperinceModal: React.FC<ModalProps> = ({
                 value={formData.level}
                 onChange={handleChange}
               />
+              {errors.level && <ErrorText>{errors.level}</ErrorText>}
             </FormField>
             <FormField>
               <Label>Inriktning:</Label>
@@ -100,6 +133,9 @@ const ExperinceModal: React.FC<ModalProps> = ({
                 value={formData.orientation}
                 onChange={handleChange}
               />
+              {errors.orientation && (
+                <ErrorText>{errors.orientation}</ErrorText>
+              )}
             </FormField>
           </>
         )}
@@ -110,6 +146,7 @@ const ExperinceModal: React.FC<ModalProps> = ({
             value={formData.description}
             onChange={handleChange}
           />
+          {errors.description && <ErrorText>{errors.description}</ErrorText>}
         </FormField>
         <Button onClick={handleSave}>Spara</Button>
         <Button onClick={onClose}>Avbryt</Button>
@@ -177,6 +214,11 @@ const Button = styled.button`
   &:hover {
     background-color: #0056b3;
   }
+`
+
+const ErrorText = styled.span`
+  color: red;
+  font-size: 0.9rem;
 `
 
 export default ExperinceModal
