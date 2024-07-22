@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
     if (user) {
       navigate('/home')
     }
-  }, [user, navigate])
+  }, [user])
 
   const validateFields = (): boolean => {
     const newErrors: { email: string | null; password: string | null } = {
