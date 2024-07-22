@@ -133,7 +133,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
 
-# serializers.py
 class SimplifiedJobPostSerializer(serializers.ModelSerializer):
     expiration_date = serializers.DateField(
         format="%Y-%m-%d", input_formats=["%Y-%m-%d"])
