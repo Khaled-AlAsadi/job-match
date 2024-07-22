@@ -4,7 +4,8 @@ import { deleteJobPost, updateJobPost } from '../services/employerService'
 import { useState } from 'react'
 import { CustomModal } from '../components/CustomModal'
 import { useAuth } from '../context/authContext'
-import JobForm from '../components/JobForm' // Import your JobForm component
+import JobForm from '../components/JobForm'
+import CandidatesList from '../components/CandidatesList'
 import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
 
@@ -58,6 +59,10 @@ const JobPage = () => {
     setCurrentJob(null) // Clear the job after closing the modal
   }
 
+  const handleViewProfile = (applicationId: string) => {
+    navigate(`/job/${job.id}/application/${applicationId}`)
+  }
+
   return (
     <Container>
       <ButtonGroup>
@@ -66,7 +71,6 @@ const JobPage = () => {
           Ta bort
         </Button>
         <Button onClick={openEditModal} variant="secondary">
-          {' '}
           Redigera
         </Button>
       </ButtonGroup>
@@ -114,6 +118,17 @@ const JobPage = () => {
           {job.is_published ? 'Publicerad' : 'Avpublicerad'}
         </DetailItem>
       </Details>
+      <ApplicationsSection>
+        <SectionTitle>Ansökningar</SectionTitle>
+        {job.applications.length > 0 ? (
+          <CandidatesList
+            applications={job.applications}
+            onViewProfile={handleViewProfile}
+          />
+        ) : (
+          <NoApplications>Inga ansökningar</NoApplications>
+        )}
+      </ApplicationsSection>
     </Container>
   )
 }
@@ -166,6 +181,23 @@ const Label = styled.span`
 
 const NoJobDetails = styled.h1`
   color: #dc3545;
+`
+
+const ApplicationsSection = styled.section`
+  width: 100%;
+  max-width: 700px;
+  margin-top: 20px;
+`
+
+const SectionTitle = styled.h3`
+  font-size: 1.5rem;
+  color: #007bff;
+  margin-bottom: 10px;
+`
+
+const NoApplications = styled.div`
+  font-size: 1rem;
+  color: #888;
 `
 
 export default JobPage
