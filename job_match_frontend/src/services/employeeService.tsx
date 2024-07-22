@@ -105,3 +105,47 @@ export const deleteEducation = async (token: any, id: number) => {
     throw error
   }
 }
+
+export const updateWorkExperience = async (
+  token: any,
+  id: number,
+  payload: WorkExperience
+) => {
+  try {
+    const response = await api.put(
+      `/jobseeker/workexperince/update/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error('Failed to update profile:', error)
+    throw error
+  }
+}
+
+export const updateEducation = async (
+  token: any,
+  id: number,
+  payload: Education
+) => {
+  try {
+    const response = await api.put(
+      `/jobseeker/education/update/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error('Failed to update profile:', error)
+    throw error
+  }
+}

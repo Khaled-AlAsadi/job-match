@@ -9,6 +9,8 @@ import {
   updateProfile as updateProfileNameEmail,
   deleteEducation,
   deleteWorkExperience,
+  updateEducation,
+  updateWorkExperience,
 } from '../services/employeeService'
 import { JobSeekerCv, WorkExperience, Education } from '../types/types'
 import ExperinceModal from '../components/ExperinceModal'
@@ -81,6 +83,7 @@ const ProfilePage: React.FC = () => {
             description: '',
           }
         : {
+            id: Date.now(),
             school_name: '',
             level: '',
             orientation: '',
@@ -92,38 +95,59 @@ const ProfilePage: React.FC = () => {
     setModalOpen(true)
   }
 
+  const editData = (
+    data: WorkExperience | Education,
+    type: 'experience' | 'education'
+  ) => {
+    setCurrentData(data)
+    setModalType(type)
+    setModalOpen(true)
+  }
+
   const saveData = async (data: any) => {
-    if (modalType === 'experience') {
-      await createWorkExperince(authTokens?.access, data)
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        work_experiences: [
-          ...prevProfile.work_experiences,
-          data as WorkExperience,
-        ],
-      }))
-    } else {
-      const formattedData = {
-        id: data.id,
-        school_name: data.school_name?.trim() || '',
-        level: data.level?.trim() || '',
-        orientation: data.orientation?.trim() || '',
-        description: data.description?.trim() || '',
-        years: data.years?.trim() || '',
+    try {
+      if (modalType === 'experience') {
+        if (data.id) {
+          // Editing
+          await updateWorkExperience(authTokens?.access, data.id, data)
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            work_experiences: prevProfile.work_experiences.map((exp) =>
+              exp.id === data.id ? data : exp
+            ),
+          }))
+        } else {
+          // Adding
+          await createWorkExperince(authTokens?.access, data)
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            work_experiences: [
+              ...prevProfile.work_experiences,
+              data as WorkExperience,
+            ],
+          }))
+        }
+      } else {
+        if (data.id) {
+          // Editing
+          await updateEducation(authTokens?.access, data.id, data)
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            educations: prevProfile.educations.map((edu) =>
+              edu.id === data.id ? data : edu
+            ),
+          }))
+        } else {
+          // Adding
+          await createEducation(authTokens?.access, data)
+          setProfile((prevProfile) => ({
+            ...prevProfile,
+            educations: [...prevProfile.educations, data as Education],
+          }))
+        }
       }
-
-      console.log('Formatted Data:', formattedData)
-
-      try {
-        await createEducation(authTokens?.access, formattedData)
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          educations: [...prevProfile.educations, formattedData as Education],
-        }))
-      } catch (error) {
-        console.error('Error saving data:', error)
-        setError('Failed to save education data.')
-      }
+    } catch (error) {
+      setError('Failed to save data.')
     }
     setModalOpen(false)
   }
@@ -202,6 +226,9 @@ const ProfilePage: React.FC = () => {
                 <CardCompany>{workExperience.company_name}</CardCompany>
                 <CardYears>{workExperience.years}</CardYears>
                 <CardDescription>{workExperience.description}</CardDescription>
+                <Button onClick={() => editData(workExperience, 'experience')}>
+                  Redigera
+                </Button>
                 <Button
                   onClick={() =>
                     confirmDeleteData(workExperience.id, 'experience')
@@ -224,6 +251,9 @@ const ProfilePage: React.FC = () => {
                 <CardCompany>{education.orientation}</CardCompany>
                 <CardYears>{education.years}</CardYears>
                 <CardDescription>{education.description}</CardDescription>
+                <Button onClick={() => editData(education, 'education')}>
+                  Redigera
+                </Button>
                 <Button
                   onClick={() => confirmDeleteData(education.id, 'education')}
                 >
@@ -264,10 +294,22 @@ export default ProfilePage
 
 const Container = styled.div`
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 `
 
 const ProfileForm = styled.div`
-  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 15px;
+  }
 `
 
 const FormField = styled.div`
@@ -282,28 +324,45 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+  }
 `
 
 const Button = styled.button`
-  padding: 10px 20px;
-  margin: 10px 0;
+  padding: 10px 15px;
+  margin: 5px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background-color 0.3s;
+
   &:hover {
     background-color: #0056b3;
+  }
+
+  @media (max-width: 600px) {
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 `
 
 const SectionTitle = styled.h2`
   margin: 20px 0;
+  font-size: 1.5rem;
+
+  @media (max-width: 900px) {
+    font-size: 1.3rem;
+  }
 `
 
 const ExperienceList = styled.div`
@@ -316,22 +375,29 @@ const ExperienceCard = styled.div`
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @media (max-width: 600px) {
+    padding: 10px;
+  }
 `
 
 const CardTitle = styled.h3`
-  margin: 0 0 5px 0;
+  margin: 0;
   font-size: 1.2rem;
 `
 
 const CardCompany = styled.h4`
-  margin: 0 0 5px 0;
+  margin: 0;
   color: #555;
 `
 
 const CardYears = styled.p`
-  margin: 0 0 5px 0;
+  margin: 0;
   font-style: italic;
 `
 
