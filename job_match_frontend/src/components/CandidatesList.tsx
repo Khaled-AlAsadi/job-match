@@ -14,7 +14,7 @@ const CandidatesList: React.FC<ApplicationListProps> = ({
   return (
     <ListContainer>
       {applications.length > 0 ? (
-        applications.map((application: Application) => (
+        applications.map((application) => (
           <ApplicationItem key={application.profile_id}>
             <ApplicationInfo>
               <div>

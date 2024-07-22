@@ -135,6 +135,16 @@ def getJobPostById(request, id):
                             status=status.HTTP_401_UNAUTHORIZED)
 
 
+@api_view(["GET"])
+def getApplication(request, job_id, application_id):
+    if request.user.is_authenticated and request.user.is_ag:
+        job_post = get_object_or_404(JobPost, id=job_id, job_post=request.user)
+        application = get_object_or_404(Application, id=application_id, job_post=job_post)
+        serializer = ApplicationSerializer(application)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+
 @api_view(["PATCH"])
 def updateJobSeekerInfo(request):
     if request.user.is_authenticated and not request.user.is_ag:

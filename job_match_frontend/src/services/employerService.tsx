@@ -15,6 +15,26 @@ export const retrieveEmployerJobPosts = async (token: any) => {
   }
 }
 
+export const retrieveApplication = async (
+  token: any,
+  jobId: string,
+  applicationId: string
+) => {
+  try {
+    const response = await api.get(
+      `employer/jobpost/${jobId}/application/${applicationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.error('Failed to retrieve job posts:', error)
+    throw error
+  }
+}
 export const createJobPost = async (token: any, payload: EmployerJobPost) => {
   try {
     const response = await api.post('employer/jobpost/create', payload, {

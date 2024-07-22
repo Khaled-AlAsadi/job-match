@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { Application } from '../types/types'
 import { deleteJobPost } from '../services/employerService'
 import { useState } from 'react'
 import { CustomModal } from '../components/CustomModal'
@@ -10,7 +9,7 @@ import CandidatesList from '../components/CandidatesList'
 const JobPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const [isModalopen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedApplicationId, setSelectedApplicationId] = useState<
     string | null
   >(null)
@@ -37,22 +36,23 @@ const JobPage = () => {
       logout()
     }
   }
+
   const handleViewProfile = (applicationId: string) => {
-    setSelectedApplicationId(applicationId)
-    navigate(`/application/${applicationId}`) // Navigate to the application detail page
+    navigate(`/job/${job.id}/application/${applicationId}`)
   }
+
   return (
     <Container>
       <Button onClick={() => navigate(-1)}>Gå tillbaka</Button>
-      <Button onClick={() => handleDeleteButtonClick()}>Ta bort</Button>
+      <Button onClick={handleDeleteButtonClick}>Ta bort</Button>
       <CustomModal
-        visible={isModalopen}
+        visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        modalTitle={`Är du säker att du vill du ta bort jobbannonsen?`}
-        modalText={`all data kommer att tas bort som tillhör annonsen`}
+        modalTitle="Är du säker att du vill du ta bort jobbannonsen?"
+        modalText="All data kommer att tas bort som tillhör annonsen"
         primaryButtonTitle="Ja"
         secondaryButtonTitle="Nej"
-        onPrimaryButtonPress={() => handleJobPostDeletion()}
+        onPrimaryButtonPress={handleJobPostDeletion}
         onSecondaryButtonPress={() => setIsModalOpen(false)}
       />
       <JobPostTitle>{job.job_post_title}</JobPostTitle>
@@ -82,14 +82,10 @@ const JobPage = () => {
       <ApplicationsSection>
         <SectionTitle>Ansökningar</SectionTitle>
         {job.applications.length > 0 ? (
-          job.applications.map((application: Application[], index: any) => (
-            <ApplicationContainer key={index}>
-              <CandidatesList
-                applications={application}
-                onViewProfile={handleViewProfile}
-              />
-            </ApplicationContainer>
-          ))
+          <CandidatesList
+            applications={job.applications}
+            onViewProfile={handleViewProfile}
+          />
         ) : (
           <NoApplications>Inga ansökningar</NoApplications>
         )}
@@ -152,32 +148,6 @@ const ApplicationsSection = styled.section`
 const SectionTitle = styled.h3`
   font-size: 1.5rem;
   margin-bottom: 10px;
-`
-
-const ApplicationContainer = styled.div`
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-`
-
-const ApplicationDetail = styled.div`
-  margin-bottom: 5px;
-`
-
-const Experience = styled.div`
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-radius: 4px;
-`
-
-const EducationDetail = styled.div`
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-radius: 4px;
 `
 
 const NoApplications = styled.div`

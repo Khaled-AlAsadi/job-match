@@ -10,6 +10,7 @@ urlpatterns = [
     path('employer/jobpost/update/<str:id>', views.updateJobPost, name="updateJobPost"),
     path('employer/jobpost/delete/<str:id>', views.deleteJobPost, name="deleteJobPost"),
     path('employer/jobpost/get/<str:id>', views.getJobPostById, name="getJobPostById"),
+    path('employer/jobpost/<str:job_id>/application/<str:application_id>', views.getApplication, name="getApplication"),
     path('jobseeker/availableJobPosts', views.retrieveAvailableJobPosts, name="availableJobPosts"),
     path('jobseeker/applications', views.retrieveApplications, name="applications"),
     path('jobseeker/info/update', views.updateJobSeekerInfo, name="updateJobSeekerInfo"),
