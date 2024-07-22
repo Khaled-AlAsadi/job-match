@@ -2,8 +2,8 @@ import json
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from rest_framework.response import Response
-from .serializers import ApplicationSerializer, ApplicationsSerializer, AvailableJobPostsSerializer, CustomUserSerializer, EducationSerializer, JobPostSerializer, JobSeekerCVSerializer, WorkExperinceSerializer
-from .models import Application, CustomUser, Education, JobPost, JobSeekerCv, WorkExperince
+from .serializers import *
+from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.utils.timezone import now
@@ -83,6 +83,7 @@ def retrieveAvailableJobPosts(request):
         return JsonResponse(
             {"Error": "You are not logged in or not authorized"}, status=401)
 
+
 @api_view(['GET'])
 def retrieveApplications(request):
     if request.user.is_authenticated and not request.user.is_ag:
@@ -96,7 +97,8 @@ def retrieveApplications(request):
             {"Error": "You are not logged in or not authorized"},
             status=status.HTTP_401_UNAUTHORIZED
         )
-    
+
+
 @api_view(['PATCH'])
 def updateJobPost(request, id):
     if request.user.is_authenticated and request.user.is_ag:
@@ -139,11 +141,14 @@ def getJobPostById(request, id):
 def getApplication(request, job_id, application_id):
     if request.user.is_authenticated and request.user.is_ag:
         job_post = get_object_or_404(JobPost, id=job_id, job_post=request.user)
-        application = get_object_or_404(Application, id=application_id, job_post=job_post)
+        application = get_object_or_404(
+            Application, id=application_id, job_post=job_post)
         serializer = ApplicationSerializer(application)
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"Error": "You are not logged in"},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(["PATCH"])
 def updateJobSeekerInfo(request):
@@ -187,7 +192,9 @@ def getJobSeekerCv(request):
         serializer = JobSeekerCVSerializer(cv)
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
-        return JsonResponse({"Error": "You are not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+        return JsonResponse({"Error": "You are not logged in"},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(["POST"])
 def createWorkExperince(request):
@@ -306,7 +313,8 @@ def applyToJob(request, id):
                 profile_id=request.user,
                 job_post=job_post).exists():
             return Response(
-                {"Error": "You have already applied for this job"}, status=status.HTTP_204_NO_CONTENT)
+                {"Error": "You have already applied for this job"},
+                status=status.HTTP_204_NO_CONTENT)
 
         # Get or create the JobSeekerCv instance for the user
         job_seeker_cv, created = JobSeekerCv.objects.get_or_create(
@@ -328,7 +336,7 @@ def applyToJob(request, id):
     else:
         return Response(
             {
-                "Error": "You are not logged in or not authorized to apply for this job"},
+                "Error": "You are not authorized to apply for this job"},
             status=status.HTTP_401_UNAUTHORIZED)
 
 
@@ -349,11 +357,11 @@ def deleteApplicationEmployee(request, id):
         application.delete()
 
         return Response(
-            {"Message": "Application deleted successfully"}, status=status.HTTP_200_OK)
+            {"Message": "success"}, status=status.HTTP_200_OK)
     else:
         return Response(
             {
-                "Error": "You are not logged in or not authorized to delete this application"},
+                "Error": "You are not not authorized "},
             status=status.HTTP_401_UNAUTHORIZED)
 
 
