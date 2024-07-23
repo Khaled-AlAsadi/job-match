@@ -20,9 +20,17 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework import routers
+from job_match_backend_app.views import ExampleView, ExampleModelViewSet
+
+router = routers.DefaultRouter()
+router.register(r'example', ExampleModelViewSet)
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("job_match_backend_app.urls")),
+    path('api-auth/', include('rest_framework.urls')),  # DRF's browsable API
     path('login', TokenObtainPairView.as_view(), name='token_obtain'),
     path('refresh/token', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/', include(router.urls)),  # Include your API router
 ]

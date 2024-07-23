@@ -7,6 +7,7 @@ from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.utils.timezone import now
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -15,6 +16,9 @@ from django.utils.timezone import now
 def index(request):
     return HttpResponse("Använd rätt route för att hitta saker")
 
+class ExampleView(APIView):
+    def get(self, request):
+        return Response({"message": "Hello, World!"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getUser(request):
