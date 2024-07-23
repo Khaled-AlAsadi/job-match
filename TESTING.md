@@ -51,11 +51,11 @@ Usability was tested with the below user acceptance testing, sent to new users t
 | As an employer i want to be able to edit my existing Job                                   | Y               | ![Home Page](documentation/features/home/home_page.png)           |
 | As an employer i want to be able to view the candidates profiles that applied for the job. | Y               | ![Home Page](documentation/features/home/home_page.png)           |
 
-| Employee                                                                         | Requirement met | Image                                                             |
-| -------------------------------------------------------------------------------- | --------------- | ----------------------------------------------------------------- |
-| As an employee i want to be able to view published Job Posts and apply for them. | Y               | ![Signup Page](documentation/features/allauth_access/sign_up.png) |
-| As an employee i want to be able to update my cv/profile.                        | Y               | ![Signup Page](documentation/features/allauth_access/sign_up.png) |
-| As an employee i want to be able to create my cv/profile to apply with.          | Y               | ![Signup Page](documentation/features/allauth_access/sign_up.png) |
+| Employee                                                                         | Requirement met | Image |
+| -------------------------------------------------------------------------------- | --------------- | ----- |
+| As an employee i want to be able to view published Job Posts and apply for them. | Y               |       |
+| As an employee i want to be able to update my cv/profile.                        | Y               |       |
+| As an employee i want to be able to create my cv/profile to apply with.          | Y               |       |
 
 ---
 
