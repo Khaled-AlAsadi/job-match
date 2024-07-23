@@ -140,9 +140,4 @@ Please refer to the [DEPLOYMENT.md](DEPLOYMENT.md) file for all deployment and p
 - [Render](https://render.com/): for providing a free hosting.
 - [Firebase](https://firebase.google.com/): for providing a free hosting.
 - [Postgresql](https://www.postgresql.org/): for providing a free database.
-
-### Content and Images
-
----
-
-## Acknowledgments
+- [Graphviz](https://graphviz.org/download/): for generating Picture of database model.
