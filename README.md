@@ -2,7 +2,7 @@
 
 **Deployed website: [Link to website](https://job-match-web-32db5.web.app/)**
 
-![Main image](documentation/readme_header.png)
+![Main image](documentaion/readme_header.png)
 
 ## About
 
@@ -77,7 +77,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Wireframes
 
-[Wireframes](documentaion/design/wowder_wireframes.pdf)
+[Wireframes](documentaion/design/wireframes.pdf)
 
 ---
 
