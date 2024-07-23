@@ -44,12 +44,12 @@ Usability was tested with the below user acceptance testing, sent to new users t
 
 ## Testing User Story
 
-| Employer                                                                                   | Requirement met | Image                                                             |
-| ------------------------------------------------------------------------------------------ | --------------- | ----------------------------------------------------------------- |
-| As an employer i want to be able to create Job Posts for interessted candidates to apply.  | Y               | ![Signup Page](documentation/features/allauth_access/sign_up.png) |
-| As an employer i want to be able to delete my Job Post                                     | Y               | ![Home Page](documentation/features/home/home_page.png)           |
-| As an employer i want to be able to edit my existing Job                                   | Y               | ![Home Page](documentation/features/home/home_page.png)           |
-| As an employer i want to be able to view the candidates profiles that applied for the job. | Y               | ![Home Page](documentation/features/home/home_page.png)           |
+| Employer                                                                                   | Requirement met | Image |
+| ------------------------------------------------------------------------------------------ | --------------- | ----- |
+| As an employer i want to be able to create Job Posts for interessted candidates to apply.  | Y               |       |
+| As an employer i want to be able to delete my Job Post                                     | Y               |       |
+| As an employer i want to be able to edit my existing Job                                   | Y               |       |
+| As an employer i want to be able to view the candidates profiles that applied for the job. | Y               |       |
 
 | Employee                                                                         | Requirement met | Image |
 | -------------------------------------------------------------------------------- | --------------- | ----- |
