@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
 import styled from 'styled-components'
+import { LoadingSpinner } from '../components/LoadingSpinner'
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('')
@@ -11,6 +12,7 @@ const SignupPage: React.FC = () => {
   const [mobileNumber, setMobileNumber] = useState('')
   const [orgNumber, setOrgNumber] = useState('')
   const [isEmployer, setIsEmployer] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // State for error messages
   const [firstNameError, setFirstNameError] = useState<string | null>(null)
@@ -93,6 +95,7 @@ const SignupPage: React.FC = () => {
 
   const handleSignup = async () => {
     if (!validateFields()) return
+    setIsLoading(true)
 
     try {
       await signup(
@@ -106,8 +109,10 @@ const SignupPage: React.FC = () => {
         false,
         password
       )
+      setIsLoading(false)
       navigate('/login')
     } catch (error) {
+      setIsLoading(false)
       console.error('Signup failed:', error)
     }
   }
@@ -187,7 +192,9 @@ const SignupPage: React.FC = () => {
         </>
       )}
 
-      <SignupButton onClick={handleSignup}>Registrera</SignupButton>
+      <SignupButton onClick={handleSignup}>
+        {isLoading ? <LoadingSpinner></LoadingSpinner> : 'Registrera'}
+      </SignupButton>
     </SignupContainer>
   )
 }
@@ -236,6 +243,8 @@ const Checkbox = styled.input`
 `
 
 const SignupButton = styled.button`
+  display: flex;
+  justify-content: center;
   width: 250px;
   background-color: black;
   padding: 10px;
