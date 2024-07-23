@@ -89,10 +89,10 @@ const LoginPage: React.FC = () => {
       />
       {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
       {invalidMessage && <ErrorMessage>{invalidMessage}</ErrorMessage>}
-      <StyledButton onClick={handleLogin}>
+      <LoginButton onClick={handleLogin}>
         {isLoading ? <LoadingSpinner></LoadingSpinner> : 'Logga in'}
-      </StyledButton>
-      <StyledButton onClick={handleRegisterNavigation}>Registrera</StyledButton>
+      </LoginButton>
+      <LoginButton onClick={handleRegisterNavigation}>Registrera</LoginButton>
     </LoginContainer>
   )
 }
@@ -111,30 +111,24 @@ const LoginContainer = styled.div`
   }
 `
 
-const StyledButton = styled.button`
+const LoginButton = styled.button`
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 200px;
-  height: 2.5rem;
-  border: none;
+  width: 250px;
   background-color: black;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
   color: white;
-  font-size: 1rem;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  box-sizing: border-box;
+  transition: background-color 0.3s ease;
 
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
+  &:hover {
+    background-color: #333;
   }
 
-  @media (max-width: 600px) {
-    max-width: 100%;
-    font-size: 0.875rem;
-    padding: 0.5rem;
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 `
 
