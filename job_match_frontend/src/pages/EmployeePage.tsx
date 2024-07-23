@@ -102,23 +102,32 @@ export default EmployeePage
 
 const Container = styled.div`
   padding: 20px;
-  max-width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   box-sizing: border-box;
+  background-color: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const JobItem = styled.div`
-  margin-bottom: 15px;
+  width: 100%;
+  margin-bottom: 20px;
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
 
   @media (min-width: 768px) {
-    flex-direction: row;
+    display: flex;
     align-items: flex-start;
     justify-content: space-between;
   }
@@ -129,15 +138,16 @@ const JobDetails = styled.div`
 `
 
 const JobTitle = styled.h2`
-  margin: 0;
-  font-size: 1.5em;
+  margin: 0 0 10px;
+  font-size: 1.8em;
   color: #333;
 `
 
 const Text = styled.p`
   margin: 5px 0;
-  color: #444;
+  color: #666;
   font-size: 1rem;
+  line-height: 1.6;
 
   @media (max-width: 600px) {
     font-size: 0.9rem;
@@ -148,18 +158,19 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
 
   @media (min-width: 768px) {
     flex-direction: row;
     margin-left: 20px;
+    margin-top: 0;
   }
 `
 
 const Button = styled.button`
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1em;
   font-weight: 600;
@@ -204,6 +215,8 @@ const MessageContainer = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  height: 100vh;
+  background-color: #f0f2f5;
 `
 
 const MessageText = styled.p`

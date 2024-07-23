@@ -51,7 +51,7 @@ const EmployeeJobPostsPage = () => {
 
   return (
     <Container>
-      <h1>Sökta Jobbansökningar</h1>
+      <h1>Mina Jobbansökningar</h1>
       {error && <Error>{error}</Error>}
       <ApplicationsContainer>
         {applications.length > 0 ? (
