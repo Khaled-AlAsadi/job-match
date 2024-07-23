@@ -162,6 +162,7 @@ const SignupPage: React.FC = () => {
         value={mobileNumber}
         onChange={handleInputChange(setMobileNumber, setMobileNumberError)}
         placeholder="Mobilnummer"
+        maxLength={10}
       />
       {mobileNumberError && <ErrorMessage>{mobileNumberError}</ErrorMessage>}
 
@@ -180,7 +181,7 @@ const SignupPage: React.FC = () => {
             type="text"
             value={orgNumber}
             onChange={handleInputChange(setOrgNumber, setOrgNumberError)}
-            placeholder="Organisationsnummer"
+            placeholder="Organisationsnummer Ex: 123456-1234"
           />
           {orgNumberError && <ErrorMessage>{orgNumberError}</ErrorMessage>}
         </>
