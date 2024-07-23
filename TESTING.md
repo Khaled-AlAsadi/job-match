@@ -90,11 +90,9 @@ Add check to see if the user is an employee `if (user?.is_ag === false) {
 
 ---
 
-### HTML Validation:
+### Validation:
 
-### CSS Validation:
-
-### JS Validation:
+- I did not have time to do an eslint report.
 
 ### Python Validation:
 
