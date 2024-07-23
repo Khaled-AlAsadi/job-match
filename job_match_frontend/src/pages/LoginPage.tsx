@@ -4,6 +4,7 @@ import { useAuth } from '../context/authContext'
 import styled from 'styled-components'
 
 const LoginPage: React.FC = () => {
+  const [invalidMessage, setInvalidMessage] = useState<any>()
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
@@ -48,13 +49,9 @@ const LoginPage: React.FC = () => {
     try {
       await login(formValues.email, formValues.password)
       navigate('/home')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Inloggning misslyckades:', error)
-      setErrors({
-        ...errors,
-        password:
-          'Inloggning misslyckades. Kontrollera din e-postadress och lösenord.',
-      })
+      setInvalidMessage('Inget aktivt konto hittades')
     }
   }
 
@@ -87,6 +84,7 @@ const LoginPage: React.FC = () => {
         placeholder="Lösenord"
       />
       {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+      {invalidMessage && <ErrorMessage>{invalidMessage}</ErrorMessage>}
       <LoginButton onClick={handleLogin}>Logga in</LoginButton>
       <LoginButton onClick={handleRegisterNavigation}>Registrera</LoginButton>
     </LoginContainer>

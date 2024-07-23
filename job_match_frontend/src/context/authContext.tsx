@@ -50,6 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Login failed:', error)
       setUser(null)
+      throw error
     }
   }
 
