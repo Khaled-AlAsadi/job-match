@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/authContext'
 import styled from 'styled-components'
+import { LoadingSpinner } from '../components/LoadingSpinner'
 
 const LoginPage: React.FC = () => {
-  const [invalidMessage, setInvalidMessage] = useState<any>()
+  const [invalidMessage, setInvalidMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
@@ -20,7 +22,7 @@ const LoginPage: React.FC = () => {
     if (user) {
       navigate('/home')
     }
-  }, [user, navigate]) // Fixed dependency array
+  }, [user, navigate])
 
   const validateFields = (): boolean => {
     const newErrors: { email: string | null; password: string | null } = {
@@ -45,11 +47,13 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     if (!validateFields()) return
-
+    setIsLoading(true)
     try {
       await login(formValues.email, formValues.password)
+      setIsLoading(false)
       navigate('/home')
     } catch (error: any) {
+      setIsLoading(false)
       console.error('Inloggning misslyckades:', error)
       setInvalidMessage('Inget aktivt konto hittades')
     }
@@ -85,8 +89,10 @@ const LoginPage: React.FC = () => {
       />
       {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
       {invalidMessage && <ErrorMessage>{invalidMessage}</ErrorMessage>}
-      <LoginButton onClick={handleLogin}>Logga in</LoginButton>
-      <LoginButton onClick={handleRegisterNavigation}>Registrera</LoginButton>
+      <StyledButton onClick={handleLogin}>
+        {isLoading ? <LoadingSpinner></LoadingSpinner> : 'Logga in'}
+      </StyledButton>
+      <StyledButton onClick={handleRegisterNavigation}>Registrera</StyledButton>
     </LoginContainer>
   )
 }
@@ -105,22 +111,30 @@ const LoginContainer = styled.div`
   }
 `
 
-const LoginButton = styled.button`
-  width: 250px;
-  background-color: black;
-  padding: 10px;
-  font-size: 18px;
+const StyledButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+  height: 2.5rem;
   border: none;
+  background-color: black;
   color: white;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
 
-  &:hover {
-    background-color: #333;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 
-  @media screen and (max-width: 768px) {
-    width: 100%;
+  @media (max-width: 600px) {
+    max-width: 100%;
+    font-size: 0.875rem;
+    padding: 0.5rem;
   }
 `
 
