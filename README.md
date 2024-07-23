@@ -77,7 +77,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Wireframes
 
-[Wireframes](documentation/design/wowder_wireframes.pdf)
+[Wireframes](documentaion/design/wowder_wireframes.pdf)
 
 ---
 
@@ -85,7 +85,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### GitHub Project Management
 
-![GitHub Project Management](documentation/agile/kanban.png)
+![GitHub Project Management](documentaion/agile/kanban.png)
 
 ---
 
@@ -93,7 +93,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 To understand app flow, I created flowchart.
 
-[Flowchart](documentation/flowcharts/flow_chart.png)
+[Flowchart](documentaion/flowcharts/flow_chart.png)
 
 ---
 
@@ -106,7 +106,7 @@ To understand app flow, I created flowchart.
 
 ### Entity-Relationship Diagram
 
-![ERD](documentation/my_project_visualized.png)
+![ERD](documentaion/my_project_visualized.png)
 
 ### Data Modeling
 
