@@ -30,21 +30,21 @@
 
   - The links have animated hover effect.
   - The navigation is clear and easy to understand for the user.
-    ![NavBar desktop Employee](documentation/features/navbar/header_employee.png)
+    ![NavBar desktop Employee](documentaion/features/navbar/header_employee.png)
 
   - The navigation bar is responsive:
 
     - On mobile devices:
 
-        ![NavBar Mobile Closed](documentation/features/header_employee_closed.png)
+        ![NavBar Mobile Closed](documentaion/features/header_employee_closed.png)
 
       - When the hamburger menu is clicked, there is dropdown menu with the available links.
-        ![NavBar Mobile Open](documentation/features/header_employee_open.png)
+        ![NavBar Mobile Open](documentaion/features/header_employee_open.png)
 
 
 ### Home Page (Employer):
 
-![Home page](documentation/features/home_page_employer.png)
+![Home page](documentaion/features/home_page_employer.png)
 
 The Home Page is for the employer to create/view the jobposts.
 
@@ -53,7 +53,7 @@ The Home Page has:
    -  Button that opens the form for the employer to create a job post.
 
 ### Job Page (Employer):
-![Job page](documentation/features/job_page_employer.png)
+![Job page](documentaion/features/job_page_employer.png)
 
 The Page is for the employer to create/view the jobposts.
 The Job Page has:
@@ -64,7 +64,7 @@ The Job Page has:
 
 ### Create Job Post Modal (Employer):
 
-![Create Job Post Form](documentation/features/job_post_form_employer.png)
+![Create Job Post Form](documentaion/features/job_post_form_employer.png)
 
 The Modal is for the employer to create/view the jobposts.
 
@@ -76,7 +76,7 @@ The Modal has
 
 ### Delte Job Post Modal (Employer):
 
-![Delete Job Post Modal](documentation/features/job_delete_modal_employer.png)
+![Delete Job Post Modal](documentaion/features/job_delete_modal_employer.png)
 
 The Modal is for the employer to confirm deletion of a jobpost.
 
@@ -90,21 +90,21 @@ The Modal has
 
 ### Application Page (Employer):
 
-![Application Page employer](documentation/features/application_page_employer.png)
+![Application Page employer](documentaion/features/application_page_employer.png)
 
 The Application Page is for the employer to view a specifc candidate's CV that applied for the job.
 
 ---
 
 ### Home Page (Employee):
-![Home page](documentation/features/home_page_employee.png)
+![Home page](documentaion/features/home_page_employee.png)
 
 The page is for the employee/Jobseeker to view available jobs and apply for them.
 
 
 ### Prfoile Page (Employee)
 
-![Profile page](documentation/features/profile_page_employee.png)
+![Profile page](documentaion/features/profile_page_employee.png)
 
 The page is for the employee/Jobseeker to view available jobs and apply for them.
 
@@ -116,7 +116,7 @@ The page has:
 
 ### Applications Page (Employee)
 
-![Applications page](documentation/features/applications_page_employee.png)
+![Applications page](documentaion/features/applications_page_employee.png)
 
 The page is for the employee/Jobseeker to view which job posts the jobseeker already applied for.
 
