@@ -97,7 +97,7 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Color Scheme
 
-![Main image](documentaion/color_scheme.png)
+![Main image](documentaion/design/color_scheme.png)
 
 1. Body:
 
