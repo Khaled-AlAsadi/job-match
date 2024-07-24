@@ -95,10 +95,14 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Color Scheme
 
-The navbar and footer has the backgroudcolor (`#333333`) which is black grey.
-The delete buttons has the red backgroudcolor.
-The add and confirmation buttons has light blue backgroudcolor.
-The edit buttons has grey backgroudcolor.
+The navbar and footer has the backgroud color (`#333333`) which is black grey.
+
+The delete buttons has the red backgroud color.
+
+The add and confirmation buttons has light blue backgroud color.
+
+The edit buttons has grey backgroud color.
+
 The cards has a white background.
 
 ### Wireframes
