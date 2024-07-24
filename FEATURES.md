@@ -30,7 +30,7 @@
 
   - The links have animated hover effect.
   - The navigation is clear and easy to understand for the user.
-    ![NavBar desktop Employee](documentaion/features/navbar/header_employee.png)
+    ![NavBar desktop Employee](documentaion/features/header_employee.png)
 
   - The navigation bar is responsive:
 
