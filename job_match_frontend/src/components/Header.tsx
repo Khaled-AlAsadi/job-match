@@ -15,7 +15,7 @@ function HeaderComponent() {
     <NavbarContainer>
       <Header>
         <Logo>Job Match</Logo>
-        <MenuIcon onClick={toggleMenu}>&#9776;</MenuIcon>
+        {user && <MenuIcon onClick={toggleMenu}>&#9776;</MenuIcon>}
       </Header>
       {user && (
         <NavLinks isOpen={isMenuOpen}>
