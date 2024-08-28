@@ -128,9 +128,20 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'is_staff',
             'password'
         ]
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'is_staff': {'read_only': True},
+        }
 
     def create(self, validated_data):
+        if 'org_number' in validated_data and validated_data['org_number']:
+            validated_data['is_ag'] = True
+        
         validated_data['password'] = make_password(validated_data['password'])
+        
+        validated_data['is_staff'] = False
+        validated_data['is_superuser'] = False
+        
         return super().create(validated_data)
 
 
