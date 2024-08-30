@@ -15,6 +15,7 @@ from django.utils.timezone import now
 def index(request):
     return HttpResponse("Använd rätt route för att hitta saker")
 
+
 @api_view(['GET'])
 def getUser(request):
     user = request.user
@@ -361,7 +362,6 @@ def deleteApplicationEmployee(request, id):
     else:
         return Response({"Error": "You are not authorized"},
                         status=status.HTTP_401_UNAUTHORIZED)
-                        
 
 
 @api_view(["POST"])
@@ -371,3 +371,17 @@ def createUser(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["DELETE"])
+def deleteUser(request):
+    if request.user.is_authenticated:
+        user = request.user
+
+        user.delete()
+
+        return Response({"message": "User deleted successfully."},
+                        status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response({"Error": "You are not authorized"},
+                        status=status.HTTP_401_UNAUTHORIZED)
