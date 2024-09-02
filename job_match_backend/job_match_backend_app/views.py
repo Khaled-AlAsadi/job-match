@@ -344,9 +344,8 @@ def applyToJob(request, id):
 @api_view(["DELETE"])
 def deleteApplicationEmployee(request, id):
     if request.user.is_authenticated:
-        job_post = get_object_or_404(JobPost)
+        job_post = get_object_or_404(JobPost, id=id)
 
-        # Find the application
         application = Application.objects.filter(
             profile_id=request.user, job_post=job_post
         ).first()
@@ -355,7 +354,6 @@ def deleteApplicationEmployee(request, id):
             return Response({"Error": "Application does not exist"},
                             status=status.HTTP_404_NOT_FOUND)
 
-        # Delete the application
         application.delete()
 
         return Response({"Message": "success"}, status=status.HTTP_200_OK)
