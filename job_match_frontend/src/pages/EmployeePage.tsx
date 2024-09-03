@@ -7,6 +7,7 @@ import {
 import { AvailableJobPosts, JobSeekerCv } from '../types/types'
 import { useAuth } from '../context/authContext'
 import styled from 'styled-components'
+import { toast } from 'react-toastify'
 
 const EmployeePage = () => {
   const [jobPosts, setJobPosts] = useState<AvailableJobPosts[]>([])
@@ -36,13 +37,12 @@ const EmployeePage = () => {
   }, [user, authTokens])
 
   const handleApply = async (jobId: number) => {
-    console.log(`Applying for job with id: ${jobId}`)
     if (
       (Array.isArray(profile?.work_experiences) &&
         profile?.work_experiences.length === 0) ||
       (Array.isArray(profile?.educations) && profile?.educations.length === 0)
     ) {
-      return alert('Vänligen redigera din profil först')
+      return toast.warning('Vänligen gör klart din profil först')
     }
     await apply(authTokens?.access, jobId)
     setJobPosts((prevJobPosts) =>

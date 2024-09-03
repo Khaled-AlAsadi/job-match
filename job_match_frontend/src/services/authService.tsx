@@ -64,6 +64,20 @@ export const getUser = async (token: string) => {
   }
 }
 
+export const deleteUser = async (token: any) => {
+  try {
+    const response = await api.delete('/delete/user', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to delete user:', error)
+    throw error
+  }
+}
+
 export const resetPassword = async (email: string) => {
   try {
     const response = await api.post('password-reset', { email: email })

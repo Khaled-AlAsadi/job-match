@@ -9,6 +9,7 @@ import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
 import JobForm from '../components/JobForm'
+import { toast } from 'react-toastify'
 
 const EmployerPage = () => {
   const navigate = useNavigate()
@@ -61,6 +62,7 @@ const EmployerPage = () => {
       await createJobPost(authTokens?.access, formData)
       const updatedJobPosts = await retrieveEmployerJobPosts(authTokens?.access)
       setJobPosts(updatedJobPosts)
+      toast.success('Jobannons skapades')
     } catch (error) {
       console.error('Error creating job post:', error)
     } finally {
