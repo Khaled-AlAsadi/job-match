@@ -136,12 +136,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         if 'org_number' in validated_data and validated_data['org_number']:
             validated_data['is_ag'] = True
-        
+
         validated_data['password'] = make_password(validated_data['password'])
-        
+
         validated_data['is_staff'] = False
         validated_data['is_superuser'] = False
-        
+
         return super().create(validated_data)
 
 

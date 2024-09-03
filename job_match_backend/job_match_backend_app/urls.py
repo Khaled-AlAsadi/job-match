@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
-     path("delete/user", views.deleteUser, name="DeleteUser"),
+    path("delete/user", views.deleteUser, name="DeleteUser"),
     path("create/user", views.createUser, name="createUser"),
     path('user/info', views.getUser, name="getUser"),
     path('employer/jobposts', views.retrieveEmployerJobPosts, name="jobposts"),
@@ -39,4 +39,9 @@ urlpatterns = [
     path('jobseeker/apply/<str:id>', views.applyToJob, name="applyToJob"),
     path('jobseeker/delete/application/<int:id>',
          views.deleteApplicationEmployee, name='deleteApplicationEmployee'),
+    path('password-reset', views.PasswordResetAPIView.as_view(),
+         name='api_password_reset'),
+    path('reset/confirm/<str:uid>/<str:token>/',
+         views.PasswordResetConfirmAPIView.as_view(),
+         name='password_reset_confirm'),
 ]

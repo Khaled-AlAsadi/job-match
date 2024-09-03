@@ -7,6 +7,15 @@ from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.utils.timezone import now
+from rest_framework.views import APIView
+from django.utils.decorators import method_decorator
+from django.contrib.auth import views as auth_views
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+import os
 
 # Create your views here.
 
@@ -383,3 +392,68 @@ def deleteUser(request):
     else:
         return Response({"Error": "You are not authorized"},
                         status=status.HTTP_401_UNAUTHORIZED)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PasswordResetAPIView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'error': 'Email is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            print(os.environ.get("DEFAULT_FROM_EMAIL"))
+            reset_url = (
+                os.environ.get('FRONTEND_BASE_URL')
+                + "/reset/confirm/"
+                + uid
+                + "/"
+                + token
+            )
+            send_mail(
+                'Password Reset',
+                f'Click the link to reset your password: {reset_url}',
+                os.environ.get("DEFAULT_FROM_EMAIL"),
+                [email],
+                fail_silently=False,
+            )
+
+            return Response({'success': 'Password reset link sent to email'},
+                            status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User with this email does not exist'},
+                            status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PasswordResetConfirmAPIView(APIView):
+    def post(self, request, uid, token):
+        new_password = request.data.get('password')
+
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = CustomUser.objects.get(pk=uid)
+
+            if not default_token_generator.check_token(user, token):
+                return Response({'error': 'Invalid token'},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            user.password = make_password(new_password)
+            user.save()
+
+            return Response({'message': 'Password reset successful'},
+                            status=status.HTTP_200_OK)
+
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User not found'},
+                            status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
