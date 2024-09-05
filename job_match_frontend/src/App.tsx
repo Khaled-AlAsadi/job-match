@@ -10,7 +10,7 @@ function App() {
     <AppContainer>
       <Content>
         <AppRoutes />
-        <ToastContainer />
+        <ToastContainer limit={1}/>
       </Content>
       <FooterComponent />
     </AppContainer>
