@@ -7,6 +7,7 @@ import {
   deleteJobApplication,
 } from '../services/employeeService'
 import { CustomModal } from '../components/CustomModal'
+import { toast } from 'react-toastify'
 
 const EmployeeJobPostsPage = () => {
   const { user, authTokens } = useAuth()
@@ -41,10 +42,11 @@ const EmployeeJobPostsPage = () => {
       setApplications((prevApplications) =>
         prevApplications.filter((app) => app.id !== jobId)
       )
+      toast.success('Ansökan togs bort')
       setIsModalOpen(false)
     } catch (error) {
       console.error('Error deleting application', error)
-      setError('Failed to delete application.')
+      toast.error('Det gick inte att ta bort ansökan')
       setIsModalOpen(false)
     }
   }
@@ -52,7 +54,6 @@ const EmployeeJobPostsPage = () => {
   return (
     <Container>
       <h1>Mina Jobbansökningar</h1>
-      {error && <Error>{error}</Error>}
       <ApplicationsContainer>
         {applications.length > 0 ? (
           applications.map((application: any) => (
