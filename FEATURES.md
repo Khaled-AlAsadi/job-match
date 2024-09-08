@@ -23,6 +23,7 @@
 - ##### Navigation
 
   - Contains navigation links :
+
     - HOME - leads to the home page.
     - Log in/out - leads to the login page.
     - Profile (Employee only) - leads to the profile page.
@@ -36,11 +37,10 @@
 
     - On mobile devices:
 
-        ![NavBar Mobile Closed](documentaion/features/header_employee_closed.png)
+      ![NavBar Mobile Closed](documentaion/features/header_employee_closed.png)
 
       - When the hamburger menu is clicked, there is dropdown menu with the available links.
         ![NavBar Mobile Open](documentaion/features/header_employee_open.png)
-
 
 ### Home Page (Employer):
 
@@ -50,17 +50,18 @@ The Home Page is for the employer to create/view the jobposts.
 
 The Home Page has:
 
-   -  Button that opens the form for the employer to create a job post.
+- Button that opens the form for the employer to create a job post.
 
 ### Job Page (Employer):
+
 ![Job page](documentaion/features/job_page_employer.png)
 
 The Page is for the employer to create/view the jobposts.
 The Job Page has:
-    
-  - Go back button that takes the user to the home page.
-  - Delete Button that opens the delete modal.
-  - Edit button that opens the form with the form filled and ready to edit.
+
+- Go back button that takes the user to the home page.
+- Delete Button that opens the delete modal.
+- Edit button that opens the form with the form filled and ready to edit.
 
 ### Create Job Post Modal (Employer):
 
@@ -70,9 +71,9 @@ The Modal is for the employer to create/view the jobposts.
 
 The Modal has
 
-   - Form
-   - Cnacel Button
-   - Save Button
+- Form
+- Cnacel Button
+- Save Button
 
 ### Delte Job Post Modal (Employer):
 
@@ -82,11 +83,10 @@ The Modal is for the employer to confirm deletion of a jobpost.
 
 The Modal has
 
-   - Title
-   - Subtitle
-   - Cnacel Button
-   - Save Button
-
+- Title
+- Subtitle
+- Cnacel Button
+- Save Button
 
 ### Application Page (Employer):
 
@@ -97,10 +97,10 @@ The Application Page is for the employer to view a specifc candidate's CV that a
 ---
 
 ### Home Page (Employee):
+
 ![Home page](documentaion/features/home_page_employee.png)
 
 The page is for the employee/Jobseeker to view available jobs and apply for them.
-
 
 ### Prfoile Page (Employee)
 
@@ -110,9 +110,9 @@ The page is for the employee/Jobseeker to view available jobs and apply for them
 
 The page has:
 
-   - Cards for Job Posts.
-   - Skip button.
-   - Apply Button.
+- Cards for Job Posts.
+- Skip button.
+- Apply Button.
 
 ### Applications Page (Employee)
 
@@ -122,8 +122,18 @@ The page is for the employee/Jobseeker to view which job posts the jobseeker alr
 
 The page has:
 
-   - Cards for Job Posts.
-   - Delete button for every Job Post.
-
+- Cards for Job Posts.
+- Delete button for every Job Post.
 
 ---
+
+### Component Overview
+
+This section outlines the key components of the system, detailing their responsibilities and how they are designed for reusability.
+
+| Component    | Description                                                   | Role                                                 | Reusability                                                                                                     |
+| ------------ | ------------------------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Modal        | A customizable modal component for delete actions in the app. | Handles deletion.                                    | Accepts props for different titles, text, and button text, making it reusable across different parts of the UI. |
+| Button       | A customizable button component.                              | Reusable button                                      | Accepts props for different button variants and styles.                                                         |
+| Auth Context | Handles user authentication and session management.           | Controls login, logout, and user session validation. | Can be integrated anywhere in the app where user authentication is required.                                    |
+|              |
