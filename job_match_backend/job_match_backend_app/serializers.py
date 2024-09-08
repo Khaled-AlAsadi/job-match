@@ -166,6 +166,7 @@ class SimplifiedJobPostSerializer(serializers.ModelSerializer):
 
 class ApplicationsSerializer(serializers.ModelSerializer):
     job_post = SimplifiedJobPostSerializer(read_only=True)
+    id = serializers.IntegerField(source='job_post.id', read_only=True)
 
     class Meta:
         model = Application

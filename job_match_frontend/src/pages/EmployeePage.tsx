@@ -45,6 +45,8 @@ const EmployeePage = () => {
       return toast.warning('Vänligen gör klart din profil först')
     }
     await apply(authTokens?.access, jobId)
+    toast.success('Du har sökt jobbet')
+
     setJobPosts((prevJobPosts) =>
       prevJobPosts.filter((job) => job.id !== jobId)
     )

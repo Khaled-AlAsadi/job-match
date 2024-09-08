@@ -10,7 +10,7 @@ function App() {
     <AppContainer>
       <Content>
         <AppRoutes />
-        <ToastContainer limit={1}/>
+        <ToastContainer limit={1} autoClose={2000}/>
       </Content>
       <FooterComponent />
     </AppContainer>
