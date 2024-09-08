@@ -131,9 +131,10 @@ The page has:
 
 This section outlines the key components of the system, detailing their responsibilities and how they are designed for reusability.
 
-| Component    | Description                                                   | Role                                                 | Reusability                                                                                                     |
-| ------------ | ------------------------------------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Modal        | A customizable modal component for delete actions in the app. | Handles deletion.                                    | Accepts props for different titles, text, and button text, making it reusable across different parts of the UI. |
-| Button       | A customizable button component.                              | Reusable button                                      | Accepts props for different button variants and styles.                                                         |
-| Auth Context | Handles user authentication and session management.           | Controls login, logout, and user session validation. | Can be integrated anywhere in the app where user authentication is required.                                    |
-|              |
+| Component       | Description                                                   | Role                                                         | Reusability                                                                                                     |
+| --------------- | ------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Modal           | A customizable modal component for delete actions in the app. | Handles deletion.                                            | Accepts props for different titles, text, and button text, making it reusable across different parts of the UI. |
+| Button          | A customizable button component.                              | Reusable button                                              | Accepts props for different button variants and styles.                                                         |
+| Auth Context    | Handles user authentication and session management.           | Controls login, logout, and user session validation.         | Can be integrated anywhere in the app where user authentication is required.                                    |
+| Loading Spinner | Loading spinner that can be used on buttons                   | Shows on login button when user tries to log in              | Can be integrated anywhere in the app on button click and waits a response.                                     |
+| Experince Form  | Form for creating and editing Educations and Work Experinces  | Manages adding new or editing educations and work experinces | The form is used for the job seeker to add new or edit existing experinces.                                     |
