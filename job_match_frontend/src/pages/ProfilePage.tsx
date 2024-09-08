@@ -15,7 +15,7 @@ import {
 import { JobSeekerCv, WorkExperience, Education } from '../types/types'
 import ExperinceModal from '../components/ExperinceModal'
 import { CustomModal } from '../components/CustomModal'
-import Button from '../components/Button' // Import the updated Button component
+import Button from '../components/Button'
 import { deleteUser } from '../services/authService'
 import { toast } from 'react-toastify'
 
@@ -69,9 +69,9 @@ const ProfilePage: React.FC = () => {
         email: profile.email,
         mobile_number: profile.mobile_number,
       })
-      alert('Profile updated successfully')
+      toast.success('Dina ändringar sparades')
     } catch (error) {
-      setError('Failed to update profile.')
+      toast.error('Dina ändringar kunde inte sparas')
     }
   }
 
@@ -165,7 +165,9 @@ const ProfilePage: React.FC = () => {
           }))
         }
       }
+      toast.success('Dina ändringar sparades')
     } catch (error) {
+      toast.error('Dina ändringar kunde inte sparas')
       setError('Failed to save data.')
     }
     setModalOpen(false)
@@ -198,7 +200,10 @@ const ProfilePage: React.FC = () => {
           }))
         }
         setDeleteModalOpen(false)
+        toast.success('Dina ändringar sparades')
       } catch (error) {
+        toast.error('Dina ändringar kunde inte sparas')
+
         setError('Failed to delete data.')
       }
     }
@@ -256,7 +261,7 @@ const ProfilePage: React.FC = () => {
               <ExperienceCard key={workExperience.id}>
                 <CardTitle>{workExperience.occupation_title}</CardTitle>
                 <CardCompany>{workExperience.company_name}</CardCompany>
-                <CardYears>{workExperience.years}</CardYears>
+                <CardYears>{workExperience.years} År</CardYears>
                 <CardDescription>{workExperience.description}</CardDescription>
                 <Button
                   variant="secondary"
@@ -285,7 +290,7 @@ const ProfilePage: React.FC = () => {
               <ExperienceCard key={education.id}>
                 <CardTitle>{education.school_name}</CardTitle>
                 <CardCompany>{education.orientation}</CardCompany>
-                <CardYears>{education.years}</CardYears>
+                <CardYears>{education.years} År</CardYears>
                 <CardDescription>{education.description}</CardDescription>
                 <Button
                   variant="secondary"
