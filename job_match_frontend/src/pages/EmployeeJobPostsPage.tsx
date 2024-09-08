@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../context/authContext'
 import { EmployerJobPost } from '../types/types'
@@ -7,11 +7,11 @@ import {
   deleteJobApplication,
 } from '../services/employeeService'
 import { CustomModal } from '../components/CustomModal'
+import { toast } from 'react-toastify'
 
 const EmployeeJobPostsPage = () => {
   const { user, authTokens } = useAuth()
   const [applications, setApplications] = useState<EmployerJobPost[]>([])
-  const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [jobId, setJobId] = useState<number | null>(null)
 
@@ -21,8 +21,8 @@ const EmployeeJobPostsPage = () => {
         const data = await retrieveApplications(authTokens?.access)
         setApplications(data)
       } catch (error) {
+        toast.error("Applikationer kunde inte hämtas, vänligen logga in igen")      
         console.error('Error fetching applications', error)
-        setError('Failed to fetch applications.')
       }
     }
     fetchApplications()
@@ -41,10 +41,11 @@ const EmployeeJobPostsPage = () => {
       setApplications((prevApplications) =>
         prevApplications.filter((app) => app.id !== jobId)
       )
+      toast.success("Ändringar sparades")
       setIsModalOpen(false)
     } catch (error) {
       console.error('Error deleting application', error)
-      setError('Failed to delete application.')
+      toast.error("Ändringar kunde inte sparas")      
       setIsModalOpen(false)
     }
   }
@@ -52,7 +53,6 @@ const EmployeeJobPostsPage = () => {
   return (
     <Container>
       <h1>Mina Jobbansökningar</h1>
-      {error && <Error>{error}</Error>}
       <ApplicationsContainer>
         {applications.length > 0 ? (
           applications.map((application: any) => (
@@ -176,10 +176,4 @@ const DeleteButton = styled.button`
     background-color: #bd2130;
     transform: translateY(0);
   }
-`
-
-const Error = styled.div`
-  color: red;
-  margin-bottom: 16px;
-  font-size: 1rem;
 `
