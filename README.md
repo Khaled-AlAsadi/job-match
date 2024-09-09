@@ -41,8 +41,6 @@ The application have a standard look. The plan was to focus on the functionality
 | [#1](https://github.com/users/Khaled-AlAsadi/projects/1/views/1?pane=issue&itemId=71540462) | As an employee i want to be able to create my cv/profile to apply with.         |
 | [#2](https://github.com/users/Khaled-AlAsadi/projects/1/views/1?pane=issue&itemId=71540489) | As an employee i want to be able to update my cv/profile.                       |
 | [#3](https://github.com/users/Khaled-AlAsadi/projects/1/views/1?pane=issue&itemId=71540519) | As an employee i want to be able to view published Job Posts and apply for them |
-|                                                                                             |
-|                                                                                             |
 
 ---
 
