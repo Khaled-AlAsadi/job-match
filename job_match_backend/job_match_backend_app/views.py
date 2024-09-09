@@ -75,6 +75,8 @@ def createJobPost(request):
 @api_view(['GET'])
 def retrieveAvailableJobPosts(request):
     if request.user.is_authenticated and not request.user.is_ag:
+        location = request.GET.get('location', None)
+
         applied_job_posts = Application.objects.filter(
             profile_id=request.user).values_list(
             'job_post_id', flat=True)
@@ -82,6 +84,10 @@ def retrieveAvailableJobPosts(request):
             is_published=True,
             expiration_date__gte=now()).exclude(
             id__in=applied_job_posts)
+                    
+        if location:
+            job_posts = job_posts.filter(location__icontains=location)
+        
         serializer = AvailableJobPostsSerializer(job_posts, many=True)
         return JsonResponse(
             serializer.data,

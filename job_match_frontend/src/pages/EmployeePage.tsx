@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 
 const EmployeePage = () => {
   const [jobPosts, setJobPosts] = useState<AvailableJobPosts[]>([])
+  const [searchItem, setSearchItem] = useState('')
   const [currentJobIndex, setCurrentJobIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -59,6 +60,20 @@ const EmployeePage = () => {
     setCurrentJobIndex((prevIndex) => prevIndex + 1)
   }
 
+  const handleInputChange = async (e: any) => {
+    const searchTerm = e.target.value.trim()
+
+    setSearchItem(searchTerm)
+
+    if (searchTerm.length === 0) {
+      const data = await retrieveAvailableJobPosts(authTokens?.access)
+      return setJobPosts(data)
+    }
+
+    const data = await retrieveAvailableJobPosts(authTokens?.access, searchTerm)
+    setJobPosts(data)
+  }
+
   if (loading) {
     return <p>Loading...</p>
   }
@@ -67,35 +82,40 @@ const EmployeePage = () => {
     return <p>Error: {error}</p>
   }
 
-  if (jobPosts.length === 0 || currentJobIndex >= jobPosts.length) {
-    return (
-      <MessageContainer>
-        <MessageText>Inga fler tillgängliga jobbannonser</MessageText>
-      </MessageContainer>
-    )
-  }
-
   const currentJob = jobPosts[currentJobIndex]
 
   return (
     <Container>
-      <JobItem>
-        <JobDetails>
-          <JobTitle>{currentJob.job_post_title}</JobTitle>
-          <Text>{currentJob.company_name}</Text>
-          <Text>{currentJob.location}</Text>
-          <Text>{currentJob.employment_type}</Text>
-          <Text>{currentJob.job_description}</Text>
-          <Text>Contact: {currentJob.phone_number}</Text>
-          <Text>Ansök innan: {currentJob.expiration_date}</Text>
-        </JobDetails>
-        <ButtonGroup>
-          <ApplyButton onClick={() => handleApply(currentJob.id)}>
-            Ansök
-          </ApplyButton>
-          <SkipButton onClick={handleSkip}>Hoppa över</SkipButton>
-        </ButtonGroup>
-      </JobItem>
+      <Input
+        type="text"
+        value={searchItem}
+        onChange={handleInputChange}
+        placeholder="Sök efter annonser baserad på jobbsområde"
+      />
+
+      {jobPosts.length === 0 || currentJobIndex >= jobPosts.length ? (
+        <MessageContainer>
+          <MessageText>Inga fler tillgängliga jobbannonser</MessageText>
+        </MessageContainer>
+      ) : (
+        <JobItem>
+          <JobDetails>
+            <JobTitle>{currentJob.job_post_title}</JobTitle>
+            <Text>Företag: {currentJob.company_name}</Text>
+            <Text>JobbsOmråde: {currentJob.location}</Text>
+            <Text>Anställningstyp: {currentJob.employment_type}</Text>
+            <Text>JobbBeskrivning: {currentJob.job_description}</Text>
+            <Text>Mobilnummer: {currentJob.phone_number}</Text>
+            <Text>Ansök innan: {currentJob.expiration_date}</Text>
+          </JobDetails>
+          <ButtonGroup>
+            <ApplyButton onClick={() => handleApply(currentJob.id)}>
+              Ansök
+            </ApplyButton>
+            <SkipButton onClick={handleSkip}>Hoppa över</SkipButton>
+          </ButtonGroup>
+        </JobItem>
+      )}
     </Container>
   )
 }
@@ -224,4 +244,12 @@ const MessageContainer = styled.div`
 const MessageText = styled.p`
   font-size: 1.5em;
   color: #666;
+`
+const Input = styled.input`
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
 `
