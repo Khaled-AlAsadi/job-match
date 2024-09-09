@@ -101,31 +101,19 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Color Scheme
 
+The main colors used in the application.
+
 ![Main image](documentaion/design/color_scheme.png)
 
-1. Body:
+The colors for the buttons that are in the application.
 
-- Background color: White
+![Buttons Color image](documentaion/design/buttons_color_scheme.png)
 
-2. Navbar and Footer:
+Typography
 
-- Background color: #333333 (Black Grey)
+The main font used in the application is Montserrat', sans-serif.
 
-3. Delete Buttons:
-
-- Background color: Red
-
-4. Add and Confirmation Buttons:
-
-- Background color: Light Blue
-
-5. Edit Buttons:
-
-- Background color: Grey
-
-6. Cards and Forms:
-
-- Background color: White
+![Font image](documentaion/design/font.png)
 
 ### Wireframes
 
