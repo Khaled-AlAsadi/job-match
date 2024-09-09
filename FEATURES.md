@@ -138,3 +138,9 @@ This section outlines the key components of the system, detailing their responsi
 | Auth Context    | Handles user authentication and session management.           | Controls login, logout, and user session validation.         | Can be integrated anywhere in the app where user authentication is required.                                    |
 | Loading Spinner | Loading spinner that can be used on buttons                   | Shows on login button when user tries to log in              | Can be integrated anywhere in the app on button click and waits a response.                                     |
 | Experince Form  | Form for creating and editing Educations and Work Experinces  | Manages adding new or editing educations and work experinces | The form is used for the job seeker to add new or edit existing experinces.                                     |
+
+### API Routes
+
+| **Feature** | **Method** | **Endpoint** | **Description**                           | **Request Body**                                 | **Response**                                           | **Authentication** |
+| ----------- | ---------- | ------------ | ----------------------------------------- | ------------------------------------------------ | ------------------------------------------------------ | ------------------ |
+| **Login**   | POST       | `/login`     | Authenticates user and returns JWT token. | `{ "username": "string", "password": "string" }` | `{ "access": "jwt_token", "refresh":"refresh token" }` | None               |
