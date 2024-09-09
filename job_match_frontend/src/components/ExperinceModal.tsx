@@ -108,10 +108,16 @@ const ExperinceModal: React.FC<ModalProps> = ({
           <Label>År:</Label>
           <Input
             name="years"
-            type="text"
-            maxLength={2}
+            type="number"
+            max={99}
+            min={1}
             value={formData.years}
-            onChange={handleChange}
+            onChange={(e) => {
+              const { name, value } = e.target
+              if (value.length <= 2) {
+                setFormData({ ...formData, [name]: value })
+              }
+            }}
           />
           {errors.years && <ErrorText>{errors.years}</ErrorText>}
         </FormField>
