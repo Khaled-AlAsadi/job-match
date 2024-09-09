@@ -141,6 +141,42 @@ This section outlines the key components of the system, detailing their responsi
 
 ### API Routes
 
+#### Employee
+
 | **Feature** | **Method** | **Endpoint** | **Description**                           | **Request Body**                                 | **Response**                                           | **Authentication** |
 | ----------- | ---------- | ------------ | ----------------------------------------- | ------------------------------------------------ | ------------------------------------------------------ | ------------------ |
 | **Login**   | POST       | `/login`     | Authenticates user and returns JWT token. | `{ "username": "string", "password": "string" }` | `{ "access": "jwt_token", "refresh":"refresh token" }` | None               |
+
+| **Sign up** | POST | `/create/user` | Creates an account for user. | `{ "email": "string", "first_name": "string", "password":"string", "mobile_number":"string", "last_name":"string" }` | `{ "email": "string", "first_name": "string", "password":"string", "mobile_number":"string", "last_name":"string" , "org_number":"string" , "is_ag":"boolean" , "is_active":"boolean" }` | None |
+
+| **Applications** | GET | `/jobseeker/applications` | Retrives the jobs that the JobSeeker applied for. | None | `{ "id": "Integer", job_post }` | Bearer "token" |
+
+| **Profile** | GET | `/jobseeker/retrive/profile`| Retrives the the JobSeeker profile. | None | `{ profile }` | Bearer "token" |
+
+| **Retrive Available JobPosts** | GET | `/jobseeker/availableJobPosts`| Retrives the the publish job posts. | None | None | Bearer "token" |
+
+| **Retrive Filtered Available JobPosts** | GET | `/jobseeker/availableJobPosts?location={string}`| Retrives the the publish job posts and filtered based on post location. | None | None | Bearer "token" |
+
+| **Profile** | PATCH | `/jobseeker/info/update` | Update info. | `{ "mobile_number": "string", "email":"string" }`| `{ "mobile_number": "string", "email":"string" }` | Bearer "token" |
+
+| **Work Experince** | DELETE | `/jobseeker/workexperince/delete/{id}` | Deletes a work experince. | None| None | Bearer "token" |
+
+| **Work Experince** | POST | `jobseeker/workexperince/create` | Creates a work experince. | `{ workexperince }`| `{ workexperince }` | Bearer "token" |
+
+| **Work Experince** | PUT | `jobseeker/workexperince/update/{id}` | Update an existing education. | `{eduaction}`| `{ workexperince }` | Bearer "token" |
+
+| **Education** | DELETE | `/jobseeker/education/delete/{id}` | Deletes a work experince. | None| None | Bearer "token" |
+
+| **Education** | POST | `jobseeker/education/create` | Creates a work experince. | `{ eduaction }`| `{ eduaction }` | Bearer "token" |
+
+| **Education** | PUT | `jobseeker/education/update/{id}` | Update an existing education. | None| None | Bearer "token" |
+
+#### Employer
+
+| **Login** | POST | `/login` | Authenticates user and returns JWT token. | `{ "username": "string", "password": "string" }` | `{ "access": "jwt_token", "refresh":"refresh token" }` | None |
+
+| **Sign up** | POST | `/create/user` | Creates an account for user. | `{ "email": "string", "first_name": "string", "password":"string", "mobile_number":"string", "last_name":"string" , "org_number":"string" }` | `{ "email": "string", "first_name": "string", "password":"string", "mobile_number":"string", "last_name":"string" , "org_number":"string" , "is_ag":"boolean" , "is_active":"boolean" }` | None |
+
+| **Job Posts** | GET | `/employer/jobposts` | Retrives the job posts that the employer created. | NONE | `[{JobPosts}]` | Bearer "token" |
+
+| **Job Post Application** | GET | `/employer/jobpost/{PostId}/application/{ApplicationId}` | Retrives the profile that applied for the specific job. | NONE | `{Profile}` | Bearer "token" |

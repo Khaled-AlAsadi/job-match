@@ -6,7 +6,7 @@
 
 ## About
 
-#### The application is meant to match Jobseeker and Employer. The Jobseeker has the ability to create a profile,Browse the available job and apply for them. While the employer can create job posts the employer can alson view the candidates and contact them.
+#### The application is meant to match Jobseeker and Employer. The Jobseeker has the ability to create a profile,Browse the available job and apply for them. While the employer can create job posts the employer can also view the candidates and contact them.
 
 ---
 
@@ -14,7 +14,9 @@
 
 The application have a standard look. The plan was to focus on the functionality and then enhance the styling more in the soon future.
 
----
+### Target
+
+This website is intended for Matching Employers and JobSeekers. The Employers can create JobPosts and the posts will be visible to the JobSeekers. The JobSeekers will need to complete a profile to start applying for jobs. Once the jobseeker complete his/her profile they will be able to apply for jobs.
 
 ### User Stories
 
