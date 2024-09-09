@@ -84,10 +84,10 @@ def retrieveAvailableJobPosts(request):
             is_published=True,
             expiration_date__gte=now()).exclude(
             id__in=applied_job_posts)
-                    
+
         if location:
             job_posts = job_posts.filter(location__icontains=location)
-        
+
         serializer = AvailableJobPostsSerializer(job_posts, many=True)
         return JsonResponse(
             serializer.data,

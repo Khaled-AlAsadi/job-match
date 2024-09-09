@@ -18,6 +18,12 @@ The application have a standard look. The plan was to focus on the functionality
 
 ### User Stories
 
+#### User
+
+| Issue ID                                                   | User Story                                        |
+| ---------------------------------------------------------- | ------------------------------------------------- |
+| [#8](https://github.com/Khaled-AlAsadi/job-match/issues/8) | As a user i want to be able to delete my account. |
+
 #### Employer
 
 | Issue ID                                                                                    | User Story                                                                                 |
