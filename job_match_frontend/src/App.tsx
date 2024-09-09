@@ -2,12 +2,15 @@ import styled from 'styled-components'
 import './App.css'
 import FooterComponent from './components/Footer'
 import AppRoutes from './routes/AppRoutes'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
     <AppContainer>
       <Content>
         <AppRoutes />
+        <ToastContainer limit={1} autoClose={2000}/>
       </Content>
       <FooterComponent />
     </AppContainer>

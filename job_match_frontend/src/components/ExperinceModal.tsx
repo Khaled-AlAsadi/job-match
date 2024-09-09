@@ -71,7 +71,7 @@ const ExperinceModal: React.FC<ModalProps> = ({
   }
 
   return (
-    <ModalBackdrop onClick={onClose}>
+    <ModalBackdrop>
       <ModalContainer onClick={handleModalClick}>
         <FormField>
           <Label>{type === 'experience' ? 'Titel:' : 'Skola:'}</Label>
@@ -109,6 +109,7 @@ const ExperinceModal: React.FC<ModalProps> = ({
           <Input
             name="years"
             type="text"
+            maxLength={2}
             value={formData.years}
             onChange={handleChange}
           />

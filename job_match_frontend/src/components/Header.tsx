@@ -14,7 +14,11 @@ function HeaderComponent() {
   return (
     <NavbarContainer>
       <Header>
-        <Logo>Job Match</Logo>
+        <Logo>
+          <StyledLink href="/" aria-label="Startsidan">
+            Job Match
+          </StyledLink>
+        </Logo>
         {user && <MenuIcon onClick={toggleMenu}>&#9776;</MenuIcon>}
       </Header>
       {user && (
@@ -104,6 +108,16 @@ const NavLinks = styled.div<{ isOpen: boolean }>`
 `
 
 const NavLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const StyledLink = styled.a`
   color: white;
   text-decoration: none;
   margin-right: 1rem;

@@ -63,3 +63,43 @@ export const getUser = async (token: string) => {
     throw error
   }
 }
+
+export const deleteUser = async (token: any) => {
+  try {
+    const response = await api.delete('/delete/user', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to delete user:', error)
+    throw error
+  }
+}
+
+export const resetPassword = async (email: string) => {
+  try {
+    const response = await api.post('password-reset', { email: email })
+    return response.data
+  } catch (error) {
+    console.error('Failed to send mail or email does not exist:', error)
+    throw error
+  }
+}
+
+export const resetPasswordConfirm = async (
+  password: string,
+  uid: string,
+  token: any
+) => {
+  try {
+    const response = await api.post(`reset/confirm/${uid}/${token}/`, {
+      password: password,
+    })
+    return response.data
+  } catch (error) {
+    console.error('Failed to Change password', error)
+    throw error
+  }
+}

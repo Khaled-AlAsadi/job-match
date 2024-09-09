@@ -7,6 +7,15 @@ from .models import Application, Education, JobPost, JobSeekerCv, WorkExperince
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.utils.timezone import now
+from rest_framework.views import APIView
+from django.utils.decorators import method_decorator
+from django.contrib.auth import views as auth_views
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+import os
 
 # Create your views here.
 
@@ -14,6 +23,7 @@ from django.utils.timezone import now
 @api_view(['GET'])
 def index(request):
     return HttpResponse("Använd rätt route för att hitta saker")
+
 
 @api_view(['GET'])
 def getUser(request):
@@ -65,6 +75,8 @@ def createJobPost(request):
 @api_view(['GET'])
 def retrieveAvailableJobPosts(request):
     if request.user.is_authenticated and not request.user.is_ag:
+        location = request.GET.get('location', None)
+
         applied_job_posts = Application.objects.filter(
             profile_id=request.user).values_list(
             'job_post_id', flat=True)
@@ -72,6 +84,10 @@ def retrieveAvailableJobPosts(request):
             is_published=True,
             expiration_date__gte=now()).exclude(
             id__in=applied_job_posts)
+
+        if location:
+            job_posts = job_posts.filter(location__icontains=location)
+
         serializer = AvailableJobPostsSerializer(job_posts, many=True)
         return JsonResponse(
             serializer.data,
@@ -343,9 +359,8 @@ def applyToJob(request, id):
 @api_view(["DELETE"])
 def deleteApplicationEmployee(request, id):
     if request.user.is_authenticated:
-        job_post = get_object_or_404(JobPost)
+        job_post = get_object_or_404(JobPost, id=id)
 
-        # Find the application
         application = Application.objects.filter(
             profile_id=request.user, job_post=job_post
         ).first()
@@ -354,14 +369,12 @@ def deleteApplicationEmployee(request, id):
             return Response({"Error": "Application does not exist"},
                             status=status.HTTP_404_NOT_FOUND)
 
-        # Delete the application
         application.delete()
 
         return Response({"Message": "success"}, status=status.HTTP_200_OK)
     else:
         return Response({"Error": "You are not authorized"},
                         status=status.HTTP_401_UNAUTHORIZED)
-                        
 
 
 @api_view(["POST"])
@@ -369,6 +382,84 @@ def createUser(request):
     serializer = CustomUserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["DELETE"])
+def deleteUser(request):
+    if request.user.is_authenticated:
+        user = request.user
+
+        user.delete()
+
+        return Response({"message": "User deleted successfully."},
+                        status=status.HTTP_204_NO_CONTENT)
     else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Error": "You are not authorized"},
+                        status=status.HTTP_401_UNAUTHORIZED)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PasswordResetAPIView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'error': 'Email is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            print(os.environ.get("DEFAULT_FROM_EMAIL"))
+            reset_url = (
+                os.environ.get('FRONTEND_BASE_URL')
+                + "/reset/confirm/"
+                + uid
+                + "/"
+                + token
+            )
+            send_mail(
+                'Password Reset',
+                f'Click the link to reset your password: {reset_url}',
+                os.environ.get("DEFAULT_FROM_EMAIL"),
+                [email],
+                fail_silently=False,
+            )
+
+            return Response({'success': 'Password reset link sent to email'},
+                            status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User with this email does not exist'},
+                            status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PasswordResetConfirmAPIView(APIView):
+    def post(self, request, uid, token):
+        new_password = request.data.get('password')
+
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = CustomUser.objects.get(pk=uid)
+
+            if not default_token_generator.check_token(user, token):
+                return Response({'error': 'Invalid token'},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            user.password = make_password(new_password)
+            user.save()
+
+            return Response({'message': 'Password reset successful'},
+                            status=status.HTTP_200_OK)
+
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User not found'},
+                            status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)

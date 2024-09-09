@@ -8,6 +8,7 @@ import JobForm from '../components/JobForm'
 import CandidatesList from '../components/CandidatesList'
 import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
+import { toast } from 'react-toastify'
 
 const JobPage = () => {
   const location = useLocation()
@@ -32,6 +33,7 @@ const JobPage = () => {
       if (authTokens?.access && user !== null) {
         await deleteJobPost(authTokens?.access, job.id)
         navigate('/home')
+        toast.success('Jobbannons togs bort')
       }
     } catch (error) {
       logout()
@@ -43,6 +45,7 @@ const JobPage = () => {
       if (authTokens?.access) {
         await updateJobPost(authTokens.access, job.id, updatedJobPost)
         navigate('/home')
+        toast.success('Jobbannonsen uppdaterades')
       }
     } catch (error) {
       logout()

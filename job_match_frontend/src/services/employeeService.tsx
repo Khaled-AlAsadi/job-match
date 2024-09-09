@@ -1,13 +1,21 @@
 import { Education, WorkExperience } from '../types/types'
 import api from './api'
 
-export const retrieveAvailableJobPosts = async (token: any) => {
+export const retrieveAvailableJobPosts = async (
+  token: any,
+  location: any = null
+) => {
   try {
-    const response = await api.get('/jobseeker/availableJobPosts', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await api.get(
+      location
+        ? `/jobseeker/availableJobPosts?location=${location}`
+        : `/jobseeker/availableJobPosts`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
     return response.data
   } catch (error) {
     console.error('Failed to retrieve job posts:', error)

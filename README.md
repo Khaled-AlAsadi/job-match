@@ -18,6 +18,12 @@ The application have a standard look. The plan was to focus on the functionality
 
 ### User Stories
 
+#### User
+
+| Issue ID                                                   | User Story                                        |
+| ---------------------------------------------------------- | ------------------------------------------------- |
+| [#8](https://github.com/Khaled-AlAsadi/job-match/issues/8) | As a user i want to be able to delete my account. |
+
 #### Employer
 
 | Issue ID                                                                                    | User Story                                                                                 |
@@ -35,8 +41,6 @@ The application have a standard look. The plan was to focus on the functionality
 | [#1](https://github.com/users/Khaled-AlAsadi/projects/1/views/1?pane=issue&itemId=71540462) | As an employee i want to be able to create my cv/profile to apply with.         |
 | [#2](https://github.com/users/Khaled-AlAsadi/projects/1/views/1?pane=issue&itemId=71540489) | As an employee i want to be able to update my cv/profile.                       |
 | [#3](https://github.com/users/Khaled-AlAsadi/projects/1/views/1?pane=issue&itemId=71540519) | As an employee i want to be able to view published Job Posts and apply for them |
-|                                                                                             |
-|                                                                                             |
 
 ---
 
@@ -97,31 +101,19 @@ Please refer to the [FEATURES.md](FEATURES.md) file for all test-related documen
 
 ### Color Scheme
 
+The main colors used in the application.
+
 ![Main image](documentaion/design/color_scheme.png)
 
-1. Body:
+The colors for the buttons that are in the application.
 
-- Background color: White
+![Buttons Color image](documentaion/design/buttons_color_scheme.png)
 
-2. Navbar and Footer:
+Typography
 
-- Background color: #333333 (Black Grey)
+The main font used in the application is Montserrat', sans-serif.
 
-3. Delete Buttons:
-
-- Background color: Red
-
-4. Add and Confirmation Buttons:
-
-- Background color: Light Blue
-
-5. Edit Buttons:
-
-- Background color: Grey
-
-6. Cards and Forms:
-
-- Background color: White
+![Font image](documentaion/design/font.png)
 
 ### Wireframes
 

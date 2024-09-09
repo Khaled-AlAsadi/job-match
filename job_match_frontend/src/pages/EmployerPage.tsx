@@ -9,15 +9,20 @@ import { EmployerJobPost } from '../types/types'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
 import JobForm from '../components/JobForm'
+import { toast } from 'react-toastify'
+import { CustomModal } from '../components/CustomModal'
+import { deleteUser } from '../services/authService'
 
 const EmployerPage = () => {
   const navigate = useNavigate()
   const [isFormOpen, setIsFormOpen] = useState(false)
 
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+
   const [EmployerjobPosts, setJobPosts] = useState<EmployerJobPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const { user, authTokens } = useAuth()
+  const { user, authTokens, logout } = useAuth()
 
   const handleJobView = (job: EmployerJobPost) => {
     navigate(`/employer/job/${job.id}`, { state: { job } })
@@ -56,11 +61,23 @@ const EmployerPage = () => {
     setIsFormOpen(false)
   }
 
+  const handleAccountDeletion = async () => {
+    setDeleteModalOpen(false)
+    try {
+      await deleteUser(authTokens?.access)
+      logout()
+      toast.success('Ditt konto raderades')
+    } catch (error) {
+      toast.error('Ditt konto kunde inte raderas')
+    }
+  }
+
   const handleJobSubmit = async (formData: EmployerJobPost) => {
     try {
       await createJobPost(authTokens?.access, formData)
       const updatedJobPosts = await retrieveEmployerJobPosts(authTokens?.access)
       setJobPosts(updatedJobPosts)
+      toast.success('Jobannons skapades')
     } catch (error) {
       console.error('Error creating job post:', error)
     } finally {
@@ -92,6 +109,19 @@ const EmployerPage = () => {
         onClose={handleCloseForm}
         onSubmit={handleJobSubmit}
         primaryButtonText="Skapa"
+      />
+      <Button variant="delete" onClick={() => setDeleteModalOpen(true)}>
+        Ta bort mitt konto
+      </Button>
+      <CustomModal
+        visible={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        primaryButtonTitle="Ja"
+        onPrimaryButtonPress={handleAccountDeletion}
+        secondaryButtonTitle="Nej"
+        onSecondaryButtonPress={() => setDeleteModalOpen(false)}
+        modalText="Är du säker på att du vill ta bort ditt konto?"
+        modalTitle="Ditt konto kommer att raderas"
       />
     </Container>
   )
