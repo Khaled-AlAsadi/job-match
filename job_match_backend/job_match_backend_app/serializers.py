@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth.hashers import make_password
+from rest_framework.exceptions import ValidationError
 
 
 class WorkExperinceSerializer(serializers.ModelSerializer):
@@ -133,6 +134,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'is_staff': {'read_only': True},
         }
 
+    def validate_password(self, value):
+        if len(value) < 6:
+            raise ValidationError(
+                "Password must be at least 6 characters long.")
+        return value
+
     def create(self, validated_data):
         if 'org_number' in validated_data and validated_data['org_number']:
             validated_data['is_ag'] = True
@@ -143,6 +150,20 @@ class CustomUserSerializer(serializers.ModelSerializer):
         validated_data['is_superuser'] = False
 
         return super().create(validated_data)
+
+    def is_valid(self, raise_exception=False):
+        """
+        Override the is_valid method to
+        flatten errors and return single strings.
+        """
+        valid = super().is_valid(raise_exception=raise_exception)
+
+        if hasattr(self, '_errors'):
+            for field, messages in self._errors.items():
+                if isinstance(messages, list) and len(messages) == 1:
+                    self._errors[field] = messages[0]
+
+        return valid
 
 
 class SimplifiedJobPostSerializer(serializers.ModelSerializer):
